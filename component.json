@@ -1,6 +1,6 @@
 {
-    "name": "carte",
-    "description": "Simple API reference",
+    "name": "SharePaper",
+    "description": "A reference repository for a collaborated paper submission.",
     "version": "0.0.1",
     "local": ["boot"],
     "paths": ["lib"]
