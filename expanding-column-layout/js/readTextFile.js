@@ -5,14 +5,16 @@ csv = "heading1,heading2,heading3,heading4,heading5\nvalue1_1,value2_1,value3_1,
 $(document).ready(function() {
     $.ajax({
         type: "GET",
-        url: "http://localhost:4000/expanding-column-layout/tag7.txt",
+        url: "tag7.txt",
         dataType: "text",
-        success: function(data) {processData(data);}
+        success: function(data) {document.getElementById("demo").innerHTML = processData(data);}
      });
 });
 
 function processData(allText) {
-    var allTextLines = allText.split(/\r\n|\n/);
+  console.log(allText);
+    var allTextLines = allText.split(',');
+    /*
     var headers = allTextLines[0].split(',');
     var lines = [];
 
@@ -27,7 +29,9 @@ function processData(allText) {
             lines.push(tarr);
         }
     }
-console.log(lines);
+    */
+console.log(allTextLines);
+  return allTextLines;
 }
 
 /*
