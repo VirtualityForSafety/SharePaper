@@ -38,6 +38,7 @@ var Expand = (function() {
 
     var init = function() {
       bindActions();
+      console.log("index.js init done!");
     };
 
     return {

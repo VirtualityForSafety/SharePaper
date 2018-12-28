@@ -5,60 +5,41 @@ csv = "heading1,heading2,heading3,heading4,heading5\nvalue1_1,value2_1,value3_1,
 $(document).ready(function() {
     $.ajax({
         type: "GET",
-        url: "tag7.txt",
+        url: "tag5.txt",
         dataType: "text",
-        success: function(data) {document.getElementById("demo").innerHTML = processData(data);}
+        success: function(data) {document.getElementById("demo").innerHTML = processData(data); }
      });
 });
+
+/*
+<head>
+  <meta charset="UTF-8">
+  <title>Expanding Column Layout</title>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+  
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>");*/
 
 function processData(allText) {
   console.log(allText);
     var allTextLines = allText.split(',');
-    /*
-    var headers = allTextLines[0].split(',');
     var lines = [];
-
-    for (var i=1; i<allTextLines.length; i++) {
-        var data = allTextLines[i].split(',');
-        if (data.length == headers.length) {
-
-            var tarr = [];
-            for (var j=0; j<headers.length; j++) {
-                tarr.push(headers[j]+":"+data[j]);
-            }
-            lines.push(tarr);
-        }
+    var result = ""
+    for (var i=0; i<allTextLines.length; i++) {
+      var subresult = "<article class=\"strips__strip\"><div class=\"strip__content\">\n<h1 class=\"strip__title\" data-name=\"Ipsum\">\n";
+      subresult += (allTextLines[i]);
+      subresult += "</h1>      <div class=\"strip__inner-text\">        <h2>Ettrics</h2>        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia sapiente deserunt consectetur, quod reiciendis corrupti quo ea aliquid! Repellendus numquam quo, voluptate. Suscipit soluta omnis quibusdam facilis, illo voluptates odit!</p>        <p>          <a href=\"https://twitter.com/ettrics\" target=\"_blank\"><i class=\"fa fa-twitter\"></i></a>        </p>      </div>    </div></article>";
+      result += subresult;
     }
-    */
+    result += "<i class=\"fa fa-close strip__close\"></i>";
 console.log(allTextLines);
-  return allTextLines;
+  return result;
 }
-
-/*
-$(document).ready(function() {
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:4000/expanding-column-layout/tag7.txt",
-        dataType: "text",
-        success: function(data) {processData(data);}
-     });
-});
-
-function processData(allText) {
-    var allTextLines = allText.split(/\r\n|\n/);
-    var headers = allTextLines[0].split(',');
-    var lines = [];
-
-    for (var i=1; i<allTextLines.length; i++) {
-        var data = allTextLines[i].split(',');
-        if (data.length == headers.length) {
-
-            var tarr = [];
-            for (var j=0; j<headers.length; j++) {
-                tarr.push(headers[j]+":"+data[j]);
-            }
-            lines.push(tarr);
-        }
-    }
-console.log(lines);
-}*/
