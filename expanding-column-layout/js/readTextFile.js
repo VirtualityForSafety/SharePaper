@@ -7,26 +7,9 @@ $(document).ready(function() {
         type: "GET",
         url: "tag5.txt",
         dataType: "text",
-        success: function(data) {document.getElementById("demo").innerHTML = processData(data); }
+        success: function(data) {document.getElementById("demo").innerHTML = processData(data); Expand.init();}
      });
 });
-
-/*
-<head>
-  <meta charset="UTF-8">
-  <title>Expanding Column Layout</title>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
-<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-
-  
-      <link rel="stylesheet" href="css/style.css">
-
-  
-</head>
-
-<body>");*/
 
 function processData(allText) {
   console.log(allText);
