@@ -23,7 +23,7 @@ function button1_click(){
   // var ex1="Robust my love";
   //  console.log(ex1.indexOf(k));
   for(var i=0; i<temp.length;i++){
-    if((temp.item(i)).innerText.indexOf(k)>=0&&k!=""){
+    if((temp.item(i)).innerText.toLowerCase().indexOf(k.toLowerCase())>=0&&k!=""){
        console.log("TRUE");
        ref.item(i).style.display="block";
     }
