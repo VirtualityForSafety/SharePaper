@@ -11,7 +11,7 @@ body{
 
 #searching{
   font: 30px, 'PT Sans', serif;
-  margin: 10px;
+  background-color: blue;
   text-align: center;
 }
 
@@ -21,6 +21,7 @@ body{
   text-align: center;
   vertical-align: middle;
 }
+
 ul:after{
   display:block;
   clear:both;
@@ -28,7 +29,7 @@ ul:after{
 }
 
 #keyword{
-  font-size:30px;
+  font-size:23px;
 }
 #ref{
   font-size: 30px;
