@@ -106,11 +106,6 @@ function processCSVData(allText) {
         var subresult = "";
         subresult+= "<button class=\"collapsible\">" +data[1] + addTags(data[6]) + "</button>";
         subresult+= "<div class=\"content\"><p>updated at " + data[2]+" by " + data[3] + "</br>Note: " + data[5] + "</p></div>";
-        //subresult+= "</br>Note: " + data[5] + "</div>";
-//        subresult += "</li>";
-        
-        //var tagScript = ;
-        //subresult += tagScript;
         result += subresult;
     }
     return result;
