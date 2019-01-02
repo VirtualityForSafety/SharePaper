@@ -9,18 +9,21 @@
 
 
   <body>
-    <p id = "searching">
-      <input type="text" id="keyword" placeholder='Paper Title'> 
-      <input type= 'button' id='ref' value= "☞"  onmouseover="change1(this)" onmouseout="change2(this)" onclick="button1_click()" style='background-color:white;'>
+    <p id = "section tags">
+    <input type= 'button' id='ref' value= "Section1"> <input type= 'button' id='ref' value= "Section2"> <input type= 'button' id='ref' value= "Section3"> <input type= 'button' id='ref' value= "Section4"> <input type= 'button' id='ref' value= "Section5"> 
     </p>
 
-    <h1>Paper list</h1>
+    <p id = "other tags">
+    <input type= 'button' id='ref' value= "tag1"> <input type= 'button' id='ref' value= "tag1"> <input type= 'button' id='ref' value= "tag1"> <input type= 'button' id='ref' value= "tag1"> <input type= 'button' id='ref' value= "tag1"> <input type= 'button' id='ref' value= "tag1">
+    <input type= 'button' id='ref' value= "tag1"> <input type= 'button' id='ref' value= "tag1"> <input type= 'button' id='ref' value= "tag1"> <input type= 'button' id='ref' value= "tag1"> <input type= 'button' id='ref' value= "tag1"> <input type= 'button' id='ref' value= "tag1">
+    </p>
+    <h1>Paper list: sort by <input type= 'button' id='ref' value= "time"> <input type= 'button' id='ref' value= "name"> <input type= 'button' id='ref' value= "uploader"></h1>
     <hr style="border: solid 2px rgb(63, 63, 63);">
     
     <section id="papers"></section>
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script src="js/readTextFile.js"></script>
-    <script src="js/index.js"></script>
+    <!--<script src="js/index.js"></script>-->
   </body>
 </html>
