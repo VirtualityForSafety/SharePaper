@@ -36,7 +36,7 @@ function button1_click(){
 $(document).ready(function() {
      $.ajax({
         type: "GET",
-        url: "papers.csv",
+        url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
         dataType: "text",
         success: function(data) {
             document.getElementById("papers").innerHTML = processCSVData(data); prepareCollapsabile();}
