@@ -40,7 +40,7 @@ $(document).ready(function() {
         url: "tag5.txt",
         dataType: "text",
         success: function(data) {
-            processData(data);}
+            processData(data); prepareCollapsabile();}
      });
      
      $.ajax({
@@ -50,7 +50,29 @@ $(document).ready(function() {
         success: function(data) {
             document.getElementById("papers").innerHTML = processCSVData(data); }
      });
+     $('.show_hide').click(function(){
+        $(this).next('.slidingDiv').slideToggle();
+         return false;
+    });
 });
+
+function prepareCollapsabile(){
+  
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
+}
 
 function processData(allText) {
   console.log(allText);
@@ -60,8 +82,7 @@ function processData(allText) {
     for (var i=0; i<allTextLines.length; i++) {
       var subresult = "<article class=\"strips__strip\"><div class=\"strip__content\">\n<h1 class=\"strip__title\" data-name=\"Ipsum\">\n";
       subresult += (allTextLines[i]);
-      subresult += (i);
-      
+      subresult += (i);      
       subresult += "</h1>      <div class=\"strip__inner-text\">        <h2>Ettrics</h2>        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia sapiente deserunt consectetur, quod reiciendis corrupti quo ea aliquid! Repellendus numquam quo, voluptate. Suscipit soluta omnis quibusdam facilis, illo voluptates odit!</p>        <p>          <a href=\"https://twitter.com/ettrics\" target=\"_blank\"><i class=\"fa fa-twitter\"></i></a>        </p>      </div>    </div></article>";
       result += subresult;
     }
@@ -77,22 +98,20 @@ function processCSVData(allText) {
     var lines = [];
     var result = "";
     for (var i=1; i<allTextLines.length-1; i++) {
-        console.log(i);
-        var subresult = "<ul class =\"table\"><li id=\"paperName\" style=\"text-align:left\">";
         var data = allTextLines[i].split(',');
         if(data.length != headers.length){
             var corrected_line = reparseLine(allTextLines[i]);
             data = corrected_line.split(',');
         }
-        subresult+= data[1];
-        subresult+= "</br>updated at " + data[2]+" by " + data[3];
-        subresult+= "</br>Note: " + data[5];
-        subresult += "</li>";
+        var subresult = "";
+        subresult+= "<button class=\"collapsible\">" +data[1] + addTags(data[6]) + "</button>";
+        subresult+= "<div class=\"content\"><p>updated at " + data[2]+" by " + data[3] + "</br>Note: " + data[5] + "</p></div>";
+        //subresult+= "</br>Note: " + data[5] + "</div>";
+//        subresult += "</li>";
         
-        var tagScript = addTags(data[6]);
-        subresult += tagScript;
+        //var tagScript = ;
+        //subresult += tagScript;
         result += subresult;
-        result += "</ul>"
     }
     return result;
 }
@@ -111,13 +130,12 @@ function reparseLine(oneLine){
 
 function addTags(tagSentence){
     var tags = tagSentence.split('/');
-    console.log(tags);
-    var string = "<li><ul class=\"tags\">";
+    var string = "<ul class=\"tags\">";
     for(var i = 0; i < tags.length; i++){
         string += "<a href=\"#\" class=\"tag\">"
         string += tags[i];
         string += "</a>";
     }
-    string += "</ul></li>";
+    string += "</ul>";
     return string;
 }
