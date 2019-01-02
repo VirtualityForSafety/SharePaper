@@ -1,0 +1,53 @@
+<<<<<<< HEAD
+Name,Child
+old study,
+virtual reality,
+multimedia,
+fidelity,
+experiment,
+discussion,
+spatio-temporal model,
+immersiveness,
+result,
+conclusion,
+presence,
+evaluation,
+part-task,
+haptic display,
+related works,
+display design,haptic display
+simulation,
+modeling,
+social influence,
+paradigm shift,
+meta-analysis,paradigm shift
+visual guidance,
+part-task training,
+introduction,
+=======
+Name,Child,Color
+old study,,#ffff99
+virtual reality,,#e6ff99
+multimedia,,#ccff99
+fidelity,,#b3ff99
+experiment,,#99ff99
+discussion,,#99ffb3
+spatio-temporal model,,#99ffcc
+immersiveness,,#99ffe6
+result,,#99ffff
+conclusion,,#99e6ff
+presence,,#99ccff
+evaluation,,#99b3ff
+part-task,,#9999ff
+haptic display,,#b399ff
+related works,,#cc99ff
+display design,haptic display,#e699ff
+simulation,,#ff99ff
+modeling,,#ff99e6
+social influence,,#ff99cc
+paradigm shift,,#ff99b3
+meta-analysis,paradigm shift,#ff9999
+visual guidance,,#ff9999
+part-task training,,#ffb399
+introduction,,#ffcc99
+>>>>>>> bfa9d7c160c68e044c1abe5a37c5a0bd61441f03
