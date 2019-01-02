@@ -78,13 +78,15 @@ function processCSVData(allText) {
     var result = "";
     for (var i=1; i<allTextLines.length-1; i++) {
         console.log(i);
-        var subresult = "<ul class =\"table\"><li id=\"paperName\">";
+        var subresult = "<ul class =\"table\"><li id=\"paperName\" style=\"text-align:left\">";
         var data = allTextLines[i].split(',');
         if(data.length != headers.length){
             var corrected_line = reparseLine(allTextLines[i]);
             data = corrected_line.split(',');
         }
         subresult+= data[1];
+        subresult+= "</br>updated at " + data[2]+" by " + data[3];
+        subresult+= "</br>Note: " + data[5];
         subresult += "</li>";
         
         var tagScript = addTags(data[6]);
