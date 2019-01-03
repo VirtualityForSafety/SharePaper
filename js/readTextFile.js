@@ -38,7 +38,7 @@ $(document).ready(function() {
         url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
         dataType: "text",
         success: function(data) {
-            document.getElementById("papers").innerHTML = processCSVData(data); prepareCollapsabile();}
+            document.getElementById("papers").innerHTML = processCSVData(data); prepareCollapsible();}
      });
      $('.show_hide').click(function(){
         $(this).next('.slidingDiv').slideToggle();
@@ -46,7 +46,7 @@ $(document).ready(function() {
     });
 });
 
-function prepareCollapsabile(){
+function prepareCollapsible(){
   
 var coll = document.getElementsByClassName("collapsible");
 var i;
@@ -94,7 +94,7 @@ function processCSVData(allText) {
         }
         var subresult = "";
         subresult+= "<button class=\"collapsible\">" +data[1] + addTags(data[6]) + "</button>";
-        subresult+= "<div class=\"content\"><p>updated at " + data[2]+" by " + data[3] + "</br>Note: " + data[5] + "</p></div>";
+        subresult+= "<div class=\"content\"><p class=\"detail\">updated at " + data[2]+" by " + data[3] + "</br>Note: " + data[5] + "</p></div>";
         result += subresult;
     }
     return result;
@@ -114,12 +114,12 @@ function reparseLine(oneLine){
 
 function addTags(tagSentence){
     var tags = tagSentence.split('/');
-    var string = "<ul class=\"tags\">";
+    var string = "<div class=\"alignright\">";
     for(var i = 0; i < tags.length; i++){
         string += "<a href=\"#\" class=\"tag\">"
         string += tags[i];
         string += "</a>";
     }
-    string += "</ul>";
+    string += "</div>";
     return string;
 }
