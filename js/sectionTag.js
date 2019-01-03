@@ -62,7 +62,7 @@ var stripTitle = $('.strip__title');
     $(".strips__strip").css("will-change","width, left, z-index, height");
     $(".strips__strip").css("position","absolute");
     $(".strips__strip").css("width",String(100/sum)+"\%");
-    $(".strips__strip").css("min-height","100vh");
+    $(".strips__strip").css("min-height","15vh");
     $(".strips__strip").css("overflow","hidden");
     $(".strips__strip").css("cursor","pointer");
     $(".strips__strip").css("transition","all 0.6s cubic-bezier(0.23, 1, 0.32, 1)");
