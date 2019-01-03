@@ -6,7 +6,7 @@
 $(document).ready(function() {
     $.ajax({
         type: "GET",
-        url: "tag7.txt",
+        url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/tags.csv",
         dataType: "text",
         success: function(data) {
 
@@ -86,10 +86,25 @@ var stripTitle = $('.strip__title');
     adjustCSS();
   }
 
+function getSectionTags(allText) {
+    var allTextLines = allText.split(/\r\n|\n/);
+    var headers = allTextLines[0].split(',');
+    console.log(headers);
+    var lines = [];
+    for (var i=1; i<allTextLines.length-1; i++) {
+        if (!allTextLines[i].includes("section"))
+          continue;
+        var data = allTextLines[i].split(',')[0].split(':');
+        lines.push(data[1]);
+    }
+    console.log(lines);
+    return lines;
+}
+
 
 function processData(allText) {
   console.log(allText);
-    var allTextLines = allText.split(',');
+    var allTextLines = getSectionTags(allText);
     sum = allTextLines.length;
     var lines = [];
     var result = ""
