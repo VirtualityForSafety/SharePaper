@@ -1,0 +1,19 @@
+ID,Group,Name,Description,Value,Maintainer
+1,Paper,ID,This is a sample description.,,default
+2,Paper,Title,This is a sample description.,,default
+3,Paper,Year,This is a sample description.,,default
+4,Paper,Journal/Conference,This is a sample description.,,default
+5,Paper,Author,This is a sample description.,,default
+6,Paper,Keywords,This is a sample description.,,default
+7,Paper,Quality,This is a sample description.,"high,medium,low",default
+8,Paper,Summary,This is a sample description.,,default
+9,Paper,Upload timestamp,This is a sample description.,,default
+10,Paper,Uploader,This is a sample description.,,default
+11,Paper,Link,This is a sample description.,,default
+12,Tag,ID,This is a sample description.,,default
+13,Tag,Contributor,This is a sample description.,,default
+14,Tag,Section,This is a sample description.,"introduction,related works,method,experiment,result,discussion,conclusion",default
+15,Tag,Tag,This is a sample description.,,default
+16,Tag,Comment,This is a sample description.,,default
+17,Tag,Timestamp,This is a sample description.,,default
+18,Tag,Paper ID,This is a sample description.,,default
