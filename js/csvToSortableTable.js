@@ -15,7 +15,7 @@ $(document).ready(function() {
 });
 
 function reverseTableRows() {
-  
+
     var table = document.getElementById("paperTable"),
         newTbody = document.createElement('tbody'),
         oldTbody = table.tBodies[0],
@@ -55,7 +55,7 @@ function sortTable(numElement) {
           break;
         }
         columnState[numElement]=1;
-        
+
       }
       if (shouldSwitch) {
         /*If a switch has been marked, make the switch
@@ -71,13 +71,13 @@ function sortTable(numElement) {
 }
 
 function processCSVData(allText) {
-  
+
     var allTextLines = allText.split(/\r\n|\n/);
     var headers = allTextLines[0].split(',');
-    
+
     var lines = [];
     var result = "<table id=\"paperTable\"><tr>";
-    
+
     var header = allTextLines[0].split(',');
     for( var k=0; k<header.length ; k++){
       if(k==0){
@@ -91,35 +91,64 @@ function processCSVData(allText) {
     result += "</tr>";
 
     for (var i=1; i<allTextLines.length; i++) {
-        var data = allTextLines[i].split(',');
-        var dataLine = "<tr>";
-        if(data.length != headers.length){
-            var corrected_line = reparseLine(allTextLines[i]);
-            data = corrected_line.split(',');
-            for( var k=0; k<data.length ; k++){
-              if(k==0){
-                dataLine+= "<td style=\"display:none;\">"+ data[k] + "</td>";
-                }
-                else{
-                  dataLine+= "<td>"+ data[k] + "</td>";
-                  }
+      var dataLine = "<tr>";
+        var data = parseLine(allTextLines[i]);
+        for( var k=0; k<data.length ; k++){
+          if(k==0){
+            dataLine+= "<td style=\"display:none;\">"+ data[k] + "</td>";
+            }
+            else{
+              if(k==data.length-1)
+                dataLine += "<td><a href=\"resources/"+data[k]+".pdf\" download>download</a></td>";
+                else
+                dataLine+= "<td>"+ data[k] + "</td>";
               }
-              
-        }
+          }
+
         result += dataLine + "</tr>";
     }
 
     return result + "</table>";
 }
 
-function reparseLine(oneLine){
-    var data = oneLine.split('"');
+function parseLine(oneLine){
+  var parsedData = [];
+  var integrating = false;
+    var data = oneLine.split(',');
+    for (i=0; i<data.length; i++){
+      if(!integrating)
+        item = data[i];
+      else {
+        item += "," + data[i];
+      }
+      //if ((data[i].match(/'\"'/g) || []).length>0){
+      if(data[i].includes('\"')){
+        splited = data[i].split('\"');
+        if(!integrating)
+          item = (splited[0].length > splited[1].length)? splited[0] : splited[1];
+        else
+          item += (splited[0].length > splited[1].length)? splited[0] : splited[1];
+        integrating = !integrating;
+      }
+      if(!integrating)
+        parsedData.push(item);
+    }
+    /*
     var start = oneLine.indexOf("\"");
     var end   = oneLine.indexOf("\"", start+1);
     var substring = oneLine.substring(start, end);
 
     var replaced_substring = substring.replace(/,/g," &");
-    var new_string = data[0] + replaced_substring + data[2];
-    return new_string;
+    var new_string = data[0] + replaced_substring + data[2];*/
+    return parsedData;
 }
 
+function checkUpdated(dateString){
+  var time = dateString.split('/');
+  var today = new Date();
+  var paperDate = new Date(time[0], Number(time[1]) - 1, time[2]);
+  var betweenDay = (today.getTime() - paperDate.getTime()) / 1000/60/60/24;
+
+  if(betweenDay <= 12) return 1;
+  else return 0;
+}
