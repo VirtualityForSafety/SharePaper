@@ -231,7 +231,6 @@ h2 {
 }
 
 /* Demo purposes */
-
 body {
   font-family: "Raleway", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -339,6 +338,7 @@ input.tag_test {
   position: relative;
   margin: 0 10px 0px 10px;
   text-decoration: none;
+  cursor: pointer;
   -webkit-transition: color 0.2s;
 }
 
@@ -370,7 +370,6 @@ input.tag_test {
 }
 
 .tag:hover::after {
-
    border-left-color: rgb(13, 81, 145); 
 }
 
@@ -390,7 +389,22 @@ input.tag_test {
 .active, .collapsible:hover {
   background-color: white;
   color: #0066ff;
-  //border: 1px solid #0066ff;
+}
+
+.tag active::after{
+  background-color: white;
+  color: #0066ff;
+}
+
+#new {
+  font-family: "Staatliches", sans-serif;
+  font-size: 25px;
+  margin: 10px 0 5px 0;
+  color: orange;
+}
+.newPaper {
+  border-top: 3px solid rgb(255, 200, 98);
+  border-bottom: 3px solid rgb(255, 200, 98);
 }
 
 .collapsible:after {
@@ -413,8 +427,9 @@ div.alignright {
   font-size: 30px;
 }
 
-.active:after {
-  content: "\2212";
+.click{
+  display: inline;
+  background-color: blue;
 }
 
 .content {
@@ -422,10 +437,12 @@ div.alignright {
   font-size: 23px;
   padding: 0 18px;
   max-height: 0;
+  width: 100%;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
   background-color: #f2f2f2;
 }
+
 p {
   font-family: "Abel", sans-serif;
   font-size: 23px;
@@ -443,4 +460,8 @@ p.detail {
   font-size: 40px;
   float: left;
   height: 100%;
+}
+
+#paperTitle {
+
 }
