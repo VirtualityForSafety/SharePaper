@@ -1,37 +1,152 @@
 <!DOCTYPE html>
-<html lang="en" >
-
-  <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <title>SharePaper</title>
     <link href="https://fonts.googleapis.com/css?family=Abel|Nanum+Gothic|Quicksand|Raleway|Staatliches" rel="stylesheet">
-        <link rel="stylesheet" href="css/style.css">
-  </head>
-
-
-  <body>
-  <!--
-  <p id = "searching">
-      <input type="text" id="keyword" placeholder='Paper Title'> 
-      <input type= 'button' id='ref' value= "ขั"  onmouseover="change1(this)" onmouseout="change2(this)" onclick="button1_click()" style='background-color:white;'>
-    </p>
-    -->
-    <p class="title">SharePaper </p>
-    <section class="strips" id="sectionTag">
-    </section>
-
-    <p id = "other tags">
-    <input class='tag_test' type= 'button' id='ref' value= "tag1"> <input class='tag_test' type= 'button' id='ref' value= "tag1"> <input class='tag_test' type= 'button' id='ref' value= "tag1"> <input class='tag_test' type= 'button' id='ref' value= "tag1"> <input class='tag_test' type= 'button' id='ref' value= "tag1"> <input class='tag_test' type= 'button' id='ref' value= "tag1">
-    <input class='tag_test' type= 'button' id='ref' value= "tag1"> <input class='tag_test' type= 'button' id='ref' value= "tag1"> <input class='tag_test' type= 'button' id='ref' value= "tag1"> <input class='tag_test' type= 'button' id='ref' value= "tag1"> <input class='tag_test' type= 'button' id='ref' value= "tag1"> <input class='tag_test' type= 'button' id='ref' value= "tag1">
-    </p>
-    <p> <div class="title">Paper list </div> <div class="alignright"> sort by <input class='tag_test' type= 'button' id='ref' value= "time"> <input class='tag_test' type= 'button' id='ref' value= "name"> <input class='tag_test' type= 'button' id='ref' value= "uploader"> </div></p>
-    <div style="clear: both;"></div>
-    <hr style="border: solid 0.5px rgb(63, 63, 63);">
+    <link rel="stylesheet" href="css/style.css">
     
-    <section id="papers"></section>
+    <style>
+table {
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
 
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-    <script src="js/readTextFile.js"></script>
-    <script  src="js/sectionTag.js"></script>
-  </body>
+th, td {
+  text-align: left;
+  padding: 16px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2
+}
+</style>
+<style>
+            table {
+                border-collapse: collapse;
+                border: 2px black solid;
+                font: 12px sans-serif;
+            }
+
+            td {
+                border: 1px black solid;
+                padding: 5px;
+            }
+        </style>
+</head>
+<body>
+<h1>Paper list</h1>
+<section id="papers"></section>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+    <script src="js/csvToTable.js"></script>
+<!--
+<table id="paperTable">
+  <tr>
+    <th style="display:none;">ID</th>
+    <th><button onclick="sortTable(1)">Title</button></th>
+    <th><button onclick="sortTable(5)">Quality</button></th>
+    <th><button onclick="sortTable(3)">Keywords</button></th>
+    <th><button onclick="sortTable(1)">Journal</button></th>
+  </tr>
+  <tr>
+    <td>Berglunds snabbkop</td>
+    <td>Sweden</td>
+  </tr>
+  <tr>
+    <td>North/South</td>
+    <td>UK</td>
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Koniglich Essen</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Magazzini Alimentari Riuniti</td>
+    <td>Italy</td>
+  </tr>
+  <tr>
+    <td>Paris specialites</td>
+    <td>France</td>
+  </tr>
+  <tr>
+    <td>Island Trading</td>
+    <td>UK</td>
+  </tr>
+  <tr>
+    <td>Laughing Bacchus Winecellars</td>
+    <td>Canada</td>
+  </tr>
+</table>
+-->
+<script>
+var columnState = [0,0];
+
+function reverseTableRows() {
+  
+    var table = document.getElementById("paperTable"),
+        newTbody = document.createElement('tbody'),
+        oldTbody = table.tBodies[0],
+        rows = table.rows,
+        i = rows.length - 1;
+        newTbody.appendChild(rows[0]);
+        for (i = rows.length - 1; i >= 0; i--) {
+            newTbody.appendChild(rows[i]);
+        }
+    oldTbody.parentNode.replaceChild(newTbody, oldTbody);
+}
+
+function sortTable(numElement) {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("paperTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  if(columnState[numElement]==0){ //no sorted state
+      while (switching) {
+      //start by saying: no switching is done:
+      switching = false;
+      rows = table.rows;
+      /*Loop through all table rows (except the
+      first, which contains table headers):*/
+      for (i = 1; i < (rows.length - 1); i++) {
+        //start by saying there should be no switching:
+        shouldSwitch = false;
+        /*Get the two elements you want to compare,
+        one from current row and one from the next:*/
+        x = rows[i].getElementsByTagName("TD")[numElement];
+        y = rows[i + 1].getElementsByTagName("TD")[numElement];
+        //check if the two rows should switch place:
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+        columnState[numElement]=1;
+        
+      }
+      if (shouldSwitch) {
+        /*If a switch has been marked, make the switch
+        and mark that a switch has been done:*/
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+      }
+    }
+  }
+  else if(columnState[numElement]>0){ //no sorted state
+    reverseTableRows();
+  }
+}
+</script>
+
+</body>
 </html>
+
+
+
+
