@@ -53,7 +53,7 @@ function processCSVData(allText) {
         }
         var subresult = "";
 
-        var tags = data[6].split('/');
+        var tags = data[5].split('/');
 
         for(var k= 0; k < tags.length; k++){
             names.push(tags[k]);
@@ -73,6 +73,7 @@ function processCSVData(allText) {
         string += "</a>";
         string += "</div>";
         subresult+= "<button class=\"collapsible\">" + string + "</button>";
+
     }
         subresult+= "<div class=\"content\"><p class=\"detail\">updated at " + data[2]+" by " + data[3] + "</br>Note: " + data[5] + "</p></div>";
 
