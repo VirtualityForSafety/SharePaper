@@ -8,6 +8,15 @@ $(document).ready(function() {
          columnDescription = generatePaperColumn(readCSV(csvData));
        }
 });
+
+$.ajax({
+   type: "GET",
+   url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/tags.csv",
+   dataType: "text",
+   success: function(csvData) {
+       tagArray = generateTagArray(readCSV(csvData));
+     }
+});
      $.ajax({
         type: "GET",
         url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",

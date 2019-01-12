@@ -1,3 +1,5 @@
+//////////////////////////////////// common part ////////////////////////////////////
+
 function reverseTableRows() {
 
     var table = document.getElementById("paperTable"),
@@ -65,47 +67,6 @@ function readCSV(allText){
   return data;
 }
 
-function generatePaperTable(data) {
-  var result = "<table id=\"paperTable\"><tr>";
-  var header = data[0];
-  var titleIndex = header.indexOf("Title");
-  var dateIndex = header.indexOf("Timestamp");
-  for( var k=0; k<header.length ; k++){
-    if(k==0){
-        result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
-    }
-    else{
-      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+")\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
-    }
-  }
-  result += "</tr>";
-
-  for (var i=1; i<data.length; i++) {
-    var dataLine = "<tr>";
-    var shouldHighlighted = false;
-    if(dateIndex >=0)
-      checkUpdated(data[i][dateIndex]);
-    var id = i;
-    for(var k=0; k<data[i].length ; k++){
-      if(shouldHighlighted){
-        data[i][k] = "<b>"+data[i][k]+"</b>";
-      }
-      if(k==0){
-        dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
-      }
-      else{
-        if(k==titleIndex)
-          dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>";
-        else if(k==data[i].length-1)
-          dataLine += "<td><a href=\"resources/"+data[i][k]+".pdf\" download>download</a></td>";
-        else
-          dataLine+= "<td>"+ data[i][k] + "</td>";
-      }
-    }
-    result += dataLine + "</tr>";
-  }
-  return result + "</table>";
-}
 
 function parseLine(oneLine){
   var parsedData = [];
@@ -149,6 +110,81 @@ function checkUpdated(dateString){
   else return 0;
 }
 
+//////////////////////////////////// paper part ////////////////////////////////////
+
+function generatePaperTable(data) {
+  var result = "<table id=\"paperTable\"><tr>";
+  var header = data[0];
+  var titleIndex = header.indexOf("Title");
+  var dateIndex = header.indexOf("Timestamp");
+  for( var k=0; k<header.length ; k++){
+    if(k==0){
+        result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
+    }
+    else{
+      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+")\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
+    }
+  }
+  result += "</tr>";
+  for (var i=1; i<data.length; i++) {
+    var dataLine = "<tr>";
+    var shouldHighlighted = false;
+    if(dateIndex >=0)
+      checkUpdated(data[i][dateIndex]);
+    var id = i;
+    for(var k=0; k<data[i].length ; k++){
+      if(shouldHighlighted){
+        data[i][k] = "<b>"+data[i][k]+"</b>";
+      }
+      if(k==0){
+        dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
+      }
+      else{
+        if(k==titleIndex)
+          dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>";
+        else if(k==data[i].length-1)
+          dataLine += "<td><a href=\"resources/"+data[i][k]+".pdf\" download>download</a></td>";
+        else
+          dataLine+= "<td>"+ data[i][k] + "</td>";
+      }
+    }
+    result += dataLine + "</tr>";
+    // paper detail information
+    var paperTagInfo="";
+    for(var k=0; k<tagArray[i].length ; k++)
+      paperTagInfo += "<tr><td colspan="+header.length+">"+tagArray[i][k]+"</td></tr>";
+    result += paperTagInfo;
+  }
+  return result + "</table>";
+}
+
+//////////////////////////////////// tag part ////////////////////////////////////
+
+function getMaxPaperID(data){
+  var maxID = 0;
+  for (var i=1; i<data.length; i++) {
+    var paperID = data[i][data[i].length-1] * 1;
+    if(paperID > maxID)
+      maxID = paperID;
+  }
+  return maxID;
+}
+
+function generateTagArray(data) {
+  tagMap = new Array(getMaxPaperID(data)+1);
+  for (var i=1; i<data.length; i++) {
+    var paperID = data[i][data[i].length-1];
+    if(tagMap[paperID]!=undefined){
+      tagMap[paperID].push(data[i]);
+    }
+    else{
+      var tempArray = new Array();
+      tempArray.push(data[i]);
+      tagMap[paperID] = tempArray;
+    }
+  }
+  return tagMap;
+}
 
 function generateTagTable(data) {
     var result = "<table id=\"paperTable\"><tr>";
