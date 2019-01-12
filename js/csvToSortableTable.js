@@ -79,21 +79,31 @@ function processCSVData(allText) {
     var result = "<table id=\"paperTable\"><tr>";
 
     var header = allTextLines[0].split(',');
+    var dateIndex = header.indexOf("Upload timestamp");
     for( var k=0; k<header.length ; k++){
       if(k==0){
           result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
         }
         else{
           result+= "<th><button onclick=\"sortTable("+k+")\">"+ header[k] + "</button></th>";
-          console.log("<th><button onclick=\"sortTable("+k+")\">"+ header[k] + "</button></th>");
           }
       }
     result += "</tr>";
 
     for (var i=1; i<allTextLines.length; i++) {
+      if(allTextLines[i].length==0)
+        continue;
       var dataLine = "<tr>";
         var data = parseLine(allTextLines[i]);
+
+        var shouldHighlighted = checkUpdated(data[dateIndex]);
+
         for( var k=0; k<data.length ; k++){
+          if(shouldHighlighted){
+            data[k] = "<b>"+data[k]+"</b>";
+            console.log(data[k]);
+          }
+
           if(k==0){
             dataLine+= "<td style=\"display:none;\">"+ data[k] + "</td>";
             }
