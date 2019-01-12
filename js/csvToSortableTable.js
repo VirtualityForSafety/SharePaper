@@ -6,7 +6,7 @@ $(document).ready(function() {
         url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
         dataType: "text",
         success: function(data) {
-            document.getElementById("papers").innerHTML = csvToSortablePaperTable(data); }
+            document.getElementById("papers").innerHTML = csvToPaperColumn(data); }
      });
      $('.show_hide').click(function(){
         $(this).next('.slidingDiv').slideToggle();
@@ -70,57 +70,57 @@ function sortTable(numElement) {
   }
 }
 
-function csvToSortablePaperTable(allText) {
+function csvToPaperColumn(allText) {
 
-    var allTextLines = allText.split(/\r\n|\n/);
-    var headers = allTextLines[0].split(',');
+  var allTextLines = allText.split(/\r\n|\n/);
+  var headers = allTextLines[0].split(',');
 
-    var lines = [];
-    var result = "<table id=\"paperTable\"><tr>";
+  var lines = [];
+  var result = "<table id=\"paperTable\"><tr>";
 
-    var header = allTextLines[0].split(',');
-    var titleIndex = header.indexOf("Title");
-    var dateIndex = header.indexOf("Timestamp");
-    for( var k=0; k<header.length ; k++){
+  var header = allTextLines[0].split(',');
+  var titleIndex = header.indexOf("Title");
+  var dateIndex = header.indexOf("Timestamp");
+  for( var k=0; k<header.length ; k++){
+  if(k==0){
+      result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
+    }
+    else{
+      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+")\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
+      }
+  }
+  result += "</tr>";
+
+  for (var i=1; i<allTextLines.length; i++) {
+  if(allTextLines[i].length==0)
+    continue;
+  var dataLine = "<tr>";
+    var data = parseLine(allTextLines[i]);
+    var shouldHighlighted = false;
+    if(dateIndex >=0)
+      checkUpdated(data[dateIndex]);
+    var id = i;
+    for( var k=0; k<data.length ; k++){
+      if(shouldHighlighted){
+        data[k] = "<b>"+data[k]+"</b>";
+      }
       if(k==0){
-          result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
+        dataLine+= "<td style=\"display:none;\">"+ data[k] + "</td>";
         }
         else{
-          result+= "<th><button onclick=\"sortTable("+k+")\">"+ header[k] + "</button></th>";
+          if(k==titleIndex)
+            dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[k] + "</div></td>";
+          else if(k==data.length-1)
+            dataLine += "<td><a href=\"resources/"+data[k]+".pdf\" download>download</a></td>";
+            else
+            dataLine+= "<td>"+ data[k] + "</td>";
           }
       }
-    result += "</tr>";
 
-    for (var i=1; i<allTextLines.length; i++) {
-      if(allTextLines[i].length==0)
-        continue;
-      var dataLine = "<tr>";
-        var data = parseLine(allTextLines[i]);
-        var shouldHighlighted = false;
-        if(dateIndex >=0)
-          checkUpdated(data[dateIndex]);
-        var id = i;
-        for( var k=0; k<data.length ; k++){
-          if(shouldHighlighted){
-            data[k] = "<b>"+data[k]+"</b>";
-          }
-          if(k==0){
-            dataLine+= "<td style=\"display:none;\">"+ data[k] + "</td>";
-            }
-            else{
-              if(k==titleIndex)
-                dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[k] + "</div></td>";
-              else if(k==data.length-1)
-                dataLine += "<td><a href=\"resources/"+data[k]+".pdf\" download>download</a></td>";
-                else
-                dataLine+= "<td>"+ data[k] + "</td>";
-              }
-          }
+    result += dataLine + "</tr>";
+  }
 
-        result += dataLine + "</tr>";
-    }
-
-    return result + "</table>";
+  return result + "</table>";
 }
 
 function parseLine(oneLine){

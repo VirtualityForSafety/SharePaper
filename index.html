@@ -21,29 +21,55 @@ th, td {
 tr:nth-child(even) {
   background-color: #f2f2f2
 }
-</style>
-<style>
-            table {
-                border-collapse: collapse;
-                border: 2px black solid;
-                font: 12px sans-serif;
-            }
+table {
+    border-collapse: collapse;
+    border: 2px black solid;
+    font: 12px sans-serif;
+}
 
-            td {
-                border: 1px black solid;
-                padding: 5px;
-            }
-        </style>
+td {
+    border: 1px black solid;
+    padding: 5px;
+}
+/* Tooltip container */
+.tip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tip .description {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tip:hover .description {
+  visibility: visible;
+}
+</style>
+
 </head>
 <body>
 <section id="checkTag"></section>
 <section id="papers"></section>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-
+    <script src="js/csvToColumnInfo.js"></script>
     <script src="js/csvToSortableTable.js"></script>
     <script src="js/eachTag.js"></script>
 <script>
 var columnState = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var columnDescription = {};
 </script>
 
 </body>
