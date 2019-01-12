@@ -77,7 +77,6 @@ function readCSV(allText){
     if(allTextLines[i].length==0)
       continue;
     data[i] = parseLine(allTextLines[i]);
-    console.log(data[i]);
   }
   return data;
 }
