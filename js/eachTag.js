@@ -7,7 +7,7 @@ $(document).ready(function() {
         url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
         dataType: "text",
         success: function(data) {
-            document.getElementById("papers").innerHTML = processCSVData(data); prepareCollapsible();}
+            document.getElementById("checkTag").innerHTML = processCSVData(data); }//prepareCollapsible();}
      });
 $('.show_hide').click(function(){
         $(this).next('.slidingDiv').slideToggle();
@@ -16,7 +16,7 @@ $('.show_hide').click(function(){
 });
 
 function prepareCollapsible(){
-  
+
 var coll = document.getElementsByClassName("collapsible");
 var i;
 
@@ -28,7 +28,7 @@ for (i = 0; i < coll.length; i++) {
       content.style.maxHeight = null;
     } else {
       content.style.maxHeight = content.scrollHeight + "px";
-    } 
+    }
   });
 }
 }
@@ -36,15 +36,12 @@ for (i = 0; i < coll.length; i++) {
 function processCSVData(allText) {
     var allTextLines = allText.split(/\r\n|\n/);
     var headers = allTextLines[0].split(',');
-    console.log(headers);
     var first = allTextLines[1].split(',');
-    console.log(first);
-    console.log(first[1]);
 
     var lines = [];
     var result = "";
     var names = new Array;
- 
+
     for (var i=1; i<allTextLines.length-1; i++) {
         var data = allTextLines[i].split(',');
         if(data.length != headers.length){
@@ -67,15 +64,16 @@ function processCSVData(allText) {
     }
     console.log(uniq);
     for(var k=0; k<uniq.length; k++){
+      /*
         string = "<div class=\"alignright\">";
         string += "<a href=\"#\" class=\"tag\">"
         string += uniq[k];
         string += "</a>";
         string += "</div>";
-        subresult+= "<button class=\"collapsible\">" + string + "</button>";
-
+        */
+        subresult+= "<button class=\"tag\">" + uniq[k] + "</button>";
     }
-        subresult+= "<div class=\"content\"><p class=\"detail\">updated at " + data[2]+" by " + data[3] + "</br>Note: " + data[5] + "</p></div>";
+        //subresult+= "<div class=\"content\"><p class=\"detail\">updated at " + data[2]+" by " + data[3] + "</br>Note: " + data[5] + "</p></div>";
 
     result += subresult;
 

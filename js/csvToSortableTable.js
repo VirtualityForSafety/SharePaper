@@ -6,7 +6,7 @@ $(document).ready(function() {
         url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
         dataType: "text",
         success: function(data) {
-            document.getElementById("papers").innerHTML = processCSVData(data); }
+            document.getElementById("papers").innerHTML = csvToSortableTable(data); }
      });
      $('.show_hide').click(function(){
         $(this).next('.slidingDiv').slideToggle();
@@ -70,7 +70,7 @@ function sortTable(numElement) {
   }
 }
 
-function processCSVData(allText) {
+function csvToSortableTable(allText) {
 
     var allTextLines = allText.split(/\r\n|\n/);
     var headers = allTextLines[0].split(',');
@@ -101,7 +101,6 @@ function processCSVData(allText) {
         for( var k=0; k<data.length ; k++){
           if(shouldHighlighted){
             data[k] = "<b>"+data[k]+"</b>";
-            console.log(data[k]);
           }
 
           if(k==0){

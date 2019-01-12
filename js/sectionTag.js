@@ -1,7 +1,7 @@
 // from http://jsfiddle.net/mblase75/dcqxr/
 
 
-  var sum = 0;
+ var sum = 0;
 
 $(document).ready(function() {
     $.ajax({
@@ -10,9 +10,9 @@ $(document).ready(function() {
         dataType: "text",
         success: function(data) {
 
-        document.getElementById("sectionTag").innerHTML = processData(data); 
+        document.getElementById("checkTag").innerHTML = processData(data); 
         prepareAnimatedCSS();
-    }        
+    }
     });
 });
 
@@ -27,7 +27,7 @@ var stripTitle = $('.strip__title');
   var expanded  = false;
 
   var open = function() {
-   
+
 
     var tile = $(this).parent();
 
@@ -39,9 +39,9 @@ var stripTitle = $('.strip__title');
         stripClose.addClass('strip__close--show');
         stripClose.css('transition', 'all .6s 1s cubic-bezier(0.23, 1, 0.32, 1)');
         expanded = true;
-      } 
+      }
     };
-  
+
   var close = function() {
     if (expanded) {
         tile.removeClass('strips__strip--expanded');
@@ -51,7 +51,7 @@ var stripTitle = $('.strip__title');
       tileText.css('transition', 'all 0.15s 0 cubic-bezier(0.23, 1, 0.32, 1)');
       stripClose.removeClass('strip__close--show');
       stripClose.css('transition', 'all 0.2s 0s cubic-bezier(0.23, 1, 0.32, 1)');
-       
+
       expanded = false;
     }
   };
@@ -66,7 +66,7 @@ var stripTitle = $('.strip__title');
     $(".strips__strip").css("overflow","hidden");
     $(".strips__strip").css("cursor","pointer");
     $(".strips__strip").css("transition","all 0.6s cubic-bezier(0.23, 1, 0.32, 1)");
-    
+
     // adjust bar style
     var colors = ["#244F75", "#60BFBF", "#8C4B7E", "#F8BB44", "#F24B4B"];
     for (var i=0; i<sum; i++) {
@@ -114,8 +114,8 @@ function processData(allText) {
       subresult += (allTextLines[i]);
       subresult += "</h1>      <div class=\"strip__inner-text\">        <h2>Ettrics</h2>        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia sapiente deserunt consectetur, quod reiciendis corrupti quo ea aliquid! Repellendus numquam quo, voluptate. Suscipit soluta omnis quibusdam facilis, illo voluptates odit!</p>        <p>          <a href=\"https://twitter.com/ettrics\" target=\"_blank\"><i class=\"fa fa-twitter\"></i></a>        </p>      </div>    </div></article>";
       result += subresult;
-       
-    
+
+
     }
     result += "<i class=\"fa fa-close strip__close\"></i>";
 console.log(allTextLines);
