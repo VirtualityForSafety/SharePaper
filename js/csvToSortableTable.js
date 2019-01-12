@@ -73,10 +73,7 @@ function sortTable(numElement) {
 function readCSV(allText){
   var allTextLines = allText.split(/\r\n|\n/);
   var data = new Array;
-  var header = allTextLines[0].split(',');
-  data[0] = header;
-
-  for (var i = 1; i < allTextLines.length; i++) {
+  for (var i = 0; i < allTextLines.length; i++) {
     if(allTextLines[i].length==0)
       continue;
     data[i] = parseLine(allTextLines[i]);
@@ -101,9 +98,6 @@ function csvToPaperColumn(data) {
   result += "</tr>";
 
   for (var i=1; i<data.length; i++) {
-    console.log(i);
-    console.log(data.length);
-    console.log(data[i].length);
     var dataLine = "<tr>";
     var shouldHighlighted = false;
     if(dateIndex >=0)
