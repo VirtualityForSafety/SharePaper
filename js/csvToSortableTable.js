@@ -1,19 +1,3 @@
-// from http://jsfiddle.net/mblase75/dcqxr/
-
-$(document).ready(function() {
-     $.ajax({
-        type: "GET",
-        url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
-        dataType: "text",
-        success: function(data) {
-            document.getElementById("papers").innerHTML = csvToPaperColumn(readCSV(data)); }
-     });
-     $('.show_hide').click(function(){
-        $(this).next('.slidingDiv').slideToggle();
-         return false;
-    });
-});
-
 function reverseTableRows() {
 
     var table = document.getElementById("paperTable"),
@@ -77,12 +61,11 @@ function readCSV(allText){
     if(allTextLines[i].length==0)
       continue;
     data[i] = parseLine(allTextLines[i]);
-    console.log(data[i]);
   }
   return data;
 }
 
-function csvToPaperColumn(data) {
+function generatePaperTable(data) {
   var result = "<table id=\"paperTable\"><tr>";
   var header = data[0];
   var titleIndex = header.indexOf("Title");
@@ -164,4 +147,47 @@ function checkUpdated(dateString){
 
   if(betweenDay <= 12) return 1;
   else return 0;
+}
+
+
+function generateTagTable(data) {
+    var result = "<table id=\"paperTable\"><tr>";
+    var header = data[0];
+    var dateIndex = header.indexOf("Timestamp");
+    for( var k=0; k<header.length ; k++){
+      if(k==0){
+          result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
+        }
+        else{
+          result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+")\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
+          }
+      }
+    result += "</tr>";
+
+    for (var i=1; i<data.length; i++) {
+      var dataLine = "<tr>";
+        var dataRow = data[i];
+        var shouldHighlighted = checkUpdated(dataRow[dateIndex]);
+        var id=i;
+        for( var k=0; k<dataRow.length ; k++){
+          if(shouldHighlighted){
+            dataRow[k] = "<b>"+dataRow[k]+"</b>";
+          }
+
+          if(k==0){
+            id = dataRow[k];
+            dataLine+= "<td style=\"display:none;\">"+ dataRow[k] + "</td>";
+            }
+            else{
+              if(k==dataRow.length-1)
+                dataLine += "<td><a href=\"index.html#paper"+id+"\">link</a></td>";
+                else
+                dataLine+= "<td>"+ dataRow[k] + "</td>";
+              }
+          }
+
+        result += dataLine + "</tr>";
+    }
+
+    return result + "</table>";
 }
