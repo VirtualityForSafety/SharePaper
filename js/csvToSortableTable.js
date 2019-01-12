@@ -6,7 +6,7 @@ $(document).ready(function() {
         url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
         dataType: "text",
         success: function(data) {
-            document.getElementById("papers").innerHTML = csvToPaperColumn(data); }
+            document.getElementById("papers").innerHTML = csvToPaperColumn(readCSV(data)); }
      });
      $('.show_hide').click(function(){
         $(this).next('.slidingDiv').slideToggle();
@@ -70,56 +70,63 @@ function sortTable(numElement) {
   }
 }
 
-function csvToPaperColumn(allText) {
-
+function readCSV(allText){
   var allTextLines = allText.split(/\r\n|\n/);
-  var headers = allTextLines[0].split(',');
-
-  var lines = [];
-  var result = "<table id=\"paperTable\"><tr>";
-
+  var data = new Array;
   var header = allTextLines[0].split(',');
+  data[0] = header;
+
+  for (var i = 1; i < allTextLines.length; i++) {
+    if(allTextLines[i].length==0)
+      continue;
+    data[i] = parseLine(allTextLines[i]);
+    console.log(data[i]);
+  }
+  return data;
+}
+
+function csvToPaperColumn(data) {
+  var result = "<table id=\"paperTable\"><tr>";
+  var header = data[0];
   var titleIndex = header.indexOf("Title");
   var dateIndex = header.indexOf("Timestamp");
   for( var k=0; k<header.length ; k++){
-  if(k==0){
-      result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
+    if(k==0){
+        result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
     }
     else{
       result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+")\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
-      }
+    }
   }
   result += "</tr>";
 
-  for (var i=1; i<allTextLines.length; i++) {
-  if(allTextLines[i].length==0)
-    continue;
-  var dataLine = "<tr>";
-    var data = parseLine(allTextLines[i]);
+  for (var i=1; i<data.length; i++) {
+    console.log(i);
+    console.log(data.length);
+    console.log(data[i].length);
+    var dataLine = "<tr>";
     var shouldHighlighted = false;
     if(dateIndex >=0)
-      checkUpdated(data[dateIndex]);
+      checkUpdated(data[i][dateIndex]);
     var id = i;
-    for( var k=0; k<data.length ; k++){
+    for(var k=0; k<data[i].length ; k++){
       if(shouldHighlighted){
-        data[k] = "<b>"+data[k]+"</b>";
+        data[i][k] = "<b>"+data[i][k]+"</b>";
       }
       if(k==0){
-        dataLine+= "<td style=\"display:none;\">"+ data[k] + "</td>";
-        }
-        else{
-          if(k==titleIndex)
-            dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[k] + "</div></td>";
-          else if(k==data.length-1)
-            dataLine += "<td><a href=\"resources/"+data[k]+".pdf\" download>download</a></td>";
-            else
-            dataLine+= "<td>"+ data[k] + "</td>";
-          }
+        dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
       }
-
+      else{
+        if(k==titleIndex)
+          dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>";
+        else if(k==data[i].length-1)
+          dataLine += "<td><a href=\"resources/"+data[i][k]+".pdf\" download>download</a></td>";
+        else
+          dataLine+= "<td>"+ data[i][k] + "</td>";
+      }
+    }
     result += dataLine + "</tr>";
   }
-
   return result + "</table>";
 }
 
