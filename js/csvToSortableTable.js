@@ -150,12 +150,24 @@ function generatePaperTable(data) {
     }
     result += dataLine + "</tr>";
     // paper detail information
-    var paperTagInfo="";
-    for(var k=0; k<tagArray[i].length ; k++)
-      paperTagInfo += "<tr><td colspan="+header.length+">"+tagArray[i][k]+"</td></tr>";
-    result += paperTagInfo;
+    result += getPaperDetail(i, header.length-1);
   }
   return result + "</table>";
+}
+
+function getPaperDetail(index, columnLength){
+
+  var paperTagInfo="";
+  for(var k=0; k<tagArray[index].length ; k++){
+    var paperDetail = "";
+    // should be refined
+    paperDetail += "["+tagArray[index][k][1] + "]\t";
+    paperDetail += "["+tagArray[index][k][3] + "]<br>";
+    paperDetail += tagArray[index][k][2] + " - by " + tagArray[index][k][4];
+    paperTagInfo += "<tr><td colspan="+columnLength+">"+paperDetail+"</td></tr>";
+  }
+  console.log(paperTagInfo);
+  return paperTagInfo;
 }
 
 //////////////////////////////////// tag part ////////////////////////////////////
