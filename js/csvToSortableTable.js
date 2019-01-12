@@ -79,7 +79,8 @@ function csvToSortablePaperTable(allText) {
     var result = "<table id=\"paperTable\"><tr>";
 
     var header = allTextLines[0].split(',');
-    var dateIndex = header.indexOf("Upload timestamp");
+    var titleIndex = header.indexOf("Title");
+    var dateIndex = header.indexOf("Timestamp");
     for( var k=0; k<header.length ; k++){
       if(k==0){
           result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
@@ -95,19 +96,21 @@ function csvToSortablePaperTable(allText) {
         continue;
       var dataLine = "<tr>";
         var data = parseLine(allTextLines[i]);
-
-        var shouldHighlighted = checkUpdated(data[dateIndex]);
-
+        var shouldHighlighted = false;
+        if(dateIndex >=0)
+          checkUpdated(data[dateIndex]);
+        var id = i;
         for( var k=0; k<data.length ; k++){
           if(shouldHighlighted){
             data[k] = "<b>"+data[k]+"</b>";
           }
-
           if(k==0){
             dataLine+= "<td style=\"display:none;\">"+ data[k] + "</td>";
             }
             else{
-              if(k==data.length-1)
+              if(k==titleIndex)
+                dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[k] + "</div></td>";
+              else if(k==data.length-1)
                 dataLine += "<td><a href=\"resources/"+data[k]+".pdf\" download>download</a></td>";
                 else
                 dataLine+= "<td>"+ data[k] + "</td>";

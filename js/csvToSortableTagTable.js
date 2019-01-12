@@ -97,18 +97,19 @@ function csvToSortableTable(allText) {
         var data = parseLine(allTextLines[i]);
 
         var shouldHighlighted = checkUpdated(data[dateIndex]);
-
+        var id=i;
         for( var k=0; k<data.length ; k++){
           if(shouldHighlighted){
             data[k] = "<b>"+data[k]+"</b>";
           }
 
           if(k==0){
+            id = data[k];
             dataLine+= "<td style=\"display:none;\">"+ data[k] + "</td>";
             }
             else{
               if(k==data.length-1)
-                dataLine += "<td><a href=\"resources/"+data[k]+".pdf\" download>download</a></td>";
+                dataLine += "<td><a href=\"index.html#paper"+id+"\">link</a></td>";
                 else
                 dataLine+= "<td>"+ data[k] + "</td>";
               }
