@@ -3,10 +3,10 @@
 $(document).ready(function() {
      $.ajax({
         type: "GET",
-        url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
+        url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/tags.csv",
         dataType: "text",
         success: function(data) {
-            document.getElementById("papers").innerHTML = csvToSortablePaperTable(data); }
+            document.getElementById("papers").innerHTML = csvToSortableTable(data); }
      });
      $('.show_hide').click(function(){
         $(this).next('.slidingDiv').slideToggle();
@@ -70,7 +70,7 @@ function sortTable(numElement) {
   }
 }
 
-function csvToSortablePaperTable(allText) {
+function csvToSortableTable(allText) {
 
     var allTextLines = allText.split(/\r\n|\n/);
     var headers = allTextLines[0].split(',');
@@ -79,7 +79,7 @@ function csvToSortablePaperTable(allText) {
     var result = "<table id=\"paperTable\"><tr>";
 
     var header = allTextLines[0].split(',');
-    var dateIndex = header.indexOf("Upload timestamp");
+    var dateIndex = header.indexOf("Timestamp");
     for( var k=0; k<header.length ; k++){
       if(k==0){
           result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
