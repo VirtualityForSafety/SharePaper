@@ -90,7 +90,8 @@ function parseLine(oneLine){
       if(!integrating)
         item = data[i];
       else {
-        item += "," + data[i];
+        //item += "," + data[i];
+        if(!data[i].includes('\"')) item += "," + data[i];
       }
       //if ((data[i].match(/'\"'/g) || []).length>0){
       if(data[i].includes('\"')){
@@ -98,7 +99,7 @@ function parseLine(oneLine){
         if(!integrating)
           item = (splited[0].length > splited[1].length)? splited[0] : splited[1];
         else
-          item += (splited[0].length > splited[1].length)? splited[0] : splited[1];
+          item += (splited[0].length > splited[1].length)? ", "+splited[0] : splited[1];
         integrating = !integrating;
       }
       if(!integrating)
