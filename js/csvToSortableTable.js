@@ -49,7 +49,9 @@ function sortTable(numElement) {
           shouldSwitch = true;
           break;
         }
-        //columnState[numElement]=1;
+        for(var t=0; t<columnState.length ; t++)
+            columnState[t]=0;
+        columnState[numElement]=1;
 
       }
       if (shouldSwitch) {
@@ -61,7 +63,7 @@ function sortTable(numElement) {
     }
   }
   else if(columnState[numElement]>0){ //no sorted state
-    //reverseTableRows();
+    reverseTableRows();
   }
 }
 
