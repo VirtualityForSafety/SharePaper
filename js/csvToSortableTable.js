@@ -242,8 +242,8 @@ function generateTagTable(data) {
             }
             else{
               if(k==commentIndex){
-                dataLine+= "<td><input type=\"hidden\" value=\""+dataRow[k]+"\" id=\"tag"+ i +">"; // set hidden input value
-                dataLine+= "<a onclick=\"copyText(\"tag" +i +"\")\">"; // set link
+                dataLine+= "<td><input type=\"hidden\" value=\""+dataRow[k]+"\" id=\"tag"+ i +"\">"; // set hidden input value
+                dataLine+= "<a onclick=copyText(\"tag"+i +"\")>"; // set link
                 dataLine+= dataRow[k] + "</a></td>";
               }
               else if(k==dataRow.length-1)

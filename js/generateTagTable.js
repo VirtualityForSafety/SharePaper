@@ -15,13 +15,6 @@ $(document).ready(function() {
         dataType: "text",
         success: function(csvData) {
             document.getElementById("tags").innerHTML = generateTagTable(readCSV(csvData));
-
-        function copyText(value) {
-          var copyText = document.getElementById(value);
-          copyText.select();
-          document.execCommand("copy");
-          alert("Copied the text: " + copyText.value);
-        }
           }
      });
 

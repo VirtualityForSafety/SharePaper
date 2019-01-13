@@ -70,6 +70,13 @@ td {
 <script>
 var columnState = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var columnDescription = {};
+
+function copyText(value){
+  var copyText = document.getElementById(value);
+  copyText.select();
+  document.execCommand("copy");
+  alert("Copied the text:\r" + copyText.value);
+}
 </script>
 
 </body>
