@@ -1,18 +1,4 @@
-// from http://jsfiddle.net/mblase75/dcqxr/
-
-$(document).ready(function() {
-     $.ajax({
-        type: "GET",
-        url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
-        dataType: "text",
-        success: function(data) {
-            document.getElementById("papers").innerHTML = csvToPaperColumn(readCSV(data)); }
-     });
-     $('.show_hide').click(function(){
-        $(this).next('.slidingDiv').slideToggle();
-         return false;
-    });
-});
+//////////////////////////////////// common part ////////////////////////////////////
 
 function reverseTableRows() {
 
@@ -28,6 +14,14 @@ function reverseTableRows() {
     oldTbody.parentNode.replaceChild(newTbody, oldTbody);
 }
 
+function getContentOnly(data){
+  var elements = String(data.outerHTML).split(/<|>/);
+  for(var i=0; i<elements.length ; i++){
+    if(elements[i].length!=0 && elements[i]!="td" && !elements[i].includes("Section"))
+      return String(elements[i]);
+  }
+}
+
 function sortTable(numElement) {
   var table, rows, switching, i, x, y, shouldSwitch;
   table = document.getElementById("paperTable");
@@ -35,6 +29,7 @@ function sortTable(numElement) {
   /*Make a loop that will continue until
   no switching has been done:*/
   if(columnState[numElement]==0){ //no sorted state
+
       while (switching) {
       //start by saying: no switching is done:
       switching = false;
@@ -46,14 +41,16 @@ function sortTable(numElement) {
         shouldSwitch = false;
         /*Get the two elements you want to compare,
         one from current row and one from the next:*/
-        x = rows[i].getElementsByTagName("TD")[numElement];
-        y = rows[i + 1].getElementsByTagName("TD")[numElement];
+        x = getContentOnly(rows[i].getElementsByTagName("TD")[numElement]);
+        y = getContentOnly(rows[i + 1].getElementsByTagName("TD")[numElement]);
         //check if the two rows should switch place:
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        if (x.toLowerCase() > y.toLowerCase()) {
           //if so, mark as a switch and break the loop:
           shouldSwitch = true;
           break;
         }
+        for(var t=0; t<columnState.length ; t++)
+            columnState[t]=0;
         columnState[numElement]=1;
 
       }
@@ -81,47 +78,6 @@ function readCSV(allText){
   return data;
 }
 
-function csvToPaperColumn(data) {
-  var result = "<table id=\"paperTable\"><tr>";
-  var header = data[0];
-  var titleIndex = header.indexOf("Title");
-  var dateIndex = header.indexOf("Timestamp");
-  for( var k=0; k<header.length ; k++){
-    if(k==0){
-        result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
-    }
-    else{
-      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+")\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
-    }
-  }
-  result += "</tr>";
-
-  for (var i=1; i<data.length; i++) {
-    var dataLine = "<tr>";
-    var shouldHighlighted = false;
-    if(dateIndex >=0)
-      checkUpdated(data[i][dateIndex]);
-    var id = i;
-    for(var k=0; k<data[i].length ; k++){
-      if(shouldHighlighted){
-        data[i][k] = "<b>"+data[i][k]+"</b>";
-      }
-      if(k==0){
-        dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
-      }
-      else{
-        if(k==titleIndex)
-          dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>";
-        else if(k==data[i].length-1)
-          dataLine += "<td><a href=\"resources/"+data[i][k]+".pdf\" download>download</a></td>";
-        else
-          dataLine+= "<td>"+ data[i][k] + "</td>";
-      }
-    }
-    result += dataLine + "</tr>";
-  }
-  return result + "</table>";
-}
 
 function parseLine(oneLine){
   var parsedData = [];
@@ -163,4 +119,137 @@ function checkUpdated(dateString){
 
   if(betweenDay <= 12) return 1;
   else return 0;
+}
+
+//////////////////////////////////// paper part ////////////////////////////////////
+
+function generatePaperTable(data) {
+  var result = "<table id=\"paperTable\"><tr>";
+  var header = data[0];
+  var titleIndex = header.indexOf("Title");
+  var dateIndex = header.indexOf("Timestamp");
+  for( var k=0; k<header.length ; k++){
+    if(k==0){
+        result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
+    }
+    else{
+      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+")\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
+    }
+  }
+  result += "</tr>";
+  for (var i=1; i<data.length; i++) {
+    var dataLine = "<tr class=\"clickable\">";
+    var shouldHighlighted = false;
+    if(dateIndex >=0)
+      checkUpdated(data[i][dateIndex]);
+    var id = i;
+    for(var k=0; k<data[i].length ; k++){
+      if(shouldHighlighted){
+        data[i][k] = "<b>"+data[i][k]+"</b>";
+      }
+      if(k==0){
+        dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
+      }
+      else{
+        if(k==titleIndex)
+          dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>"; // for anchoring
+          //dataLine += "<td><label for=\"paper"+(id)+"\"><b>"+data[i][k]+"</b></label><input type=\"checkbox\" name=\"paper"+(id)+"\" id=\"paper"+(id)+"\" data-toggle=\"toggle\"></td>";
+          //dataLine += "<td><label for=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</label><input type=\"checkbox\" id=\"paper"+(id)+"\" data-toggle=\"toggle\"></td>"; // for anchoring
+        else if(k==data[i].length-1)
+          dataLine += "<td><a href=\"resources/"+data[i][k]+".pdf\" download>download</a></td>";
+        else
+          dataLine+= "<td>"+ data[i][k] + "</td>";
+      }
+    }
+    result += dataLine + "</tr>";
+    // paper detail information
+    //result += getPaperDetail(i, header.length-1);
+  }
+  return result + "</table>";
+}
+
+function getPaperDetail(index, columnLength){
+
+  var paperTagInfo="";
+  if(tagArray[index]!=undefined && tagArray[index].length!=undefined){
+    for(var k=0; k<tagArray[index].length ; k++){
+      var paperDetail = "";
+      // should be refined
+      paperDetail += "["+tagArray[index][k][1] + "]\t";
+      paperDetail += "["+tagArray[index][k][3] + "]<br>";
+      paperDetail += tagArray[index][k][2] + " - by " + tagArray[index][k][4]+", " + tagArray[index][k][5];
+      paperTagInfo += "<tr  class=\"content\"><td colspan="+columnLength+">"+paperDetail+"</td></tr>";
+    }
+  }
+  return paperTagInfo;
+}
+
+//////////////////////////////////// tag part ////////////////////////////////////
+
+function getMaxPaperID(data){
+  var maxID = 0;
+  for (var i=1; i<data.length; i++) {
+    var paperID = data[i][data[i].length-1] * 1;
+    if(paperID > maxID)
+      maxID = paperID;
+  }
+  return maxID;
+}
+
+function generateTagArray(data) {
+  tagMap = new Array(getMaxPaperID(data)+1);
+  for (var i=1; i<data.length; i++) {
+    var paperID = data[i][data[i].length-1];
+    if(tagMap[paperID]!=undefined){
+      tagMap[paperID].push(data[i]);
+    }
+    else{
+      var tempArray = new Array();
+      tempArray.push(data[i]);
+      tagMap[paperID] = tempArray;
+    }
+  }
+  return tagMap;
+}
+
+function generateTagTable(data) {
+    var result = "<table id=\"paperTable\"><tr>";
+    var header = data[0];
+    var dateIndex = header.indexOf("Timestamp");
+    for( var k=0; k<header.length ; k++){
+      if(k==0){
+          result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
+        }
+        else{
+          result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+")\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
+          }
+      }
+    result += "</tr>";
+
+    for (var i=1; i<data.length; i++) {
+      var dataLine = "<tr>";
+        var dataRow = data[i];
+        var shouldHighlighted = checkUpdated(dataRow[dateIndex]);
+        var id=i;
+        for( var k=0; k<dataRow.length ; k++){
+          if(shouldHighlighted){
+            dataRow[k] = "<b>"+dataRow[k]+"</b>";
+          }
+
+          if(k==0){
+            id = dataRow[k];
+            dataLine+= "<td style=\"display:none;\">"+ dataRow[k] + "</td>";
+            }
+            else{
+              if(k==dataRow.length-1)
+                dataLine += "<td><a href=\"index.html#paper"+id+"\">link</a></td>";
+                else
+                dataLine+= "<td>"+ dataRow[k] + "</td>";
+              }
+          }
+
+        result += dataLine + "</tr>";
+    }
+
+    return result + "</table>";
 }
