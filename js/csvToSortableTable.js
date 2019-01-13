@@ -86,16 +86,16 @@ function parseLine(oneLine){
     for (i=0; i<data.length; i++){
       if(!integrating)
         item = data[i];
-      else {
-        item += "," + data[i];
-      }
+      // else {
+      //   item += "," + data[i];
+      // }
       //if ((data[i].match(/'\"'/g) || []).length>0){
       if(data[i].includes('\"')){
         splited = data[i].split('\"');
         if(!integrating)
           item = (splited[0].length > splited[1].length)? splited[0] : splited[1];
         else
-          item += (splited[0].length > splited[1].length)? splited[0] : splited[1];
+          item += (splited[0].length > splited[1].length)? ", " + splited[0] : splited[1];
         integrating = !integrating;
       }
       if(!integrating)
@@ -108,6 +108,7 @@ function parseLine(oneLine){
 
     var replaced_substring = substring.replace(/,/g," &");
     var new_string = data[0] + replaced_substring + data[2];*/
+    console.log(parsedData);
     return parsedData;
 }
 
