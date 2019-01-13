@@ -23,9 +23,15 @@ $.ajax({
         dataType: "text",
         success: function(csvData) {
             document.getElementById("paper").innerHTML = generatePaperTable(readCSV(csvData));
-            $(".content").hide();
-            $(".clickable").click(function() {
+        $(".content").hide();
+        $(".clickable").click(function() {
             $(this).nextUntil(".clickable").toggle("fast");
+        });
+        $(".expand").click(function () {
+            $(".content").show();
+        });
+        $(".collapse").click(function () {
+            $(".content").hide();
         });
           }
      });
