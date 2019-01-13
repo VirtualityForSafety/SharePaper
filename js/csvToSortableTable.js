@@ -14,6 +14,14 @@ function reverseTableRows() {
     oldTbody.parentNode.replaceChild(newTbody, oldTbody);
 }
 
+function getContentOnly(data){
+  var elements = String(data.outerHTML).split(/<|>/);
+  for(var i=0; i<elements.length ; i++){
+    if(elements[i].length!=0 && elements[i]!="td" && !elements[i].includes("Section"))
+      return String(elements[i]);
+  }
+}
+
 function sortTable(numElement) {
   var table, rows, switching, i, x, y, shouldSwitch;
   table = document.getElementById("paperTable");
@@ -21,6 +29,7 @@ function sortTable(numElement) {
   /*Make a loop that will continue until
   no switching has been done:*/
   if(columnState[numElement]==0){ //no sorted state
+
       while (switching) {
       //start by saying: no switching is done:
       switching = false;
@@ -32,15 +41,15 @@ function sortTable(numElement) {
         shouldSwitch = false;
         /*Get the two elements you want to compare,
         one from current row and one from the next:*/
-        x = rows[i].getElementsByTagName("TD")[numElement];
-        y = rows[i + 1].getElementsByTagName("TD")[numElement];
+        x = getContentOnly(rows[i].getElementsByTagName("TD")[numElement]);
+        y = getContentOnly(rows[i + 1].getElementsByTagName("TD")[numElement]);
         //check if the two rows should switch place:
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        if (x.toLowerCase() > y.toLowerCase()) {
           //if so, mark as a switch and break the loop:
           shouldSwitch = true;
           break;
         }
-        columnState[numElement]=1;
+        //columnState[numElement]=1;
 
       }
       if (shouldSwitch) {
@@ -52,7 +61,7 @@ function sortTable(numElement) {
     }
   }
   else if(columnState[numElement]>0){ //no sorted state
-    reverseTableRows();
+    //reverseTableRows();
   }
 }
 
@@ -152,7 +161,7 @@ function generatePaperTable(data) {
     }
     result += dataLine + "</tr>";
     // paper detail information
-    result += getPaperDetail(i, header.length-1);
+    //result += getPaperDetail(i, header.length-1);
   }
   return result + "</table>";
 }
@@ -160,13 +169,15 @@ function generatePaperTable(data) {
 function getPaperDetail(index, columnLength){
 
   var paperTagInfo="";
-  for(var k=0; k<tagArray[index].length ; k++){
-    var paperDetail = "";
-    // should be refined
-    paperDetail += "["+tagArray[index][k][1] + "]\t";
-    paperDetail += "["+tagArray[index][k][3] + "]<br>";
-    paperDetail += tagArray[index][k][2] + " - by " + tagArray[index][k][4]+", " + tagArray[index][k][5];
-    paperTagInfo += "<tr class=\"content\"><td colspan="+columnLength+">"+paperDetail+"</td></tr>";
+  if(tagArray[index]!=undefined && tagArray[index].length!=undefined){
+    for(var k=0; k<tagArray[index].length ; k++){
+      var paperDetail = "";
+      // should be refined
+      paperDetail += "["+tagArray[index][k][1] + "]\t";
+      paperDetail += "["+tagArray[index][k][3] + "]<br>";
+      paperDetail += tagArray[index][k][2] + " - by " + tagArray[index][k][4]+", " + tagArray[index][k][5];
+      paperTagInfo += "<tr  class=\"content\"><td colspan="+columnLength+">"+paperDetail+"</td></tr>";
+    }
   }
   return paperTagInfo;
 }
