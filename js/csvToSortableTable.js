@@ -8,8 +8,11 @@ function reverseTableRows() {
         rows = table.rows,
         i = rows.length - 1;
         newTbody.appendChild(rows[0]);
-        for (i = rows.length - 1; i >= 0; i--) {
-            newTbody.appendChild(rows[i]);
+        for (i = rows.length-2; i >= 0; i-=2) {
+          console.log(rows[i]);
+          //console.log(rows[i+1]);
+          newTbody.appendChild(rows[i]);
+          newTbody.appendChild(rows[rows.length-1]);
         }
     oldTbody.parentNode.replaceChild(newTbody, oldTbody);
 }
@@ -36,13 +39,13 @@ function sortTable(numElement) {
       rows = table.rows;
       /*Loop through all table rows (except the
       first, which contains table headers):*/
-      for (i = 1; i < (rows.length - 1); i++) {
+      for (i = 1; i < (rows.length - 2); i+=2) {
         //start by saying there should be no switching:
         shouldSwitch = false;
         /*Get the two elements you want to compare,
         one from current row and one from the next:*/
         x = getContentOnly(rows[i].getElementsByTagName("TD")[numElement]);
-        y = getContentOnly(rows[i + 1].getElementsByTagName("TD")[numElement]);
+        y = getContentOnly(rows[i + 2].getElementsByTagName("TD")[numElement]);
         //check if the two rows should switch place:
         if (x.toLowerCase() > y.toLowerCase()) {
           //if so, mark as a switch and break the loop:
@@ -57,7 +60,8 @@ function sortTable(numElement) {
       if (shouldSwitch) {
         /*If a switch has been marked, make the switch
         and mark that a switch has been done:*/
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        rows[i].parentNode.insertBefore(rows[i + 2], rows[i]);
+        rows[i].parentNode.insertBefore(rows[i + 3], rows[i+1]);
         switching = true;
       }
     }
@@ -101,6 +105,7 @@ function parseLine(oneLine){
       if(!integrating)
         parsedData.push(item);
     }
+<<<<<<< HEAD
     /*
     var start = oneLine.indexOf("\"");
     var end   = oneLine.indexOf("\"", start+1);
@@ -109,6 +114,8 @@ function parseLine(oneLine){
     var replaced_substring = substring.replace(/,/g," &");
     var new_string = data[0] + replaced_substring + data[2];*/
     console.log(parsedData);
+=======
+>>>>>>> aadf951f4f544150019baa241dda9d96a0a96e29
     return parsedData;
 }
 
@@ -164,7 +171,7 @@ function generatePaperTable(data) {
     }
     result += dataLine + "</tr>";
     // paper detail information
-    //result += getPaperDetail(i, header.length-1);
+    result += getPaperDetail(i, header.length-1);
   }
   return result + "</table>";
 }
@@ -172,16 +179,16 @@ function generatePaperTable(data) {
 function getPaperDetail(index, columnLength){
 
   var paperTagInfo="";
+  var paperDetail = "";
   if(tagArray[index]!=undefined && tagArray[index].length!=undefined){
     for(var k=0; k<tagArray[index].length ; k++){
-      var paperDetail = "";
       // should be refined
-      paperDetail += "["+tagArray[index][k][1] + "]\t";
-      paperDetail += "["+tagArray[index][k][3] + "]<br>";
-      paperDetail += tagArray[index][k][2] + " - by " + tagArray[index][k][4]+", " + tagArray[index][k][5];
-      paperTagInfo += "<tr  class=\"content\"><td colspan="+columnLength+">"+paperDetail+"</td></tr>";
+      paperDetail += "<b>["+tagArray[index][k][1] + "]\t";
+      paperDetail += "["+tagArray[index][k][3] + "]</b><br>";
+      paperDetail += tagArray[index][k][2] + " - by " + tagArray[index][k][4]+", " + tagArray[index][k][5]+"<br>";
     }
   }
+  paperTagInfo += "<tr  class=\"content\"><td colspan="+columnLength+">"+paperDetail+"</td></tr>";
   return paperTagInfo;
 }
 
