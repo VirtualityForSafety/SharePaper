@@ -90,7 +90,7 @@ function parseLine(oneLine){
       if(!integrating)
         item = data[i];
       else {
-        if(!data[i].includes('\"')) item += "," + data[i];
+        item += "," + data[i];
       }
       //if ((data[i].match(/'\"'/g) || []).length>0){
       if(data[i].includes('\"')){
@@ -98,7 +98,7 @@ function parseLine(oneLine){
         if(!integrating)
           item = (splited[0].length > splited[1].length)? splited[0] : splited[1];
         else
-          item += (splited[0].length > splited[1].length)? ", " + splited[0] : splited[1];
+          item += (splited[0].length > splited[1].length)? splited[0] : splited[1];
         integrating = !integrating;
       }
       if(!integrating)
@@ -137,8 +137,10 @@ function generatePaperTable(data) {
   for (var i=1; i<data.length; i++) {
     var dataLine = "<tr class=\"clickable\">";
     var shouldHighlighted = false;
-    if(dateIndex >=0)
-      checkUpdated(data[i][dateIndex]);
+    if(dateIndex >=0){
+      shouldHighlighted = checkUpdated(data[i][dateIndex]);
+      console.log(shouldHighlighted);
+    }
     var id = i;
     for(var k=0; k<data[i].length ; k++){
       if(shouldHighlighted){
