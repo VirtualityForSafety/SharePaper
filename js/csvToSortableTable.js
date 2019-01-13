@@ -9,7 +9,6 @@ function reverseTableRows() {
         i = rows.length - 1;
         newTbody.appendChild(rows[0]);
         for (i = rows.length-2; i >= 0; i-=2) {
-          console.log(rows[i]);
           //console.log(rows[i+1]);
           newTbody.appendChild(rows[i]);
           newTbody.appendChild(rows[rows.length-1]);
@@ -91,7 +90,7 @@ function parseLine(oneLine){
       if(!integrating)
         item = data[i];
       else {
-        if(!data[i].includes('\"')) item += "," + data[i];
+        item += "," + data[i];
       }
       //if ((data[i].match(/'\"'/g) || []).length>0){
       if(data[i].includes('\"')){
@@ -99,19 +98,12 @@ function parseLine(oneLine){
         if(!integrating)
           item = (splited[0].length > splited[1].length)? splited[0] : splited[1];
         else
-          item += (splited[0].length > splited[1].length)? ", " + splited[0] : splited[1];
+          item += (splited[0].length > splited[1].length)? splited[0] : splited[1];
         integrating = !integrating;
       }
       if(!integrating)
         parsedData.push(item);
     }
-    /*
-    var start = oneLine.indexOf("\"");
-    var end   = oneLine.indexOf("\"", start+1);
-    var substring = oneLine.substring(start, end);
-
-    var replaced_substring = substring.replace(/,/g," &");
-    var new_string = data[0] + replaced_substring + data[2];*/
     return parsedData;
 }
 
@@ -128,6 +120,7 @@ function checkUpdated(dateString){
 //////////////////////////////////// paper part ////////////////////////////////////
 
 function generatePaperTable(data) {
+  //var result = "<table id=\"test\"><tbody><tr class=\"clickable\"><td>Paper info</td><td>Paper info</td><td>Paper info</td></tr><tr class=\"content\"><td colspan=3>Paper detail</td></tr></tbody></table><table id=\"paperTable\"><tr>";
   var result = "<table id=\"paperTable\"><tr>";
   var header = data[0];
   var titleIndex = header.indexOf("Title");

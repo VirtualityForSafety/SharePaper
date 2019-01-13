@@ -8,8 +8,8 @@ function change1(obj){
     obj.style.background='white';
     obj.style.color='black';
 }
-  
-function button1_click(){ 
+
+function button1_click(){
     //document.getElementByClass("table").style.display="none";
     var ref = document.getElementsByClassName("table");
     for(var i=0;i<ref.length;i++){
@@ -47,7 +47,7 @@ $(document).ready(function() {
 });
 
 function prepareCollapsible(){
-  
+
 var coll = document.getElementsByClassName("collapsible");
 var i;
 
@@ -59,7 +59,7 @@ for (i = 0; i < coll.length; i++) {
       content.style.maxHeight = null;
     } else {
       content.style.maxHeight = content.scrollHeight + "px";
-    } 
+    }
   });
 }
 }

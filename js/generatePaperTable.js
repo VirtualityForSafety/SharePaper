@@ -22,9 +22,12 @@ $.ajax({
         url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
         dataType: "text",
         success: function(csvData) {
-            document.getElementById("paper").innerHTML = generatePaperTable(readCSV(csvData)); }
+            document.getElementById("paper").innerHTML = generatePaperTable(readCSV(csvData));
+            $(".content").hide();
+            $(".clickable").click(function() {
+            $(this).nextUntil(".clickable").toggle("fast");
+        });
+          }
      });
-     $(".clickable").click(function() {
-     $(this).nextUntil(".clickable").toggle();
- });
+
 });
