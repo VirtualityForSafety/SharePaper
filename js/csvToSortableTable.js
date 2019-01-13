@@ -139,7 +139,6 @@ function generatePaperTable(data) {
     var shouldHighlighted = false;
     if(dateIndex >=0){
       shouldHighlighted = checkUpdated(data[i][dateIndex]);
-      console.log(shouldHighlighted);
     }
     var id = i;
     for(var k=0; k<data[i].length ; k++){

@@ -62,7 +62,7 @@ function processCSVData(allText) {
 
 
     }
-    console.log(uniq);
+    //console.log(uniq);
     for(var k=0; k<uniq.length; k++){
       /*
         string = "<div class=\"alignright\">";
