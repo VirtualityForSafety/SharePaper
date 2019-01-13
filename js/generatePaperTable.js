@@ -24,8 +24,7 @@ $.ajax({
         success: function(csvData) {
             document.getElementById("paper").innerHTML = generatePaperTable(readCSV(csvData)); }
      });
-     $('.show_hide').click(function(){
-        $(this).next('.slidingDiv').slideToggle();
-         return false;
-    });
+     $(".clickable").click(function() {
+     $(this).nextUntil(".clickable").toggle();
+ });
 });

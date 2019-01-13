@@ -127,7 +127,7 @@ function generatePaperTable(data) {
   }
   result += "</tr>";
   for (var i=1; i<data.length; i++) {
-    var dataLine = "<tr>";
+    var dataLine = "<tr class=\"clickable\">";
     var shouldHighlighted = false;
     if(dateIndex >=0)
       checkUpdated(data[i][dateIndex]);
@@ -141,7 +141,9 @@ function generatePaperTable(data) {
       }
       else{
         if(k==titleIndex)
-          dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>";
+          dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>"; // for anchoring
+          //dataLine += "<td><label for=\"paper"+(id)+"\"><b>"+data[i][k]+"</b></label><input type=\"checkbox\" name=\"paper"+(id)+"\" id=\"paper"+(id)+"\" data-toggle=\"toggle\"></td>";
+          //dataLine += "<td><label for=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</label><input type=\"checkbox\" id=\"paper"+(id)+"\" data-toggle=\"toggle\"></td>"; // for anchoring
         else if(k==data[i].length-1)
           dataLine += "<td><a href=\"resources/"+data[i][k]+".pdf\" download>download</a></td>";
         else
@@ -163,10 +165,9 @@ function getPaperDetail(index, columnLength){
     // should be refined
     paperDetail += "["+tagArray[index][k][1] + "]\t";
     paperDetail += "["+tagArray[index][k][3] + "]<br>";
-    paperDetail += tagArray[index][k][2] + " - by " + tagArray[index][k][4];
-    paperTagInfo += "<tr><td colspan="+columnLength+">"+paperDetail+"</td></tr>";
+    paperDetail += tagArray[index][k][2] + " - by " + tagArray[index][k][4]+", " + tagArray[index][k][5];
+    paperTagInfo += "<tr class=\"content\"><td colspan="+columnLength+">"+paperDetail+"</td></tr>";
   }
-  console.log(paperTagInfo);
   return paperTagInfo;
 }
 

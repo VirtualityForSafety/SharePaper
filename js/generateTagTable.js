@@ -16,9 +16,5 @@ $(document).ready(function() {
         success: function(csvData) {
             document.getElementById("tags").innerHTML = generateTagTable(readCSV(csvData)); }
      });
-     $('.show_hide').click(function(){
-        $(this).next('.slidingDiv').slideToggle();
-         return false;
-    });
 
 });

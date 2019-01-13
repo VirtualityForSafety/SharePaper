@@ -287,7 +287,7 @@ ul:after{
   height:inherit;
   height: 100%;
   display: flex;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 ul{
@@ -310,25 +310,25 @@ ul li{
   margin: 0px 0 0 0;
   display: inline-block;
   list-style: none;
-  overflow: hidden; 
-  
+  overflow: hidden;
+
 }
 
 .tags li {
-  float: left; 
-  
+  float: left;
+
 }
 
 input.tag_test {
   font-family: "Raleway", sans-serif;
-  background: rgb(67, 138, 219); 
+  background: rgb(67, 138, 219);
   color: white;
   font-size: 13px;
 }
 
 .tag {
   font-family: "Raleway", sans-serif;
-  background: rgb(67, 138, 219); 
+  background: rgb(67, 138, 219);
   border-radius: 8px 0 0 8px;
   color: white;
   display: inline-block;
@@ -356,7 +356,7 @@ input.tag_test {
 .tag::after {
   background: #fff;
   border-bottom: 10px solid transparent;
-  border-left: 10px solid rgb(67, 138, 219); 
+  border-left: 10px solid rgb(67, 138, 219);
   border-top: 10px solid transparent;
   content: '';
   position: absolute;
@@ -365,13 +365,13 @@ input.tag_test {
 }
 
 .tag:hover {
-  background-color: rgb(13, 81, 145); 
+  background-color: rgb(13, 81, 145);
   color: white;
 }
 
 .tag:hover::after {
 
-   border-left-color: rgb(13, 81, 145); 
+   border-left-color: rgb(13, 81, 145);
 }
 
 .collapsible {
@@ -419,7 +419,7 @@ div.alignright {
 
 .content {
   font-family: "Raleway", sans-serif;
-  font-size: 23px;
+  font-size: 13px;
   padding: 0 18px;
   max-height: 0;
   overflow: hidden;
