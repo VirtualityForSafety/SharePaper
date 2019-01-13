@@ -14,7 +14,15 @@ $(document).ready(function() {
         url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/tags.csv",
         dataType: "text",
         success: function(csvData) {
-            document.getElementById("tags").innerHTML = generateTagTable(readCSV(csvData)); }
+            document.getElementById("tags").innerHTML = generateTagTable(readCSV(csvData));
+
+        function copyText(value) {
+          var copyText = document.getElementById(value);
+          copyText.select();
+          document.execCommand("copy");
+          alert("Copied the text: " + copyText.value);
+        }
+          }
      });
 
 });

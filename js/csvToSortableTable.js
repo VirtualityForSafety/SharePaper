@@ -214,6 +214,7 @@ function generateTagTable(data) {
     var result = "<table id=\"paperTable\"><tr>";
     var header = data[0];
     var dateIndex = header.indexOf("Timestamp");
+    var commentIndex = header.indexOf("Comment");
     for( var k=0; k<header.length ; k++){
       if(k==0){
           result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
@@ -239,9 +240,14 @@ function generateTagTable(data) {
             dataLine+= "<td style=\"display:none;\">"+ dataRow[k] + "</td>";
             }
             else{
-              if(k==dataRow.length-1)
+              if(k==commentIndex){
+                dataLine+= "<td><input type=\"hidden\" value=\""+dataRow[k]+"\" id=\"tag"+ i +">"; // set hidden input value
+                dataLine+= "<a onclick=\"copyText(\"tag" +i +"\")\">"; // set link
+                dataLine+= dataRow[k] + "</a></td>";
+              }
+              else if(k==dataRow.length-1)
                 dataLine += "<td><a href=\"index.html#paper"+id+"\">link</a></td>";
-                else
+              else
                 dataLine+= "<td>"+ dataRow[k] + "</td>";
               }
           }
