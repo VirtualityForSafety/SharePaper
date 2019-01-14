@@ -1,4 +1,3 @@
-// from http://jsfiddle.net/mblase75/dcqxr/
 
 $(document).ready(function() {
   $.ajax({
@@ -6,8 +5,10 @@ $(document).ready(function() {
      url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/columns.csv",
      dataType: "text",
      success: function(csvData) {
-         var paperColumns = generatePaperColumn(readCSV(csvData));
-         var tagColumns = generateTagColumn(readCSV(csvData));
+       var csvDataText = readCSV(csvData);
+         var paperColumns = generatePaperColumn(csvDataText);
+         var tagColumns = generateTagColumn(csvDataText);
+         tagHeader = getTagHeader(csvDataText);
          $.ajax({
             type: "GET",
             url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/tags.csv",
@@ -22,6 +23,7 @@ $(document).ready(function() {
                    success: function(csvData) {
                      var paperID = 2;
                      paperArray = readCSV(csvData);
+
                      document.getElementById("paperDetail").innerHTML = generatePaperPart(paperID, paperArray, paperColumns);
                     document.getElementById("tagDetail").innerHTML = generateTagPart(paperID, tagArray, tagColumns);
                      function resizeInput() {
@@ -46,7 +48,7 @@ function generatePaperPart(paperID, paperArray, paperColumns){
       if(index==1)
         result+= "<th style=\"display:none;\">"+ key + "</th>";
       else {
-        result+= "<th><button class=\"tip\">"+ key + "<span class=\"description\">"+paperColumns[key]+"</span></button></th>";
+        result+= "<th><a class=\"tip\">"+ key + "<span class=\"description\">"+paperColumns[key]+"</span></a></th>";
       }
     }
   }
@@ -64,17 +66,50 @@ function generatePaperPart(paperID, paperArray, paperColumns){
   return result + "</table>";
 }
 
+function getNewEntryParameters(tagColumns, id,item){
+  var result ="";
+  for (var i=0 ; i<tagColumns.length ; i++) {
+    if(i==0){
+        result+= tagColumns[i].replace(/ /g,"").toLowerCase() + "=" + id+"&";
+      continue;
+    }
+    else{
+        result+= tagColumns[i].replace(/ /g,"").toLowerCase() + "=" + item[i-1]+"&";
+    }
+  }
+  return result;
+}
+
+function getParameters(tagColumns, item){
+  var result ="";
+  var index =0;
+  for (var key in tagColumns) {
+    if (tagColumns.hasOwnProperty(key)) {
+      //id="+tagArray[paperID][i][0]+"&section="+tagArray[paperID][i][1]+"&comment="+tagArray[paperID][i][2]+"&tag="+tagArray[paperID][i][3]+"'";
+
+      result+= key.replace(/ /g,"").toLowerCase() + "=" + item[index]+"&";
+      index+=1;
+    }
+  }
+  return result;
+}
+
 function generateTagPart(paperID, tagArray, tagColumns){
   var result = "<table id=\"tagTable\"><tr>";
   // for header
   var columnLength =0;
+  var keys = [];
   for (var key in tagColumns) {
     if (tagColumns.hasOwnProperty(key)) {
+      keys.push(key+"");
       columnLength += 1;
       if(columnLength==1)
         result+= "<th style=\"display:none;\">"+ key + "</th>";
+      else if(key=="Paper ID"){
+          result+= "<th>Edit</th>";
+        }
       else {
-        result+= "<th><button class=\"tip\">"+ key + "<span class=\"description\">"+tagColumns[key]+"</span></button></th>";
+        result+= "<th><a class=\"tip\">"+ key + "<span class=\"description\">"+tagColumns[key]+"</span></a></th>";
       }
     }
   }
@@ -86,18 +121,47 @@ function generateTagPart(paperID, tagArray, tagColumns){
       result += "<tr>";
       for(var k=1; k<tagArray[paperID][i].length ; k++){
         //result +=
-        result +="<td><textarea cols=\"20\">"+tagArray[paperID][i][k]+"</textarea></td>";
+        if(k==tagArray[paperID][i].length-1){
+          //var link = "window.location.href='http://localhost:1209/tag?id="+tagArray[paperID][i][0]+"&section="+tagArray[paperID][i][1]+"&comment="+tagArray[paperID][i][2]+"&tag="+tagArray[paperID][i][3]+"'";
+          var link = "window.location.href='http://localhost:1209/tag?"+getParameters(tagColumns, tagArray[paperID][i])+"'";
+          result += "<td><input type=\"button\" value=\"Submit\" onclick=\""+link+"\"></td>";
+        }
+        else
+          result +="<td><textarea cols=\"20\">"+tagArray[paperID][i][k]+"</textarea></td>";
       }
       result += "</tr>";
     }
+
     // for new entry
     result += "<tr>";
+    //*
     for(var k=0; k<columnLength-1; k++){
-      //result +=
-      result +="<td><textarea cols=\"20\"></textarea></td>";
-    }
+      if(k==columnLength-2){
+        //var link = "window.location.href='http://localhost:1209/tag?id="+tagArray[paperID][i][0]+"&section="+tagArray[paperID][i][1]+"&comment="+tagArray[paperID][i][2]+"&tag="+tagArray[paperID][i][3]+"'";
 
+        //var link = "window.location.href='http://localhost:1209/tag?"+getParameters(tagColumns, 10000, newItemArray)+"'";
+        //result += "<td><input type=\"button\" value=\"Submit\" onclick=\""+link+"\"></td>";
+        result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter("+paperID+")\"></td>";
+      }
+      else{
+          result +="<td><textarea id=\"new_"+keys[k+1].toLowerCase()+"\" cols=\"20\"></textarea></td>";
+      }
+    }
+    //*/
     result += "</tr>";
   }
   return result + "</table>";
+}
+
+function passNewEntryParameter(paperID){
+  var section = $('textarea#new_section').val();
+  var comment = $('textarea#new_comment').val();
+  var tag = $('textarea#new_tag').val();
+  var contributor = $('textarea#new_contributor').val();
+  var timestamp = $('textarea#new_timestamp').val();
+
+  var newItemArray = [section,comment,tag,contributor,timestamp,paperID+""];
+  console.log(newItemArray);
+  console.log(getNewEntryParameters(tagHeader, 10000, newItemArray));
+  window.location.href='http://localhost:1209/tag?'+getNewEntryParameters(tagHeader, 10000, newItemArray);
 }

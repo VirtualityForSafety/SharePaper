@@ -3,13 +3,15 @@
 const fs = require('fs');
 var contentRaw = "";
 var dataArray = [];
-
+var fields = [];
 var newLine= "\r\n";
-var fields = ['Total', 'Name'];
 //fs.readFile('metadata/papers.csv', 'utf8', function (err, data) {
 var fileToWrite = 'metadata/tagsTest.csv';
 module.exports = {
-  write: function () {
+  write: function (passedParam) {
+    if(passedParam==undefined || passedParam[0]==undefined)
+      return false;
+    console.log(passedParam);
     fs.readFile(fileToWrite, 'utf8', function (err, data) {
       if (err == null) {
         contentRaw = data.toString();
@@ -20,13 +22,14 @@ module.exports = {
                 console.log('File exists');
 
                 //write the actual data and end with newline
-                var newData = [ dataArray.length-1+"","related works","added tested", "Jinki","2018/12/31/13/30/28","23"];
+                var newData = passedParam;
                 dataArray.push(newData);
                 var csv = newData+newLine;
-
-                fs.appendFile(fileToWrite, csv, function (err) {
+                fs.writeFile(fileToWrite, contentRaw+csv, function (err, stat) {
+                //fs.appendFile(fileToWrite, csv, function (err) {
                     if (err) throw err;
                     console.log('The "data to append" was appended to file!');
+                    return true;
                 });
             }
             else {
@@ -36,6 +39,7 @@ module.exports = {
                 fs.writeFile(fileToWrite, fields, function (err, stat) {
                     if (err) throw err;
                     console.log('file saved');
+                    return true;
                 });
             }
         });
@@ -47,6 +51,7 @@ module.exports = {
         fs.writeFile(fileToWrite, fields, function (err, stat) {
             if (err) throw err;
             console.log('file saved');
+            return true;
         });
       }
 

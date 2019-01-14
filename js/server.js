@@ -12,9 +12,11 @@ app.get('/:type', function(req, res) {
   var tag_tag = req.param('tag');
   var tag_contributor = req.param('contributor');
   var tag_timestamp = req.param('timestamp');
-  var tag_paperID = req.param('paperID');
-  writer.write();
-  res.send(req.params.type+' '+tag_section + ' ' + tag_comment + ' ' + tag_tag);
+  var tag_paperID = req.param('paperid');
+  var passedParam = [tag_id, tag_section, tag_comment, tag_tag, tag_contributor, tag_timestamp, tag_paperID];
+  writer.write(passedParam);
+  res.send('Updated successfully! :' + req.params.type+':'+tag_id+'<br>' +tag_section + '<br>' + tag_comment + '<br>' + tag_tag
++ '<br>' + tag_contributor+ '<br>' + tag_timestamp+ '<br>' + tag_paperID);
 });
 
 // start the server
