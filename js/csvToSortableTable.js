@@ -27,6 +27,7 @@ function getContentOnly(data){
 
 function sortTable(numElement, interval) {
   var table, rows, switching, i, x, y, shouldSwitch;
+  var check=1,forbreak=0;
   table = document.getElementById("paperTable");
   switching = true;
   /*Make a loop that will continue until
@@ -42,20 +43,53 @@ function sortTable(numElement, interval) {
       for (i = 1; i < (rows.length - interval); i+=interval) {
         //start by saying there should be no switching:
         shouldSwitch = false;
+        check=1, forbreak=0;
         /*Get the two elements you want to compare,
         one from current row and one from the next:*/
         x = getContentOnly(rows[i].getElementsByTagName("TD")[numElement]);
         y = getContentOnly(rows[i + interval].getElementsByTagName("TD")[numElement]);
         //check if the two rows should switch place:
-        if (x.toLowerCase() > y.toLowerCase()) {
+        var sortOrder={1 : 'high' , 2 : 'medium',3: 'low'};
+        var tempx=0, tempy=0;
+        // we can check x & y value
+          console.log('x:'+x+'와'+'y:' + y);
+
+        if(x=='b'||y=='b');
+        else{
+          for(var j=0; j<3 ;j++){
+            if(x==sortOrder[j+1]){
+              tempx=j+1;
+              forbreak+=1;
+            }
+            if(y==sortOrder[j+1]){
+              tempy=j+1;
+              forbreak+=1;
+            }
+            if(forbreak==2){
+              check=0;
+              break;
+            }
+          }
+        }
+        if (!check){
+
+          console.log('tempx: '+tempx+'tempy'+tempy);
+          if(tempx>tempy){
+            shouldSwitch = true;
+            // I can check shouldSwitch value has right value.
+            console.log(shouldSwitch);
+            break;
+          }
+        }
+        else if (x.toLowerCase() > y.toLowerCase()) {
           //if so, mark as a switch and break the loop:
           shouldSwitch = true;
+          console.log(shouldSwitch);
           break;
         }
         for(var t=0; t<columnState.length ; t++)
             columnState[t]=0;
         columnState[numElement]=1;
-
       }
       if (shouldSwitch) {
         /*If a switch has been marked, make the switch
@@ -71,6 +105,7 @@ function sortTable(numElement, interval) {
     reverseTableRows(interval);
   }
 }
+
 
 function readCSV(allText){
   var allTextLines = allText.split(/\r\n|\n/);
