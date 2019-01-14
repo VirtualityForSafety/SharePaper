@@ -216,6 +216,10 @@
   }
 }
 
+tr:nth-child(even) {
+   background-color: #f2f2f2;
+}
+
 h1, h2 {
   font-weight: 300;
 }
@@ -444,6 +448,9 @@ p.detail {
   float: left;
   height: 100%;
 }
-.myDragClass{
-  box-shadow: 6px 3px 5px #555, 0 1px 0 #ccc inset, 0 -1px 0 #ccc inset;
+tbody .myDragClass{
+  color: white;
+  text-shadow: 1px 1px rgb(37, 37, 37);
+  background-color: rgb(29, 70, 117);
+  box-shadow: 3px -3px 3px rgb(138, 138, 138);
 }

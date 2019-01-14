@@ -18,9 +18,7 @@ th, td {
   padding: 16px;
 }
 
-tr:nth-child(even) {
-  background-color: #f2f2f2
-}
+
 table {
   border-collapse: collapse;
   border: 2px black solid;
@@ -72,17 +70,6 @@ td {
 <script>
 var columnState = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var columnDescription = {};
-
-function setClipboard(value) {
-    var tempInput = document.createElement("input");
-    tempInput.style = "position: absolute; left: -1000px; top: -1000px";
-    tempInput.value = value;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand("copy");
-    document.body.removeChild(tempInput);
-    alert("Copied the text:\r" + value);
-}
 </script>
 
 </body>

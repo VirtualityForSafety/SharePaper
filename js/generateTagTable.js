@@ -24,8 +24,7 @@ $(document).ready(function() {
         }
         
         $("tbody").tableDnD({
-          onDragClass: "myDragClass",
-          activeCols: ["queue_position","vin"] // new option
+          onDragClass: "myDragClass"
          });
 
         }
