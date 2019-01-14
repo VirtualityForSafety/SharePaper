@@ -1,6 +1,6 @@
 //////////////////////////////////// common part ////////////////////////////////////
 
-function reverseTableRows() {
+function reverseTableRows(interval) {
 
     var table = document.getElementById("paperTable"),
         newTbody = document.createElement('tbody'),
@@ -8,10 +8,11 @@ function reverseTableRows() {
         rows = table.rows,
         i = rows.length - 1;
         newTbody.appendChild(rows[0]);
-        for (i = rows.length-2; i >= 0; i-=2) {
+        for (i = rows.length-interval; i >= 0; i-=interval) {
           //console.log(rows[i+1]);
           newTbody.appendChild(rows[i]);
-          newTbody.appendChild(rows[rows.length-1]);
+          if(interval==2)
+            newTbody.appendChild(rows[rows.length-1]);
         }
     oldTbody.parentNode.replaceChild(newTbody, oldTbody);
 }
@@ -24,7 +25,7 @@ function getContentOnly(data){
   }
 }
 
-function sortTable(numElement) {
+function sortTable(numElement, interval) {
   var table, rows, switching, i, x, y, shouldSwitch;
   table = document.getElementById("paperTable");
   switching = true;
@@ -38,13 +39,13 @@ function sortTable(numElement) {
       rows = table.rows;
       /*Loop through all table rows (except the
       first, which contains table headers):*/
-      for (i = 1; i < (rows.length - 2); i+=2) {
+      for (i = 1; i < (rows.length - interval); i+=interval) {
         //start by saying there should be no switching:
         shouldSwitch = false;
         /*Get the two elements you want to compare,
         one from current row and one from the next:*/
         x = getContentOnly(rows[i].getElementsByTagName("TD")[numElement]);
-        y = getContentOnly(rows[i + 2].getElementsByTagName("TD")[numElement]);
+        y = getContentOnly(rows[i + interval].getElementsByTagName("TD")[numElement]);
         //check if the two rows should switch place:
         if (x.toLowerCase() > y.toLowerCase()) {
           //if so, mark as a switch and break the loop:
@@ -59,14 +60,15 @@ function sortTable(numElement) {
       if (shouldSwitch) {
         /*If a switch has been marked, make the switch
         and mark that a switch has been done:*/
-        rows[i].parentNode.insertBefore(rows[i + 2], rows[i]);
-        rows[i].parentNode.insertBefore(rows[i + 3], rows[i+1]);
+        rows[i].parentNode.insertBefore(rows[i + interval], rows[i]);
+        if(interval==2)
+          rows[i].parentNode.insertBefore(rows[i + 3], rows[i+1]);
         switching = true;
       }
     }
   }
   else if(columnState[numElement]>0){ //no sorted state
-    reverseTableRows();
+    reverseTableRows(interval);
   }
 }
 
@@ -90,7 +92,8 @@ function parseLine(oneLine){
       if(!integrating)
         item = data[i];
       else {
-        item += "," + data[i];
+        //item += "," + data[i];
+        if(!data[i].includes('\"')) item += "," + data[i];
       }
       //if ((data[i].match(/'\"'/g) || []).length>0){
       if(data[i].includes('\"')){
@@ -98,7 +101,7 @@ function parseLine(oneLine){
         if(!integrating)
           item = (splited[0].length > splited[1].length)? splited[0] : splited[1];
         else
-          item += (splited[0].length > splited[1].length)? splited[0] : splited[1];
+          item += (splited[0].length > splited[1].length)? ", "+splited[0] : splited[1];
         integrating = !integrating;
       }
       if(!integrating)
@@ -130,7 +133,7 @@ function generatePaperTable(data) {
         result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
     }
     else{
-      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+")\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
+      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",2)\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
     }
   }
   result += "</tr>";
@@ -220,7 +223,7 @@ function generateTagTable(data) {
           result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
         }
         else{
-          result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+")\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
+          result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",1)\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
           }
       }
     result += "</tr>";
@@ -241,8 +244,8 @@ function generateTagTable(data) {
             }
             else{
               if(k==commentIndex){
-                dataLine+= "<td><input type=\"hidden\" value=\""+dataRow[k]+"\" id=\"tag"+ i +">"; // set hidden input value
-                dataLine+= "<a onclick=\"copyText(\"tag" +i +"\")\">"; // set link
+                //dataLine+= "<td><input type=\"hidden\" value=\""+dataRow[k]+"\" id=\"tag"+ i +"\">"; // set hidden input value
+                dataLine+= "<td><a onclick = \"setClipboard('"+ dataRow[k]+"')\">"; // set link
                 dataLine+= dataRow[k] + "</a></td>";
               }
               else if(k==dataRow.length-1)

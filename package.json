@@ -1,0 +1,30 @@
+{
+  "name": "sharepaper",
+  "version": "0.1.0",
+  "description": "A reference repository for a collaborated paper submission.",
+  "main": "assets.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VirtualityForSafety/SharePaper.git"
+  },
+  "keywords": [
+    "academic",
+    "paper",
+    "writing",
+    "submission",
+    "collaboration"
+  ],
+  "dependencies": {
+    "csv": "^0.3.7"
+  },
+  "author": "Jinki Jung <your.jinki.jung@gmail.com> (https://jinkijung.github.io/)",
+  "contributors": "Jinki Jung, Soyeon Kim, Sua Lee, Sangho Lee",
+  "license": "CC-BY-NC-SA-2.0",
+  "bugs": {
+    "url": "https://github.com/VirtualityForSafety/SharePaper/issues"
+  },
+  "homepage": "https://github.com/VirtualityForSafety/SharePaper#readme"
+}
