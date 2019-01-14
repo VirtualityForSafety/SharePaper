@@ -1,54 +1,51 @@
-var writer = csvWriter()
-writer.pipe(fs.createWriteStream('out.csv'))
-writer.write({hello: "world", foo: "bar", baz: "taco"})
-writer.end()
+'use strict'
 
-/*var fs = require('fs');
-var json2csv = require('json2csv');
+const fs = require('fs');
+var contentRaw = "";
+var dataArray = [];
+
 var newLine= "\r\n";
-
 var fields = ['Total', 'Name'];
+//fs.readFile('metadata/papers.csv', 'utf8', function (err, data) {
+var fileToWrite = 'metadata/tagsTest.csv';
+fs.readFile(fileToWrite, 'utf8', function (err, data) {
+  if (err == null) {
+    contentRaw = data.toString();
+    dataArray = data.split(/\r?\n/);
 
-var appendThis = [
-    {
-        'Total': '100',
-        'Name': 'myName1'
-    },
-    {
-        'Total': '200',
-        'Name': 'myName2'
-    }
-];
+    fs.stat(fileToWrite, function (err, stat) {
+        if (err == null) {
+            console.log('File exists');
 
-var toCsv = {
-    data: appendThis,
-    fields: fields,
-    hasCSVColumnTitle: false
-};
+            //write the actual data and end with newline
+            var newData = [ dataArray.length-1+"","related works","added tested", "Jinki","2018/12/31/13/30/28","23"];
+            dataArray.push(newData);
+            var csv = newData+newLine;
 
-fs.stat('file.csv', function (err, stat) {
-  console.log("testing");
-    if (err == null) {
-        console.log('File exists');
+            fs.appendFile(fileToWrite, csv, function (err) {
+                if (err) throw err;
+                console.log('The "data to append" was appended to file!');
+            });
+        }
+        else {
+            //write the headers and newline
+            console.log('New file, just writing headers');
+            fields = contentRaw;
+            fs.writeFile(fileToWrite, fields, function (err, stat) {
+                if (err) throw err;
+                console.log('file saved');
+            });
+        }
+    });
+  }
+  else {
+    //write the headers and newline
+    console.log('New file, just writing headers');
+    fields = "ID,Section,Comment,Tag,Contributor,Timestamp,Paper ID" + newLine;
+    fs.writeFile(fileToWrite, fields, function (err, stat) {
+        if (err) throw err;
+        console.log('file saved');
+    });
+  }
 
-        //write the actual data and end with newline
-        var csv = json2csv(toCsv) + newLine;
-
-        fs.appendFile('file.csv', csv, function (err) {
-            if (err) throw err;
-            console.log('The "data to append" was appended to file!');
-        });
-    }
-    else {
-        //write the headers and newline
-        console.log('New file, just writing headers');
-        fields= (fields + newLine);
-
-        fs.writeFile('file.csv', fields, function (err, stat) {
-            if (err) throw err;
-            console.log('file saved');
-        });
-    }
 });
-
-*/
