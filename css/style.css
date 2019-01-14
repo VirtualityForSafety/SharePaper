@@ -444,3 +444,6 @@ p.detail {
   float: left;
   height: 100%;
 }
+.myDragClass{
+  box-shadow: 6px 3px 5px #555, 0 1px 0 #ccc inset, 0 -1px 0 #ccc inset;
+}

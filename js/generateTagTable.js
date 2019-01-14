@@ -22,10 +22,11 @@ $(document).ready(function() {
           document.execCommand("copy");
           alert("Copied the text: " + copyText.value);
         }
-        $(function(){
-          $("tbody").tableDnD();
-          console.log("sort");
-        });
+        
+        $("tbody").tableDnD({
+          onDragClass: "myDragClass",
+          activeCols: ["queue_position","vin"] // new option
+         });
 
         }
      });
