@@ -331,41 +331,18 @@ input.tag_test {
 }
 
 .tag {
-  font-family: "Raleway", sans-serif;
-  background: rgb(67, 138, 219);
-  border-radius: 8px 0 0 8px;
-  color: white;
+  background: blue;
   display: inline-block;
-  font-size: 13px;
-  font-weight: 330;
-  line-height: 20px;
-  padding: 0 20px 0 20px;
+  border-radius: 2px 0 0 2px;
+  color: #fff;
+  display: inline-block;
+  height: 26px;
+  line-height: 26px;
+  padding: 0 15px 0 15px;
   position: relative;
-  margin: 0 10px 0px 10px;
+  margin: 0 15px 15px 0;
   text-decoration: none;
   -webkit-transition: color 0.2s;
-}
-
-.tag::before {
-  background: #fff;
-  content: '';
-  height: 3px;
-  left: 10px;
-  border-radius: 10px;
-  position: absolute;
-  width: 6px;
-  top: 10px;
-}
-
-.tag::after {
-  background: #fff;
-  border-bottom: 10px solid transparent;
-  border-left: 10px solid rgb(67, 138, 219);
-  border-top: 10px solid transparent;
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 0;
 }
 
 .tag:hover {
