@@ -22,7 +22,12 @@ $(document).ready(function() {
           document.execCommand("copy");
           alert("Copied the text: " + copyText.value);
         }
-          }
-     });
+        $(function(){
+          $("tbody").tableDnD();
+          console.log("sort");
+        });
 
+        }
+     });
+    
 });

@@ -211,7 +211,7 @@ function generateTagArray(data) {
 }
 
 function generateTagTable(data) {
-    var result = "<table id=\"paperTable\"><tr>";
+    var result = "<table id=\"paperTable\"><tr class=\"nodrop nodrag\">";
     var header = data[0];
     var dateIndex = header.indexOf("Timestamp");
     var commentIndex = header.indexOf("Comment");
