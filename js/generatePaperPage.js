@@ -42,20 +42,28 @@ $(document).ready(function() {
 
 // returns a paperId, but a negative value for invalid link
 function getPaperID(){
-  var aarr = window.location.href.split('?');
-  if(aarr.length>1){
-    var id = aarr[aarr.length -1].split('=')[1];
+  var element = window.location.href.split('?');
+  if(element.length>1){
+    var id = element[element.length -1].split('=')[1];
     return id;
   }
   return -1;
+}
+
+function getPaperUpdateButton(){
+  var buttonScript = "";
+  var link = "window.location.href='http://localhost:1209/paper?"; //"+getTagParameters(tagColumns, tagArray[paperID][i])+"'";
+  return "<input type=\"button\" value=\"Submit\" onclick=\""+link+"\">";
 }
 
 function generatePaperPart(paperID, paperArray, paperColumns){
   var result = "<table id=\"paperTable\"><tr>";
   // for header
   var index =0;
+  var keys = [];
   for (var key in paperColumns) {
     if (paperColumns.hasOwnProperty(key)) {
+      keys.push(key+"");
       index += 1;
       if(index==1)
         result+= "<th style=\"display:none;\">"+ key + "</th>";
@@ -74,11 +82,11 @@ function generatePaperPart(paperID, paperArray, paperColumns){
       if(i==paperArray[paperID].length-1)
         result += "<td><a href=\"resources/"+paperArray[paperID][i]+".pdf\" download>download</a></td>";
       else
-        result +="<td><textarea cols=\"20\">"+paperArray[paperID][i]+"</textarea></td>";
+        result +="<td><textarea id=\"paper_"+keys[i].toLowerCase()+"\" cols=\"20\">"+paperArray[paperID][i]+"</textarea></td>";
     }
     result += "</tr>";
   }
-  return result + "</table>";
+  return result + "</table>" + "<br>" + getPaperUpdateButton();
 }
 
 function getNewEntryParameters(tagColumns, id,item){
@@ -95,7 +103,7 @@ function getNewEntryParameters(tagColumns, id,item){
   return result;
 }
 
-function getParameters(tagColumns, item){
+function getTagParameters(tagColumns, item){
   var result ="";
   var index =0;
   for (var key in tagColumns) {
@@ -138,7 +146,7 @@ function generateTagPart(paperID, tagArray, tagColumns){
         //result +=
         if(k==tagArray[paperID][i].length-1){
           //var link = "window.location.href='http://localhost:1209/tag?id="+tagArray[paperID][i][0]+"&section="+tagArray[paperID][i][1]+"&comment="+tagArray[paperID][i][2]+"&tag="+tagArray[paperID][i][3]+"'";
-          var link = "window.location.href='http://localhost:1209/tag?"+getParameters(tagColumns, tagArray[paperID][i])+"'";
+          var link = "window.location.href='http://localhost:1209/tag?"+getTagParameters(tagColumns, tagArray[paperID][i])+"'";
           result += "<td><input type=\"button\" value=\"Submit\" onclick=\""+link+"\"></td>";
         }
         else
