@@ -1,0 +1,34 @@
+<html>
+<body>
+  <table>
+    <tr class="tag tag1 tag2"><td>tag1+tag2</p></td><tr>
+      <tr class="tag tag2 tag3"><td>tag2+tag3</p></td><tr>
+        <tr class="tag tag1 tag2 tag3"><td>tag1+tag2+tag3</p></td><tr>
+          </table>
+
+<button type="button" onclick="showAll()">show all</button>
+<button type="button" onclick="hide('tag1')">hide tag1</button>
+<button type="button" onclick="hide('tag2')">hide tag2</button>
+<button type="button" onclick="hide('tag3')">hide tag3</button>
+<button type="button" onclick="hideAll()">hide all</button>
+
+<script>
+  function hideAll() {
+    var selected = document.getElementsByClassName('tag');
+    for(var i=0; i< selected.length ; i++)
+      selected[i].style.visibility = "hidden";
+  }
+  function showAll() {
+    var selected = document.getElementsByClassName('tag');
+    for(var i=0; i< selected.length ; i++)
+      selected[i].style.visibility = "visible";
+  }
+function hide(tagName) {
+  var selected = document.getElementsByClassName(tagName);
+  for(var i=0; i< selected.length ; i++)
+    selected[i].style.visibility = "hidden";
+}
+</script>
+
+</body>
+</html>
