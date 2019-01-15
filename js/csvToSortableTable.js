@@ -172,6 +172,7 @@ function generatePaperTable(data) {
     }
   }
   result += "</tr>";
+  var _paperID = -1;
   for (var i=1; i<data.length; i++) {
     var dataLine = "<tr class=\"clickable\">";
     var shouldHighlighted = false;
@@ -180,21 +181,20 @@ function generatePaperTable(data) {
     }
     var id = i;
     for(var k=0; k<data[i].length ; k++){
-      if(shouldHighlighted){
-        data[i][k] = "<b>"+data[i][k]+"</b>";
-      }
       if(k==0){
+        _paperID = data[i][k];
         dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
       }
       else{
+        var highLightStyle = "";
+        if(shouldHighlighted)
+          highLightStyle = "class='highlight'";
         if(k==titleIndex)
-          dataLine += "<td><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>"; // for anchoring
-          //dataLine += "<td><label for=\"paper"+(id)+"\"><b>"+data[i][k]+"</b></label><input type=\"checkbox\" name=\"paper"+(id)+"\" id=\"paper"+(id)+"\" data-toggle=\"toggle\"></td>";
-          //dataLine += "<td><label for=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</label><input type=\"checkbox\" id=\"paper"+(id)+"\" data-toggle=\"toggle\"></td>"; // for anchoring
+          dataLine += "<td "+highLightStyle+"><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>"; // for anchoring
         else if(k==data[i].length-1)
-          dataLine += "<td><a href=\"resources/"+data[i][k]+".pdf\" download>download</a></td>";
+          dataLine += "<td "+highLightStyle+"><a href=\"paper.html?id="+(_paperID+"")+"\">link</a></td>"
         else
-          dataLine+= "<td>"+ data[i][k] + "</td>";
+          dataLine+= "<td "+highLightStyle+">"+ data[i][k] + "</td>";
       }
     }
     result += dataLine + "</tr>";

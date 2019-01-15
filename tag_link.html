@@ -12,8 +12,7 @@
 <button type="button" onclick="hide('tag3')">hide tag3</button>
 <button type="button" onclick="hideAll()">hide all</button>
 <br>
-<a href="http://localhost:4000/tag_subselection.html?id=5">link</a>
-
+<a href="http://localhost:4000/paper.html?id=5">link</a>
 <script>
   function hideAll() {
     var selected = document.getElementsByClassName('tag');
@@ -30,13 +29,6 @@ function hide(tagName) {
   for(var i=0; i< selected.length ; i++)
     selected[i].style.visibility = "hidden";
 }
-
-var aarr = window.location.href.split('?');
-//get last value
-
-var id = aarr[aarr.length -1];
-if(aarr.length>1)
-  alert(id);
 </script>
 
 </body>

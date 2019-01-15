@@ -21,8 +21,10 @@ $(document).ready(function() {
                    url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
                    dataType: "text",
                    success: function(csvData) {
-                     var paperID = 2;
-                     paperArray = readCSV(csvData);
+                     var paperID = getPaperID();
+
+                     if(paperID>=0)
+                      paperArray = readCSV(csvData);
 
                      document.getElementById("paperDetail").innerHTML = generatePaperPart(paperID, paperArray, paperColumns);
                     document.getElementById("tagDetail").innerHTML = generateTagPart(paperID, tagArray, tagColumns);
@@ -37,6 +39,16 @@ $(document).ready(function() {
 });
 
 });
+
+// returns a paperId, but a negative value for invalid link
+function getPaperID(){
+  var aarr = window.location.href.split('?');
+  if(aarr.length>1){
+    var id = aarr[aarr.length -1].split('=')[1];
+    return id;
+  }
+  return -1;
+}
 
 function generatePaperPart(paperID, paperArray, paperColumns){
   var result = "<table id=\"paperTable\"><tr>";
@@ -59,7 +71,10 @@ function generatePaperPart(paperID, paperArray, paperColumns){
     result += "<tr>";
     for(var i=1; i<paperArray[paperID].length ; i++){
       //result +="<td><input type=\"text\" value=\""+ paperArray[paperID][i]+"\"></td>";
-      result +="<td><textarea cols=\"20\">"+paperArray[paperID][i]+"</textarea></td>";
+      if(i==paperArray[paperID].length-1)
+        result += "<td><a href=\"resources/"+paperArray[paperID][i]+".pdf\" download>download</a></td>";
+      else
+        result +="<td><textarea cols=\"20\">"+paperArray[paperID][i]+"</textarea></td>";
     }
     result += "</tr>";
   }
