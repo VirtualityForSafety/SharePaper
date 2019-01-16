@@ -3,12 +3,22 @@
 const fs = require('fs');
 var contentRaw = "";
 var dataArray = [];
-var fields = [];
+var fields = "";
 var newLine= "\r\n";
 //fs.readFile('metadata/papers.csv', 'utf8', function (err, data) {
-var fileToWrite = 'metadata/tagsTest.csv';
+var fileToWrite = '';
+var paperFile = 'metadata/papersTest.csv';
+var tagFile = 'metadata/tagsTest.csv';
 module.exports = {
-  write: function (passedParam) {
+  write: function (type, passedParam) {
+    if(type=='tag'){
+      fields = "ID,Section,Comment,Tag,Contributor,Timestamp,Paper ID" + newLine;
+      fileToWrite = tagFile;
+    }
+    else if(type=='paper'){
+      fields = "ID,Title,Year,Journal/Conference,Author,Keyword,Quality,Summary,Timestamp,Contributor,Link" + newLine;
+      fileToWrite = paperFile;
+    }
     if(passedParam==undefined || passedParam[0]==undefined)
       return false;
     console.log(passedParam);
@@ -22,10 +32,8 @@ module.exports = {
                 console.log('File exists');
 
                 //write the actual data and end with newline
-                var newData = passedParam;
-                dataArray.push(newData);
-                var csv = newData+newLine;
-                fs.writeFile(fileToWrite, contentRaw+csv, function (err, stat) {
+                dataArray.push(passedParam);
+                fs.writeFile(fileToWrite, contentRaw+passedParam+newLine, function (err, stat) {
                 //fs.appendFile(fileToWrite, csv, function (err) {
                     if (err) throw err;
                     console.log('The "data to append" was appended to file!');
@@ -47,8 +55,7 @@ module.exports = {
       else {
         //write the headers and newline
         console.log('New file, just writing headers');
-        fields = "ID,Section,Comment,Tag,Contributor,Timestamp,Paper ID" + newLine;
-        fs.writeFile(fileToWrite, fields, function (err, stat) {
+        fs.writeFile(fileToWrite, fields+passedParam+newLine, function (err, stat) {
             if (err) throw err;
             console.log('file saved');
             return true;
