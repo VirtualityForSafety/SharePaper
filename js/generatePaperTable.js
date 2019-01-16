@@ -7,7 +7,7 @@ $(document).ready(function() {
      dataType: "text",
      success: function(csvData) {
          columnDescription = generatePaperColumn(readCSV(csvData));
-         
+
          $.ajax({
             type: "GET",
             url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/tags.csv",
@@ -21,6 +21,9 @@ $(document).ready(function() {
                    dataType: "text",
                    success: function(csvData) {
                        document.getElementById("paper").innerHTML = generatePaperTable(readCSV(csvData));
+                       sortTable(8,2);
+                       reverseTableRows(2);
+
                    $(".content").hide();
                    $(".clickable").click(function() {
                        $(this).nextUntil(".clickable").toggle("fast");

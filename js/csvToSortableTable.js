@@ -192,7 +192,7 @@ function generatePaperTable(data) {
         if(k==titleIndex)
           dataLine += "<td "+highLightStyle+"><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>"; // for anchoring
         else if(k==data[i].length-1)
-          dataLine += "<td "+highLightStyle+"><a href=\"paper.html?id="+(_paperID+"")+"\">link</a></td>"
+          dataLine += "<td "+highLightStyle+"><a href=\"paper.html?id="+(_paperID+"")+"\">link</a></td>";
         else
           dataLine+= "<td "+highLightStyle+">"+ data[i][k] + "</td>";
       }
@@ -284,7 +284,7 @@ function generateTagTable(data) {
                 dataLine+= dataRow[k] + "</a></td>";
               }
               else if(k==dataRow.length-1)
-                dataLine += "<td><a href=\"index.html#paper"+id+"\">link</a></td>";
+                dataLine += "<td><a href=\"paper.html?id="+dataRow[k]+"\">link</a></td>";
               else
                 dataLine+= "<td>"+ dataRow[k] + "</td>";
               }
