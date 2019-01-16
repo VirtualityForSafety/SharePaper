@@ -34,6 +34,10 @@ $(document).ready(function() {
                    $(".collapse").click(function () {
                        $(".content").hide();
                    });
+                   $(".new_entry").hide();
+                   $(".expandNewEntry").click(function () {
+                       $(".new_entry").show("fast");
+                   });
                      }
                 });
               }

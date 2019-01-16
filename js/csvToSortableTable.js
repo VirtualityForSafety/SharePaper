@@ -52,7 +52,7 @@ function sortTable(numElement, interval) {
         var sortOrder={1 : 'high' , 2 : 'medium',3: 'low'};
         var tempx=0, tempy=0;
         // we can check x & y value
-          console.log('x:'+x+'와'+'y:' + y);
+          //console.log('x:'+x+'와'+'y:' + y);
 
         if(x=='b'||y=='b');
         else{
@@ -73,18 +73,18 @@ function sortTable(numElement, interval) {
         }
         if (!check){
 
-          console.log('tempx: '+tempx+'tempy'+tempy);
+          //console.log('tempx: '+tempx+'tempy'+tempy);
           if(tempx>tempy){
             shouldSwitch = true;
             // I can check shouldSwitch value has right value.
-            console.log(shouldSwitch);
+            //console.log(shouldSwitch);
             break;
           }
         }
         else if (x.toLowerCase() > y.toLowerCase()) {
           //if so, mark as a switch and break the loop:
           shouldSwitch = true;
-          console.log(shouldSwitch);
+          //console.log(shouldSwitch);
           break;
         }
         for(var t=0; t<columnState.length ; t++)
@@ -201,6 +201,23 @@ function generatePaperTable(data) {
     // paper detail information
     result += getPaperDetail(i, header.length-1);
   }
+  /*
+  // for new entry
+  result += "<tr class=\"new_entry\">";
+  //*
+  for(var k=0; k<header.length-1; k++){
+    if(k==header-2){
+      //var hiddenItem = "<textarea id=\"new_tag_"+keys[k+1].toLowerCase()+"\" cols=\"20\" style=\"display:none;\"></textarea>";
+      hiddenItem = "";
+      result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
+    }
+    else{
+        result +="<td><textarea id=\"new_paper_"+header[k+1].replace("/","").toLowerCase()+"\" cols=\"20\"></textarea></td>";
+    }
+  }
+  result += "</tr>";
+
+  //*/
   return result + "</table>";
 }
 
@@ -216,7 +233,7 @@ function getPaperDetail(index, columnLength){
       paperDetail += tagArray[index][k][2] + " - by " + tagArray[index][k][4]+", " + tagArray[index][k][5]+"<br>";
     }
   }
-  paperTagInfo += "<tr  class=\"content\"><td colspan="+columnLength+">"+paperDetail+"</td></tr>";
+  paperTagInfo += "<tr class=\"content\"><td colspan="+columnLength+">"+paperDetail+"</td></tr>";
   return paperTagInfo;
 }
 

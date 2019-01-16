@@ -31,6 +31,10 @@ $(document).ready(function() {
                      function resizeInput() {
                       $(this).attr('size', $(this).val().length);
                     }
+                    $(".new_entry").hide();
+                    $(".expandNewEntry").click(function () {
+                        $(".new_entry").show("fast");
+                    });
                    }
                      });
                    }
@@ -173,7 +177,7 @@ function generateTagPart(paperID, tagArray, tagColumns){
     }
 
     // for new entry
-    result += "<tr>";
+    result += "<tr class=\"new_entry\">";
     //*
     for(var k=0; k<columnLength-1; k++){
       if(k==columnLength-2){
