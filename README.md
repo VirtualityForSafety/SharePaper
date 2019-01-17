@@ -15,18 +15,18 @@ The project was initiated by [Jinki Jung](https://github.com/jinkijung), and the
 - Node.js (required to update CSV files locally)
 
 ## Executing a webserver locally
-- install [Jekyll](https://jekyllrb.com)
-- move to the repository root folder
-- execute the server by 'jekyll serve --trace'
-- browse 'http://localhost:4000'
-- enjoy!
+- Install [Jekyll](https://jekyllrb.com)
+- Move to the repository root folder
+- Execute the server by 'jekyll serve --trace'
+- Browse 'http://localhost:4000'
+- Enjoy!
 
 ## Setting up a file server 
-- install [Node.js](https://nodejs.org/en/)
-- move to the repository root folder
-- install csv package via 'npm install -g csv'
-- execute 'npm install'
-- execute the server by 'node js/server.js'
+- Install [Node.js](https://nodejs.org/en/)
+- Move to the repository root folder
+- Install csv package via 'npm install -g csv'
+- Execute 'npm install'
+- Execute the server by 'node js/server.js'
 
 ## How to use
  - A demo video will be posted.
@@ -36,3 +36,6 @@ The project was initiated by [Jinki Jung](https://github.com/jinkijung), and the
  - [Sua Lee](https://github.com/otterlee)
  - [Sangho Lee](https://github.com/kimmydkemf)
  - [Jinki Jung](https://github.com/jinkijung)
+ 
+## Special thanks to
+ - We thank to [Kangsoo Kim](http://www.kangsookim.com/) who gives a practical advise for efficient paper sharing.
