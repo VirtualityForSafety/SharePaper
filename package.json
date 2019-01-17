@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "csv": "^0.3.7",
-    "express": "^4.16.0"
+    "express": "^4.16.4"
   },
   "author": "Jinki Jung <your.jinki.jung@gmail.com> (https://jinkijung.github.io/)",
   "contributors": "Jinki Jung, Soyeon Kim, Sua Lee, Sangho Lee",

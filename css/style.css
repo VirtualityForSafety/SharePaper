@@ -431,3 +431,33 @@ tbody .myDragClass{
   background-color: rgb(29, 70, 117);
   box-shadow: 3px -3px 3px rgb(138, 138, 138);
 }
+
+input[type=button] {
+  font-family: "Staatliches", sans-serif;
+  color: white;
+  font-size: 30px;
+  width:50%;
+  padding:0px; border:0px;
+  -o-transition:color .02s ease-out, background .02s ease-in;
+  -ms-transition:color .02s ease-out, background .02s ease-in;
+  -moz-transition:color .02s ease-out, background .02s ease-in;
+  -webkit-transition:color .02s ease-out, background .02s ease-in;
+  /* ...and now override with proper CSS property */
+  transition:color .3s ease-out, background .3s ease-in;
+}
+
+.top_share {
+  text-align: right;
+  background: #34675c;
+}
+.top_paper {
+  text-align: left;
+  background: #66a5ad;
+}
+
+.top_share:hover {
+  background: #363237;
+}
+.top_paper:hover {
+  background: #324851;
+}
