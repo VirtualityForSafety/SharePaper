@@ -27,7 +27,7 @@ function getContentOnly(data){
 
 function sortTable(numElement, interval) {
   var table, rows, switching, i, x, y, shouldSwitch;
-  var check=1,forbreak=0;
+  var check=1;
   table = document.getElementById("paperTable");
   switching = true;
   /*Make a loop that will continue until
@@ -43,16 +43,15 @@ function sortTable(numElement, interval) {
       for (i = 1; i < (rows.length - interval); i+=interval) {
         //start by saying there should be no switching:
         shouldSwitch = false;
-        check=1, forbreak=0;
         /*Get the two elements you want to compare,
         one from current row and one from the next:*/
         x = getContentOnly(rows[i].getElementsByTagName("TD")[numElement]);
         y = getContentOnly(rows[i + interval].getElementsByTagName("TD")[numElement]);
         //check if the two rows should switch place:
+/*
         var sortOrder={1 : 'high' , 2 : 'medium',3: 'low'};
         var tempx=0, tempy=0;
         // we can check x & y value
-          //console.log('x:'+x+'와'+'y:' + y);
 
         if(x=='b'||y=='b');
         else{
@@ -70,14 +69,20 @@ function sortTable(numElement, interval) {
               break;
             }
           }
+        }*/
+        if(numElement==6)
+          check=1;
+        else
+          check=0;
+        if(compareWithContext(x,y,check)){
+          shouldSwitch=true;
+          break;
         }
+        /*
         if (!check){
-
-          //console.log('tempx: '+tempx+'tempy'+tempy);
           if(tempx>tempy){
             shouldSwitch = true;
             // I can check shouldSwitch value has right value.
-            //console.log(shouldSwitch);
             break;
           }
         }
@@ -86,7 +91,7 @@ function sortTable(numElement, interval) {
           shouldSwitch = true;
           //console.log(shouldSwitch);
           break;
-        }
+        }*/
         for(var t=0; t<columnState.length ; t++)
             columnState[t]=0;
         columnState[numElement]=1;
@@ -103,6 +108,21 @@ function sortTable(numElement, interval) {
   }
   else if(columnState[numElement]>0){ //no sorted state
     reverseTableRows(interval);
+  }
+}
+function compareWithContext(x,y,check){
+  if(check){
+    var sortOrder={'high':1 , 'medium':2,'low':3};
+    // we can check x & y value
+    /*if(!sortOrder[x.toLowerCase()]||!sortOrder[y.toLowerCase()]){
+        return true;
+    }
+    else*/{
+        return sortOrder[x.toLowerCase()]>sortOrder[y.toLowerCase()];
+    }
+  }
+  else{
+    return x.toLowerCase()>y.toLowerCase();
   }
 }
 
