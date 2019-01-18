@@ -208,13 +208,13 @@ function generatePaperTable(data) {
       else{
         var highLightStyle = "";
         if(shouldHighlighted)
-          highLightStyle = "class='highlight'";
+          highLightStyle ="class='highlight'";
         if(k==titleIndex)
-          dataLine += "<td "+highLightStyle+"><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>"; // for anchoring
+          dataLine += "<td "+"><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>"; // for anchoring
         else if(k==data[i].length-1)
-          dataLine += "<td "+highLightStyle+"><a href=\"paper.html?id="+(_paperID+"")+"\">link</a></td>";
+          dataLine += "<td "+"><a href=\"paper.html?id="+(_paperID+"")+"\">link</a></td>";
         else
-          dataLine+= "<td "+highLightStyle+">"+ data[i][k] + "</td>";
+          dataLine+= "<td "+">"+ data[i][k] + "</td>";
       }
     }
     result += dataLine + "</tr>";
