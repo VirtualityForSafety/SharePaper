@@ -20,7 +20,7 @@ function reverseTableRows(interval) {
 function getContentOnly(data){
   var elements = String(data.outerHTML).split(/<|>/);
   for(var i=0; i<elements.length ; i++){
-    if(elements[i].length!=0 && elements[i]!="td" && !elements[i].includes("Section"))
+    if(elements[i].length!=0 && elements[i]!="td" && !elements[i].includes("Section") && !elements[i].includes("contenteditable") && !elements[i].includes("class="))
       return String(elements[i]);
   }
 }
@@ -33,7 +33,6 @@ function invalidateSortingState(){
 function sortTable(numElement, interval, priorityMap) {
   var priorityMap = labelPriorityMaps[numElement];
   var table, rows, switching, i, x, y, shouldSwitch;
-  var check=1;
   table = document.getElementById("paperTable");
   switching = true;
   /*Make a loop that will continue until
@@ -58,9 +57,6 @@ function sortTable(numElement, interval, priorityMap) {
           shouldSwitch=true;
           break;
         }
-        invalidateSortingState();
-
-        sortingState[numElement]=1;
       }
       if (shouldSwitch) {
         /*If a switch has been marked, make the switch
@@ -71,10 +67,14 @@ function sortTable(numElement, interval, priorityMap) {
         switching = true;
       }
     }
+    invalidateSortingState();
+
+    sortingState[numElement]=1;
   }
   else if(sortingState[numElement]>0){ //no sorted state
     reverseTableRows(interval);
   }
+
 }
 
 function compareWithContext(x,y,priorityMap){
@@ -83,47 +83,8 @@ function compareWithContext(x,y,priorityMap){
     var yValue = priorityMap.get(y);
     return (xValue==undefined?9999:xValue)>(yValue==undefined?9999:yValue);
   }
-
   else
     return x > y;
-}
-
-function readCSV(allText){
-  var allTextLines = allText.split(/\r\n|\n/);
-  var data = new Array;
-  for (var i = 0; i < allTextLines.length; i++) {
-    if(allTextLines[i].length==0)
-      continue;
-    data[i] = parseLine(allTextLines[i]);
-  }
-  return data;
-}
-
-
-function parseLine(oneLine){
-  var parsedData = [];
-  var integrating = false;
-    var data = oneLine.split(',');
-    for (i=0; i<data.length; i++){
-      if(!integrating)
-        item = data[i];
-      else {
-        //item += "," + data[i];
-        if(!data[i].includes('\"')) item += "," + data[i];
-      }
-      //if ((data[i].match(/'\"'/g) || []).length>0){
-      if(data[i].includes('\"')){
-        splited = data[i].split('\"');
-        if(!integrating)
-          item = (splited[0].length > splited[1].length)? splited[0] : splited[1];
-        else
-          item += (splited[0].length > splited[1].length)? ", "+splited[0] : splited[1];
-        integrating = !integrating;
-      }
-      if(!integrating)
-        parsedData.push(item);
-    }
-    return parsedData;
 }
 
 function checkUpdated(dateString){
@@ -149,7 +110,7 @@ function generatePaperTable(data) {
         result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
     }
     else{
-      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",2)\">"+ header[k] + "<span class=\"description\">"+labelDescription[header[k]]+"</span></button></th>";
+      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",1)\">"+ header[k] + "<span class=\"description\">"+labelDescription[header[k]]+"</span></button></th>";
     }
   }
   result += "</tr>";
@@ -170,19 +131,21 @@ function generatePaperTable(data) {
         var highLightStyle = "";
         if(shouldHighlighted)
           highLightStyle ="class='highlight'";
-        if(k==titleIndex)
-          dataLine += "<td "+"><div id=\"paper"+(id)+"\" class=\"Section\">"+ data[i][k] + "</div></td>"; // for anchoring
+        if(k==titleIndex){
+          dataLine += "<td "+"><div contenteditable=\"true\" id=\"paper"+(id)+"\" class=\""+(data[0][k]).toLowerCase()+" id"+id+"\">"+ data[i][k] + "</div></td>"; // for anchoring
+        }
+
         else if(k==data[i].length-1)
           dataLine += "<td "+"><a href=\"paper.html?id="+(_paperID+"")+"\">link</a></td>";
         else
-          dataLine+= "<td "+">"+ data[i][k] + "</td>";
+          dataLine+= "<td "+"><div class=\""+(data[0][k]).replace("/","").toLowerCase()+" id"+id+"\" contenteditable=\"true\">"+ data[i][k] + "</div></td>";
       }
     }
     result += dataLine + "</tr>";
-    // paper detail information
-    result += getPaperDetail(i, header.length-1);
+    // DEPRECATED: paper detail information
+    //result += getPaperDetail(i, header.length-1);
   }
-  /*
+
   // for new entry
   result += "<tr class=\"new_entry\">";
   //*

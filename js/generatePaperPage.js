@@ -56,7 +56,6 @@ function getPaperID(){
 }
 
 function getPaperUpdateButton(paperColumns){
-
   return "<button onclick=\"passPaperParameter()\">Submit</button>";
 }
 

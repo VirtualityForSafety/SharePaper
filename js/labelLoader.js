@@ -51,6 +51,5 @@ function getLabelPriorityMap(type, data){
     else
       result.push(new Map());
   }
-  console.log(result);
   return result;
 }

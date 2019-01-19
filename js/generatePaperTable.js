@@ -21,8 +21,8 @@ $(document).ready(function() {
                    dataType: "text",
                    success: function(csvData) {
                        document.getElementById("paper").innerHTML = generatePaperTable(readCSV(csvData));
-                       sortTable(8,2);
-                       reverseTableRows(2);
+                       sortTable(8,1);
+                       reverseTableRows(1);
 
                    $(".content").hide();
                    $(".clickable").click(function() {
@@ -38,6 +38,28 @@ $(document).ready(function() {
                    $(".expandNewEntry").click(function () {
                        $(".new_entry").show("fast");
                    });
+                   $('div[contenteditable=true]').focusin(function(){
+                     console.log("!!");
+                   });
+                   $('div[contenteditable=true]').keydown(function(e) {
+                      // trap the return key being pressed
+                      if (e.keyCode == 13) {
+                        // insert 2 br tags (if only one br tag is inserted the cursor won't go to the second line)
+                        //document.execCommand('insertHTML', false, '<br><br>');
+                        // prevent the default behaviour of return key pressed
+                        console.log($(this).attr('class')+"\t"+$(this).html());
+                        var label= ["type","id","value"];
+                        var queries = $(this).attr('class').split(' ');
+                        queries.push($(this).html());
+                        console.log(queries);
+                        var result = "";
+                        for(var i=0; i<label.length;i++)
+                          result += label[i]+"="+queries[i]+"&";
+                        window.location.href="http://localhost:1209/paperpart?"+result;
+                        $(this).blur();
+                        return false;
+                      }
+                    });
                      }
                 });
               }

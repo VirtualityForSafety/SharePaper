@@ -419,12 +419,6 @@ p.detail {
   font-size: 23px;
   color: #4d4d4d;
 }
-.title {
-    font-family: "Staatliches", sans-serif;
-  font-size: 40px;
-  float: left;
-  height: 100%;
-}
 tbody .myDragClass{
   color: white;
   text-shadow: 1px 1px rgb(37, 37, 37);

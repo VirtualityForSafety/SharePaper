@@ -35,7 +35,14 @@ app.get('/:type', function(req, res) {
     writer.write('paper',passedParam);
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
   }
+  else if(req.params.type == 'paperpart'){
+    var data_type = req.param('type');
+    var data_id = req.param('id');
+    var data_value = req.param('value');
 
+    //writer.write('paper',passedParam);
+    //res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
+  }
 });
 
 // start the server
