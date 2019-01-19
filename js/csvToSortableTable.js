@@ -78,8 +78,12 @@ function sortTable(numElement, interval, priorityMap) {
 }
 
 function compareWithContext(x,y,priorityMap){
-  if(priorityMap.size>0)
-    return priorityMap.get(x)>priorityMap.get(y);
+  if(priorityMap.size>0){
+    var xValue = priorityMap.get(x);
+    var yValue = priorityMap.get(y);
+    return (xValue==undefined?9999:xValue)>(yValue==undefined?9999:yValue);
+  }
+
   else
     return x > y;
 }
