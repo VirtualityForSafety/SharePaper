@@ -6,7 +6,9 @@ $(document).ready(function() {
      url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/columns.csv",
      dataType: "text",
      success: function(csvData) {
-         columnDescription = generateTagColumn(readCSV(csvData));
+       var csvDataText = readCSV(csvData);
+         labelDescription = generateLabel("Tag", csvDataText);
+         labelPriorityMaps = getLabelPriorityMap("Tag",csvDataText);
        }
 });
      $.ajax({

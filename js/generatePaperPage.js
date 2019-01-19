@@ -6,9 +6,10 @@ $(document).ready(function() {
      dataType: "text",
      success: function(csvData) {
        var csvDataText = readCSV(csvData);
-        paperColumns = generatePaperColumn(csvDataText);
-         tagColumns = generateTagColumn(csvDataText);
+        paperColumns = generateLabel("Paper", csvDataText);
+         tagColumns = generateLabel("Tag", csvDataText);
          tagHeader = getTagHeader(csvDataText);
+
          $.ajax({
             type: "GET",
             url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/tags.csv",
@@ -56,7 +57,7 @@ function getPaperID(){
 
 function getPaperUpdateButton(paperColumns){
 
-  return "<input type=\"button\" value=\"Submit\" onclick=\"passPaperParameter()\">";
+  return "<button onclick=\"passPaperParameter()\">Submit</button>";
 }
 
 function generatePaperPart(paperID, paperArray, paperColumns){
@@ -168,7 +169,7 @@ function generateTagPart(paperID, tagArray, tagColumns){
         if(k==tagArray[paperID][i].length-1){
           //var link = "window.location.href='http://localhost:1209/tag?id="+tagArray[paperID][i][0]+"&section="+tagArray[paperID][i][1]+"&comment="+tagArray[paperID][i][2]+"&tag="+tagArray[paperID][i][3]+"'";
           var link = "window.location.href='http://localhost:1209/tag?"+getTagParameters(tagColumns, tagArray[paperID][i])+"'";
-          result += "<td><input type=\"button\" value=\"Submit\" onclick=\""+link+"\"></td>";
+          result += "<td><button onclick=\""+link+"\">Submit</button></td>";
         }
         else
           result +="<td><textarea cols=\"20\">"+tagArray[paperID][i][k]+"</textarea></td>";
@@ -182,7 +183,7 @@ function generateTagPart(paperID, tagArray, tagColumns){
     for(var k=0; k<columnLength-1; k++){
       if(k==columnLength-2){
         var hiddenItem = "<textarea id=\"new_tag_"+keys[k+1].toLowerCase()+"\" cols=\"20\" style=\"display:none;\"></textarea>";
-        result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter("+paperID+")\">"+hiddenItem+"</td>";
+        result += "<td><button onclick=\"passNewEntryParameter("+paperID+")\">Submit</button>"+hiddenItem+"</td>";
       }
       else{
           result +="<td><textarea id=\"new_tag_"+keys[k+1].toLowerCase()+"\" cols=\"20\"></textarea></td>";

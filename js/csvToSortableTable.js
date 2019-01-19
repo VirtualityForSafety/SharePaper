@@ -25,14 +25,20 @@ function getContentOnly(data){
   }
 }
 
-function sortTable(numElement, interval) {
+function invalidateSortingState(){
+  for(var t=0; t<sortingState.length ; t++)
+      sortingState[t]=0;
+}
+
+function sortTable(numElement, interval, priorityMap) {
+  var priorityMap = labelPriorityMaps[numElement];
   var table, rows, switching, i, x, y, shouldSwitch;
   var check=1;
   table = document.getElementById("paperTable");
   switching = true;
   /*Make a loop that will continue until
   no switching has been done:*/
-  if(columnState[numElement]==0){ //no sorted state
+  if(sortingState[numElement]==0){ //no sorted state
 
       while (switching) {
       //start by saying: no switching is done:
@@ -48,53 +54,13 @@ function sortTable(numElement, interval) {
         x = getContentOnly(rows[i].getElementsByTagName("TD")[numElement]);
         y = getContentOnly(rows[i + interval].getElementsByTagName("TD")[numElement]);
         //check if the two rows should switch place:
-/*
-        var sortOrder={1 : 'high' , 2 : 'medium',3: 'low'};
-        var tempx=0, tempy=0;
-        // we can check x & y value
-
-        if(x=='b'||y=='b');
-        else{
-          for(var j=0; j<3 ;j++){
-            if(x==sortOrder[j+1]){
-              tempx=j+1;
-              forbreak+=1;
-            }
-            if(y==sortOrder[j+1]){
-              tempy=j+1;
-              forbreak+=1;
-            }
-            if(forbreak==2){
-              check=0;
-              break;
-            }
-          }
-        }*/
-        if(numElement==6)
-          check=1;
-        else
-          check=0;
-        if(compareWithContext(x,y,check)){
+        if(compareWithContext(x.toLowerCase(),y.toLowerCase(),priorityMap)){
           shouldSwitch=true;
           break;
         }
-        /*
-        if (!check){
-          if(tempx>tempy){
-            shouldSwitch = true;
-            // I can check shouldSwitch value has right value.
-            break;
-          }
-        }
-        else if (x.toLowerCase() > y.toLowerCase()) {
-          //if so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          //console.log(shouldSwitch);
-          break;
-        }*/
-        for(var t=0; t<columnState.length ; t++)
-            columnState[t]=0;
-        columnState[numElement]=1;
+        invalidateSortingState();
+
+        sortingState[numElement]=1;
       }
       if (shouldSwitch) {
         /*If a switch has been marked, make the switch
@@ -106,26 +72,17 @@ function sortTable(numElement, interval) {
       }
     }
   }
-  else if(columnState[numElement]>0){ //no sorted state
+  else if(sortingState[numElement]>0){ //no sorted state
     reverseTableRows(interval);
   }
 }
-function compareWithContext(x,y,check){
-  if(check){
-    var sortOrder={'high':1 , 'medium':2,'low':3};
-    // we can check x & y value
-    /*if(!sortOrder[x.toLowerCase()]||!sortOrder[y.toLowerCase()]){
-        return true;
-    }
-    else*/{
-        return sortOrder[x.toLowerCase()]>sortOrder[y.toLowerCase()];
-    }
-  }
-  else{
-    return x.toLowerCase()>y.toLowerCase();
-  }
-}
 
+function compareWithContext(x,y,priorityMap){
+  if(priorityMap.size>0)
+    return priorityMap.get(x)>priorityMap.get(y);
+  else
+    return x > y;
+}
 
 function readCSV(allText){
   var allTextLines = allText.split(/\r\n|\n/);
@@ -188,7 +145,7 @@ function generatePaperTable(data) {
         result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
     }
     else{
-      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",2)\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
+      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",2)\">"+ header[k] + "<span class=\"description\">"+labelDescription[header[k]]+"</span></button></th>";
     }
   }
   result += "</tr>";
@@ -295,7 +252,7 @@ function generateTagTable(data) {
           result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
         }
         else{
-          result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",1)\">"+ header[k] + "<span class=\"description\">"+columnDescription[header[k]]+"</span></button></th>";
+          result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",1)\">"+ header[k] + "<span class=\"description\">"+labelDescription[header[k]]+"</span></button></th>";
           }
       }
     result += "</tr>";
