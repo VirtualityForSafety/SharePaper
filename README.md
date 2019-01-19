@@ -32,10 +32,10 @@ The project was initiated by [Jinki Jung](https://github.com/jinkijung), and the
  - A demo video will be posted.
  
 ## Contributor
- - [Soyeon Kim](https://github.com/soykim314)
- - [Sua Lee](https://github.com/otterlee)
- - [Sangho Lee](https://github.com/kimmydkemf)
- - [Jinki Jung](https://github.com/jinkijung)
+ - [Soyeon Kim](https://github.com/soykim314): data filter implementation by tag
+ - [Sua Lee](https://github.com/otterlee): 'Paper' page interaction implementation
+ - [Sangho Lee](https://github.com/kimmydkemf): sorting implementation
+ - [Jinki Jung](https://github.com/jinkijung): frameworking and refactoring
  
 ## Special thanks to
- - We thank to [Kangsoo Kim](http://www.kangsookim.com/) who gives a practical advise for efficient paper sharing.
+ - We thank to [Kangsoo Kim](http://www.kangsookim.com/) and Hyunwoo Cho who give us a practical advise for efficient paper sharing.
