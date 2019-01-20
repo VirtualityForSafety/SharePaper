@@ -7,8 +7,57 @@ var fields = "";
 var newLine= "\r\n";
 //fs.readFile('metadata/papers.csv', 'utf8', function (err, data) {
 var fileToWrite = '';
-var paperFile = 'metadata/papersTest.csv';
-var tagFile = 'metadata/tagsTest.csv';
+var paperFile = 'metadata/papers.csv';
+var tagFile = 'metadata/tags.csv';
+
+
+function appendToNewFile(fileName, content){
+  //write the actual data and end with newline
+  fs.writeFile(fileName, content, function (err, stat) {
+  //fs.appendFile(fileToWrite, csv, function (err) {
+      if (err) throw err;
+      console.log('The "data to append" was appended to file!');
+      return true;
+  });
+}
+
+function createNewFile(fileName, content){
+  //write the headers and newline
+  console.log('New file, just writing headers');
+  fs.writeFile(fileName, content, function (err, stat) {
+      if (err) throw err;
+      console.log('file saved');
+      return true;
+  });
+}
+
+function getMaxPaperID(dataArray){
+  var maxID = -1;
+  for(var i=0; i<dataArray.length ; i++){
+    var existingID = (dataArray[i].split(',')[0] * 1);
+    if(existingID > maxID)
+      maxID = existingID;
+  }
+  return maxID;
+}
+
+function updateData(dataArray, passedParam){
+  var passedID = passedParam[0];
+  for(var i=0; i<dataArray.length ; i++){
+    if(dataArray[i].length==0)
+      continue;
+    var existingID = dataArray[i].split(',')[0];
+    if(passedID == existingID){
+      dataArray[i] = passedParam.join(",");
+      return dataArray.join("\n");
+    }
+  }
+  // get maximized paper id
+  passedParam[0] = getMaxPaperID(dataArray)+1;
+  dataArray.push(passedParam);
+  return dataArray.join("\n");
+}
+
 module.exports = {
   write: function (type, passedParam) {
     if(type=='tag'){
@@ -25,41 +74,19 @@ module.exports = {
     fs.readFile(fileToWrite, 'utf8', function (err, data) {
       if (err == null) {
         contentRaw = data.toString();
-        dataArray = data.split(/\r?\n/);
-
+        var dataArrayUnfiltered = data.split(/\r?\n/);
+        var dataArray = dataArrayUnfiltered.filter(String);
         fs.stat(fileToWrite, function (err, stat) {
             if (err == null) {
-                console.log('File exists');
-
-                //write the actual data and end with newline
-                dataArray.push(passedParam);
-                fs.writeFile(fileToWrite, contentRaw+passedParam+newLine, function (err, stat) {
-                //fs.appendFile(fileToWrite, csv, function (err) {
-                    if (err) throw err;
-                    console.log('The "data to append" was appended to file!');
-                    return true;
-                });
+              appendToNewFile(fileToWrite, updateData(dataArray, passedParam));
             }
             else {
-                //write the headers and newline
-                console.log('New file, just writing headers');
-                fields = contentRaw;
-                fs.writeFile(fileToWrite, fields, function (err, stat) {
-                    if (err) throw err;
-                    console.log('file saved');
-                    return true;
-                });
+              return createNewFile(fileToWrite, fields+passedParam+newLine);
             }
         });
       }
       else {
-        //write the headers and newline
-        console.log('New file, just writing headers');
-        fs.writeFile(fileToWrite, fields+passedParam+newLine, function (err, stat) {
-            if (err) throw err;
-            console.log('file saved');
-            return true;
-        });
+        return createNewFile(fileToWrite, fields+passedParam+newLine);
       }
 
     });
