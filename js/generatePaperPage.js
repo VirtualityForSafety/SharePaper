@@ -39,6 +39,30 @@ $(document).ready(function() {
                     $(".expandNewEntry").click(function () {
                         $(".new_entry").show("fast");
                     });
+
+                    $('div[contenteditable=true]').focusin(function(){
+                      console.log("!!");
+                    });
+                    $('div[contenteditable=true]').keydown(function(e) {
+                       // trap the return key being pressed
+                       if (e.keyCode == 13) {
+                         // insert 2 br tags (if only one br tag is inserted the cursor won't go to the second line)
+                         //document.execCommand('insertHTML', false, '<br><br>');
+                         // prevent the default behaviour of return key pressed
+                         console.log($(this).attr('id')+"\t"+$(this).html());
+
+                         var label= ["type","id","value"];
+                         var queries = $(this).attr('id').split('_');
+                         queries.push($(this).html());
+                         console.log(queries);
+                         var result = "";
+                         for(var i=0; i<label.length;i++)
+                           result += label[i]+"="+queries[i]+"&";
+                         window.location.href="http://localhost:1209/tagpart?"+result;
+                         $(this).blur();
+                         return false;
+                       }
+                     });
                    }
                      });
                    }
@@ -99,16 +123,10 @@ function generatePaperPart(paperID, paperArray, paperColumns){
   return result + "</table>" + "<br>" + getPaperUpdateButton();
 }
 
-function getNewEntryParameters(tagColumns, id,item){
+function getNewEntryParameters(tagColumns, item){
   var result ="";
   for (var i=0 ; i<tagColumns.length ; i++) {
-    if(i==0){
-        result+= tagColumns[i].replace(/ /g,"").toLowerCase() + "=" + id+"&";
-      continue;
-    }
-    else{
-        result+= tagColumns[i].replace(/ /g,"").toLowerCase() + "=" + item[i-1]+"&";
-    }
+        result+= tagColumns[i].replace(/ /g,"").toLowerCase() + "=" + item[i]+"&";
   }
   return result;
 }
@@ -166,6 +184,7 @@ function generateTagPart(paperID, tagArray, tagColumns){
   {
     for(var i=0; i<tagArray[paperID].length ; i++){
       result += "<tr>";
+      var id = tagArray[paperID][i][0];
       for(var k=1; k<tagArray[paperID][i].length ; k++){
         //result +=
         if(k==tagArray[paperID][i].length-1){
@@ -174,7 +193,7 @@ function generateTagPart(paperID, tagArray, tagColumns){
           result += "<td><button onclick=\""+link+"\">Submit</button></td>";
         }
         else
-          result +="<td><textarea cols=\"20\">"+tagArray[paperID][i][k]+"</textarea></td>";
+          result +="<td><div id=\""+keys[k+1].toLowerCase()+"_"+id+"\" contenteditable=\"true\">"+tagArray[paperID][i][k]+"</div></td>";
       }
       result += "</tr>";
     }
@@ -185,10 +204,10 @@ function generateTagPart(paperID, tagArray, tagColumns){
     for(var k=0; k<columnLength-1; k++){
       if(k==columnLength-2){
         var hiddenItem = "<textarea id=\"new_tag_"+keys[k+1].toLowerCase()+"\" cols=\"20\" style=\"display:none;\"></textarea>";
-        result += "<td><button onclick=\"passNewEntryParameter("+paperID+")\">Submit</button>"+hiddenItem+"</td>";
+        result += "<td><button onclick=\"passNewTagEntryParameter("+paperID+")\">Submit</button>"+hiddenItem+"</td>";
       }
       else{
-          result +="<td><textarea id=\"new_tag_"+keys[k+1].toLowerCase()+"\" cols=\"20\"></textarea></td>";
+          result +="<td><textarea id=\"new_tag_"+keys[k+1].replace('/','').toLowerCase()+"\" cols=\"20\"></textarea></td>";
       }
     }
     //*/
@@ -197,15 +216,22 @@ function generateTagPart(paperID, tagArray, tagColumns){
   return result + "</table>";
 }
 
-function passNewEntryParameter(paperID){
+function passNewTagEntryParameter(paperID){
+
   var tagData = [];
+  var tagHeader = [];
   for (var key in tagColumns) {
     if (tagColumns.hasOwnProperty(key)) {
+      tagHeader.push(key.replace('/','').toLowerCase());
       var parameterName = 'textarea#new_tag_'+key.replace(" ","").toLowerCase();
+      console.log(parameterName + "\t" + key);
       tagData.push($(parameterName).val());
     }
   }
-  window.location.href='http://localhost:1209/tag?'+getNewEntryParameters(tagHeader, 10000, newItemArray);
+  tagData[0] = 99999; // declare this is new item
+  tagData[tagData.length-1] = paperID;
+  console.log(getNewEntryParameters(tagHeader, tagData));
+  window.location.href='http://localhost:1209/tag?'+getNewEntryParameters(tagHeader, tagData);
 }
 
 function passPaperParameter(){

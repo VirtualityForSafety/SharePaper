@@ -31,7 +31,7 @@ function createNewFile(fileName, content){
   });
 }
 
-function getMaxPaperID(dataArray){
+function getMaxID(dataArray){
   var maxID = -1;
   for(var i=0; i<dataArray.length ; i++){
     var existingID = (dataArray[i].split(',')[0] * 1);
@@ -52,8 +52,8 @@ function updateData(dataArray, passedParam){
       return dataArray.join("\n");
     }
   }
-  // get maximized paper id
-  passedParam[0] = getMaxPaperID(dataArray)+1;
+  // get maximum id
+  passedParam[0] = getMaxID(dataArray)+1;
   dataArray.push(passedParam);
   return dataArray.join("\n");
 }

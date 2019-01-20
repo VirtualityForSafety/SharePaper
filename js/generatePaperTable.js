@@ -24,8 +24,8 @@ $(document).ready(function() {
                    dataType: "text",
                    success: function(csvData) {
                        document.getElementById("paper").innerHTML = generatePaperTable(readCSV(csvData));
-                       sortTable(8,1);
-                       reverseTableRows(1);
+                       //sortTable(8,1);
+                       //reverseTableRows(1);
 
                    $(".content").hide();
                    $(".clickable").click(function() {
@@ -50,9 +50,10 @@ $(document).ready(function() {
                         // insert 2 br tags (if only one br tag is inserted the cursor won't go to the second line)
                         //document.execCommand('insertHTML', false, '<br><br>');
                         // prevent the default behaviour of return key pressed
-                        console.log($(this).attr('class')+"\t"+$(this).html());
+                        console.log($(this).attr('id')+"\t"+$(this).html());
+
                         var label= ["type","id","value"];
-                        var queries = $(this).attr('class').split(' ');
+                        var queries = $(this).attr('id').split('_');
                         queries.push($(this).html());
                         console.log(queries);
                         var result = "";

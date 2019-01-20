@@ -59,7 +59,7 @@ app.get('/:type', function(req, res) {
     var data_id = req.param('id');
     var data_value = req.param('value');
     var passedParam = [data_id, data_type, data_value];
-    writer.write('paper',passedParam);
+    writer.write('paperpart',passedParam);
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
   }
 });

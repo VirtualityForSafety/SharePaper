@@ -1,5 +1,9 @@
 //////////////////////////////////// common part ////////////////////////////////////
 
+function hasClass(element, cls) {
+    return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+}
+
 function reverseTableRows(interval) {
 
     var table = document.getElementById("paperTable"),
@@ -7,8 +11,10 @@ function reverseTableRows(interval) {
         oldTbody = table.tBodies[0],
         rows = table.rows,
         i = rows.length - 1;
-        newTbody.appendChild(rows[0]);
+        newTbody.appendChild(rows[0]); // header
+        newTbody.appendChild(rows[0]); // new_entry
         for (i = rows.length-interval; i >= 0; i-=interval) {
+
           //console.log(rows[i+1]);
           newTbody.appendChild(rows[i]);
           if(interval==2)
@@ -46,6 +52,8 @@ function sortTable(numElement, interval, priorityMap) {
       /*Loop through all table rows (except the
       first, which contains table headers):*/
       for (i = 1; i < (rows.length - interval); i+=interval) {
+        if(hasClass(rows[i],"new_entry"))
+          continue;
         //start by saying there should be no switching:
         shouldSwitch = false;
         /*Get the two elements you want to compare,
@@ -88,6 +96,10 @@ function compareWithContext(x,y,priorityMap){
 }
 
 function checkUpdated(dateString){
+
+console.log(dateString);
+  if(dateString==undefined)
+    return 0;
   var time = dateString.split('/');
   var today = new Date();
   var paperDate = new Date(time[0], Number(time[1]) - 1, time[2]);
@@ -98,6 +110,31 @@ function checkUpdated(dateString){
 }
 
 //////////////////////////////////// paper part ////////////////////////////////////
+
+function getNewEntryParameters(paperHeader, id,item){
+  var result ="";
+  for (var i=0 ; i<paperHeader.length ; i++) {
+    if(i==0){
+        result+= paperHeader[i].replace(/ /g,"").toLowerCase() + "=" + id+"&";
+      continue;
+    }
+    else{
+        result+= paperHeader[i].replace(/ /g,"").toLowerCase() + "=" + item[i-1]+"&";
+    }
+  }
+  return result;
+}
+
+function passNewPaperEntryParameter(){
+  var paperHeader = [];
+  for (var key in paperColumns) {
+    if (paperColumns.hasOwnProperty(key)) {
+      var parameterName = 'textarea#new_paper_'+key.replace(" ","").toLowerCase();
+      paperHeader.push($(parameterName).val());
+    }
+  }
+  window.location.href='http://localhost:1209/paper?'+getNewEntryParameters(paperHeader, 99999, newItemArray);
+}
 
 function generatePaperTable(data) {
   //var result = "<table id=\"test\"><tbody><tr class=\"clickable\"><td>Paper info</td><td>Paper info</td><td>Paper info</td></tr><tr class=\"content\"><td colspan=3>Paper detail</td></tr></tbody></table><table id=\"paperTable\"><tr>";
@@ -114,6 +151,17 @@ function generatePaperTable(data) {
     }
   }
   result += "</tr>";
+
+  // for new entry
+  result += "<tr class=\"new_entry\">";
+  //*
+  for(var k=0; k<header.length-1; k++){
+    var submitButton = "<button onclick=\"passNewEntryParameter(99999)\">Submit</button>";
+    result +="<td><textarea id=\"new_paper_"+header[k+1].replace("/","").toLowerCase()+"\" cols=\"20\"></textarea><br>"+submitButton+"</td>";
+    // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
+  }
+  result += "</tr>";
+
   var _paperID = -1;
   for (var i=1; i<data.length; i++) {
     var dataLine = "<tr class=\"clickable\">";
@@ -131,36 +179,16 @@ function generatePaperTable(data) {
         var highLightStyle = "";
         if(shouldHighlighted)
           highLightStyle ="class='highlight'";
-        if(k==titleIndex){
-          dataLine += "<td "+"><div contenteditable=\"true\" id=\"paper"+(id)+"\" class=\""+(data[0][k]).toLowerCase()+" id"+id+"\">"+ data[i][k] + "</div></td>"; // for anchoring
-        }
-
-        else if(k==data[i].length-1)
+        if(k==data[i].length-1)
           dataLine += "<td "+"><a href=\"paper.html?id="+(_paperID+"")+"\">link</a></td>";
         else
-          dataLine+= "<td "+"><div class=\""+(data[0][k]).replace("/","").toLowerCase()+" id"+id+"\" contenteditable=\"true\">"+ data[i][k] + "</div></td>";
+          dataLine+= "<td "+"><div id=\""+(data[0][k]).replace("/","").toLowerCase()+"_"+id+"\" contenteditable=\"true\">"+ data[i][k] + "</div></td>";
       }
     }
     result += dataLine + "</tr>";
     // DEPRECATED: paper detail information
     //result += getPaperDetail(i, header.length-1);
   }
-
-  // for new entry
-  result += "<tr class=\"new_entry\">";
-  //*
-  for(var k=0; k<header.length-1; k++){
-    if(k==header-2){
-      //var hiddenItem = "<textarea id=\"new_tag_"+keys[k+1].toLowerCase()+"\" cols=\"20\" style=\"display:none;\"></textarea>";
-      hiddenItem = "";
-      result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
-    }
-    else{
-        result +="<td><textarea id=\"new_paper_"+header[k+1].replace("/","").toLowerCase()+"\" cols=\"20\"></textarea></td>";
-    }
-  }
-  result += "</tr>";
-
   //*/
   return result + "</table>";
 }
@@ -230,9 +258,9 @@ function generateTagTable(data) {
         var shouldHighlighted = checkUpdated(dataRow[dateIndex]);
         var id=i;
         for( var k=0; k<dataRow.length ; k++){
-          if(shouldHighlighted){
-            dataRow[k] = "<b>"+dataRow[k]+"</b>";
-          }
+          var highLightStyle = "";
+          if(shouldHighlighted)
+            highLightStyle ="class='highlight'";
 
           if(k==0){
             id = dataRow[k];
