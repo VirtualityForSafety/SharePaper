@@ -6,7 +6,7 @@ $(document).ready(function() {
      url: "metadata/columns.csv",
      dataType: "text",
      success: function(csvData) {
-       var csvDataText = readCSV(csvData);
+       var csvDataText = parseText(csvData);
         paperColumns = generateLabel("Paper", csvDataText);
          tagColumns = generateLabel("Tag", csvDataText);
          tagHeader = getTagHeader(csvDataText);
@@ -17,7 +17,7 @@ $(document).ready(function() {
             url: "metadata/tags.csv",
             dataType: "text",
             success: function(csvData) {
-                tagArray = generateTagArray(readCSV(csvData));
+                tagArray = generateTagArray(parseText(csvData));
 
                 $.ajax({
                    type: "GET",
@@ -28,7 +28,7 @@ $(document).ready(function() {
                      var paperID = getPaperID();
 
                      if(paperID>=0)
-                      paperArray = readCSV(csvData);
+                      paperArray = parseText(csvData);
 
                      document.getElementById("paperDetail").innerHTML = generatePaperPart(paperID, paperArray, paperColumns);
                     document.getElementById("tagDetail").innerHTML = generateTagPart(paperID, tagArray, tagColumns);
@@ -51,7 +51,7 @@ $(document).ready(function() {
                          // prevent the default behaviour of return key pressed
                          console.log($(this).attr('id')+"\t"+$(this).html());
 
-                         var label= ["type","id","value"];
+                         var label= ["label","id","value"];
                          var queries = $(this).attr('id').split('_');
                          queries.push($(this).html());
                          console.log(queries);
@@ -193,7 +193,7 @@ function generateTagPart(paperID, tagArray, tagColumns){
           result += "<td><button onclick=\""+link+"\">Submit</button></td>";
         }
         else
-          result +="<td><div id=\""+keys[k+1].toLowerCase()+"_"+id+"\" contenteditable=\"true\">"+tagArray[paperID][i][k]+"</div></td>";
+          result +="<td><div id=\""+keys[k].toLowerCase()+"_"+id+"\" contenteditable=\"true\">"+tagArray[paperID][i][k]+"</div></td>";
       }
       result += "</tr>";
     }

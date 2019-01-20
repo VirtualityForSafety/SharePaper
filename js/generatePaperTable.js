@@ -7,7 +7,7 @@ $(document).ready(function() {
      url: "metadata/columns.csv",
      dataType: "text",
      success: function(csvData) {
-       var csvDataText = readCSV(csvData);
+       var csvDataText = parseText(csvData);
          labelDescription = generateLabel("Paper", csvDataText);
          labelPriorityMaps = getLabelPriorityMap("Paper",csvDataText);
          $.ajax({
@@ -16,27 +16,18 @@ $(document).ready(function() {
             url: "metadata/tags.csv",
             dataType: "text",
             success: function(csvData) {
-                tagArray = generateTagArray(readCSV(csvData));
+                tagArray = generateTagArray(parseText(csvData));
                 $.ajax({
                    type: "GET",
                    //url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
                    url: "metadata/papers.csv",
                    dataType: "text",
                    success: function(csvData) {
-                       document.getElementById("paper").innerHTML = generatePaperTable(readCSV(csvData));
+                       document.getElementById("paper").innerHTML = generatePaperTable(parseText(csvData));
                        //sortTable(8,1);
                        //reverseTableRows(1);
 
-                   $(".content").hide();
-                   $(".clickable").click(function() {
-                       $(this).nextUntil(".clickable").toggle("fast");
-                   });
-                   $(".expand").click(function () {
-                       $(".content").show();
-                   });
-                   $(".collapse").click(function () {
-                       $(".content").hide();
-                   });
+
                    $(".new_entry").hide();
                    $(".expandNewEntry").click(function () {
                        $(".new_entry").show("fast");
@@ -52,7 +43,7 @@ $(document).ready(function() {
                         // prevent the default behaviour of return key pressed
                         console.log($(this).attr('id')+"\t"+$(this).html());
 
-                        var label= ["type","id","value"];
+                        var label= ["label","id","value"];
                         var queries = $(this).attr('id').split('_');
                         queries.push($(this).html());
                         console.log(queries);

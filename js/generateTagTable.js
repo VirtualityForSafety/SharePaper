@@ -7,7 +7,7 @@ $(document).ready(function() {
      url: "metadata/columns.csv",
      dataType: "text",
      success: function(csvData) {
-       var csvDataText = readCSV(csvData);
+       var csvDataText = parseText(csvData);
          labelDescription = generateLabel("Tag", csvDataText);
          labelPriorityMaps = getLabelPriorityMap("Tag",csvDataText);
        }
@@ -18,12 +18,16 @@ $(document).ready(function() {
         url: "metadata/tags.csv",
         dataType: "text",
         success: function(csvData) {
-            document.getElementById("tags").innerHTML = generateTagTable(readCSV(csvData));
-            sortTable(5,1);
-            reverseTableRows(1);
+            document.getElementById("tags").innerHTML = generateTagTable(parseText(csvData));
+            //sortTable(5,1);
+            //reverseTableRows(1);
 
         $("tbody").tableDnD({
           onDragClass: "myDragClass"
+         });
+         $(".new_entry").hide();
+         $(".expandNewEntry").click(function () {
+             $(".new_entry").show("fast");
          });
 
         }

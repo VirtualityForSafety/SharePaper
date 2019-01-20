@@ -54,12 +54,12 @@ app.get('/:type', function(req, res) {
     writer.write('paper',passedParam);
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
   }
-  else if(req.params.type == 'paperpart'){
-    var data_type = req.param('type');
+  else if(req.params.type == 'paperpart' || req.params.type == 'tagpart'){
+    var data_type = req.param('label');
     var data_id = req.param('id');
     var data_value = req.param('value');
     var passedParam = [data_id, data_type, data_value];
-    writer.write('paperpart',passedParam);
+    writer.write(req.params.type, passedParam);
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
   }
 });

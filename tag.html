@@ -60,11 +60,12 @@ td {
 <body>
 <section id="topLink"></section>
 <section id="checkTag"></section>
+<button class="expandNewEntry">+</button>
 <section id="tags"></section>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="js/topLink.js"></script>
-    <script src="js/csvIO.js"></script>
+    <script src="js/csvParser.js"></script>
     <script src="js/labelLoader.js"></script>
     <script src="js/sortableTableGenerator.js"></script>
     <script src="js/generateTagTable.js"></script>
@@ -83,6 +84,7 @@ function setClipboard(value) {
 }
 var sortingState = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var labelDescription = {};
+var labelPriorityMaps = [];
 </script>
 
 </body>

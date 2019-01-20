@@ -97,7 +97,6 @@ function compareWithContext(x,y,priorityMap){
 
 function checkUpdated(dateString){
 
-console.log(dateString);
   if(dateString==undefined)
     return 0;
   var time = dateString.split('/');
@@ -250,6 +249,16 @@ function generateTagTable(data) {
           result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",1)\">"+ header[k] + "<span class=\"description\">"+labelDescription[header[k]]+"</span></button></th>";
           }
       }
+    result += "</tr>";
+
+    // for new entry
+    result += "<tr class=\"new_entry\">";
+    //*
+    for(var k=0; k<header.length-1; k++){
+      var submitButton = "<button onclick=\"passNewEntryParameter(99999)\">Submit</button>";
+      result +="<td><textarea id=\"new_tag_"+header[k+1].replace("/","").toLowerCase()+"\" cols=\"20\"></textarea><br>"+submitButton+"</td>";
+      // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
+    }
     result += "</tr>";
 
     for (var i=1; i<data.length; i++) {
