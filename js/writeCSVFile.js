@@ -103,14 +103,16 @@ function updateData(dataArray, passedParam){
       continue;
     var existingID = dataArray[i][0];
     if(passedID == existingID){
+      console.log("- we found the corresponding data and update.");
       dataArray[i] = passedParam;
-      return dataArray.join("\n");
+      return flatten(dataArray);
     }
   }
   // get maximum id
+  console.log("- we create new row for this");
   passedParam[0] = getMaxID(dataArray)+1;
   dataArray.push(passedParam);
-  return dataArray.join("\n");
+  return flatten(dataArray);
 }
 
 function getLabelIndexMap(dataArray){

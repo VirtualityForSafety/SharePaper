@@ -113,14 +113,14 @@ function generatePaperPart(paperID, paperArray, paperColumns){
       if(i==paperArray[paperID].length-1)
         downloadLink = "<br><a href=\"resources/"+paperArray[paperID][i]+".pdf\" download>download</a>";
       if(i==0)
-        result +="<textarea id=\"paper_"+keys[i].toLowerCase()+"\" cols=\"20\" style=\"display:none;\">"+paperArray[paperID][i]+"</textarea>";
+        result +="<div id=\"paper_"+keys[i].toLowerCase()+"\" style=\"display:none;\">"+paperArray[paperID][i]+"</div>" ;
       else
-        result +="<td><textarea id=\"paper_"+keys[i].replace("/","").toLowerCase()+"\" cols=\"20\">"+paperArray[paperID][i]+"</textarea>"+downloadLink+"</td>";
+        result +="<td><div id=\"paper_"+keys[i].replace("/","").toLowerCase()+"\" contenteditable=\"true\">"+paperArray[paperID][i]+"</div>"+downloadLink+ "<br>" + getPaperUpdateButton()+"</td>";
 
     }
     result += "</tr>";
   }
-  return result + "</table>" + "<br>" + getPaperUpdateButton();
+  return result + "</table>";
 }
 
 function getNewEntryParameters(tagColumns, item){
@@ -170,9 +170,6 @@ function generateTagPart(paperID, tagArray, tagColumns){
       columnLength += 1;
       if(columnLength==1)
         result+= "<th style=\"display:none;\">"+ key + "</th>";
-      else if(key=="Paper ID"){
-          result+= "<th>Edit</th>";
-        }
       else {
         result+= "<th><a class=\"tip\">"+ key + "<span class=\"description\">"+tagColumns[key]+"</span></a></th>";
       }
@@ -189,8 +186,10 @@ function generateTagPart(paperID, tagArray, tagColumns){
         //result +=
         if(k==tagArray[paperID][i].length-1){
           //var link = "window.location.href='http://localhost:1209/tag?id="+tagArray[paperID][i][0]+"&section="+tagArray[paperID][i][1]+"&comment="+tagArray[paperID][i][2]+"&tag="+tagArray[paperID][i][3]+"'";
-          var link = "window.location.href='http://localhost:1209/tag?"+getTagParameters(tagColumns, tagArray[paperID][i])+"'";
-          result += "<td><button onclick=\""+link+"\">Submit</button></td>";
+          //var link = "window.location.href='http://localhost:1209/tag?"+getTagParameters(tagColumns, tagArray[paperID][i])+"'";
+          //result += "<td><button onclick=\""+link+"\">Submit</button></td>";
+          result +="<td><div id=\""+keys[k].toLowerCase()+"_"+id+"\" contenteditable=\"true\">["+tagArray[paperID][i][k]+"]</div></td>";
+
         }
         else
           result +="<td><div id=\""+keys[k].toLowerCase()+"_"+id+"\" contenteditable=\"true\">"+tagArray[paperID][i][k]+"</div></td>";
@@ -239,13 +238,13 @@ function passPaperParameter(){
   for (var key in paperColumns) {
     //*
     if (paperColumns.hasOwnProperty(key)) {
-      var parameterName = 'textarea#paper_'+key.replace("/","").toLowerCase();
-      paperData.push($(parameterName).val());
+      var parameterName = '#paper_'+key.replace("/","").toLowerCase();
+      paperData.push($(parameterName).text());
     }
     //*/
   }
 
   var link = "window.location.href='http://localhost:1209/paper?"+getPaperParameters(paperColumns, paperData)+"'";
-  console.log(link);
+  //console.log(link);
   window.location.href='http://localhost:1209/paper?'+getPaperParameters(paperColumns, paperData);
 }
