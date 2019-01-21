@@ -164,8 +164,8 @@ function generatePaperTable(data) {
   var _paperID = -1;
   for (var i=1; i<data.length; i++) {
     var tags = getPaperTags(i);
-    console.log(tags);
-    var dataLine = "<tr class=\"clickable _tag\">";
+    var dataLine = "<tr class=\"clickable _tag "+tags+"\">";
+    console.log(dataLine);
     var shouldHighlighted = false;
     if(dateIndex >=0){
       shouldHighlighted = checkUpdated(data[i][dateIndex]);
@@ -199,7 +199,7 @@ function getPaperTags(index){
   if(tagArray[index]!=undefined && tagArray[index].length!=undefined){
     for(var k=0; k<tagArray[index].length ; k++){
       // should be refined
-      paperDetail += +tagArray[index][k][3] + " ";
+      paperDetail += tagArray[index][k][3].replace(" ","_") + " ";
     }
   }
   return paperDetail;
