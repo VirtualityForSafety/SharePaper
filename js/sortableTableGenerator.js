@@ -163,6 +163,8 @@ function generatePaperTable(data) {
 
   var _paperID = -1;
   for (var i=1; i<data.length; i++) {
+    var tags = getPaperTags(i);
+    console.log(tags);
     var dataLine = "<tr class=\"clickable _tag\">";
     var shouldHighlighted = false;
     if(dateIndex >=0){
@@ -190,6 +192,17 @@ function generatePaperTable(data) {
   }
   //*/
   return result + "</table>";
+}
+
+function getPaperTags(index){
+  var paperDetail = "";
+  if(tagArray[index]!=undefined && tagArray[index].length!=undefined){
+    for(var k=0; k<tagArray[index].length ; k++){
+      // should be refined
+      paperDetail += +tagArray[index][k][3] + " ";
+    }
+  }
+  return paperDetail;
 }
 
 function getPaperDetail(index, columnLength){
