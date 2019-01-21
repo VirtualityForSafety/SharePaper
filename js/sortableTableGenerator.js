@@ -163,7 +163,7 @@ function generatePaperTable(data) {
 
   var _paperID = -1;
   for (var i=1; i<data.length; i++) {
-    var dataLine = "<tr class=\"clickable\">";
+    var dataLine = "<tr class=\"clickable _tag\">";
     var shouldHighlighted = false;
     if(dateIndex >=0){
       shouldHighlighted = checkUpdated(data[i][dateIndex]);

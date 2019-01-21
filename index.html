@@ -63,6 +63,8 @@ td {
 <body>
 <section id="topLink"></section>
 <section id="checkTag"></section>
+<button type="button" onclick="showAll()">show all</button>
+<button type="button" onclick="toggle_by_class('tag1')">toggle_by_class</button>
 <button class="expandNewEntry">+</button>
 <section id="paper"></section>
 
@@ -79,6 +81,31 @@ var sortingState = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var labelDescription = {};
 var labelPriorityMaps = [];
 var tagArray = [];
+
+
+function hideAll() {
+  var selected = document.getElementsByClassName('_tag');
+  for(var i=0; i< selected.length ; i++)
+    selected[i].style.display = "none";
+}
+function showAll() {
+  var selected = document.getElementsByClassName('_tag');
+  for(var i=0; i< selected.length ; i++)
+    selected[i].style.display = "";
+}
+function hide(tagName) {
+var selected = document.getElementsByClassName(tagName);
+for(var i=0; i< selected.length ; i++)
+  selected[i].style.display = "none";
+}
+
+function toggle_by_class(cls) {
+  hideAll();
+  var lst = document.getElementsByClassName(cls);
+  for(var i = 0; i < lst.length; ++i) {
+      lst[i].style.display = "";
+  }
+}
 </script>
 
 </body>
