@@ -33,7 +33,10 @@ $(document).ready(function() {
                        $(".new_entry").show("fast");
                    });
                    $('div[contenteditable=true]').focusin(function(){
-                     console.log("!!");
+                     $(".btn_"+this.id).show("fast");
+                   });
+                   $('div[contenteditable=true]').focusout(function(){
+                     $("#btn_"+this.id).delay(1500).hide("fast");
                    });
                    $('div[contenteditable=true]').keydown(function(e) {
                       // trap the return key being pressed
@@ -43,14 +46,15 @@ $(document).ready(function() {
                         // prevent the default behaviour of return key pressed
                         console.log($(this).attr('id')+"\t"+$(this).html());
 
-                        var label= ["label","id","value"];
+                        var label= ["id","label","value"];
                         var queries = $(this).attr('id').split('_');
+                        var type= queries.shift()+'part'; // remove type
                         queries.push($(this).html());
                         console.log(queries);
                         var result = "";
                         for(var i=0; i<label.length;i++)
                           result += label[i]+"="+queries[i]+"&";
-                        window.location.href="http://localhost:1209/paperpart?"+result;
+                        window.location.href="http://localhost:1209/"+type+"?"+result;
                         $(this).blur();
                         return false;
                       }

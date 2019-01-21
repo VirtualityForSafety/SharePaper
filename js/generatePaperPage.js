@@ -40,27 +40,24 @@ $(document).ready(function() {
                         $(".new_entry").show("fast");
                     });
 
+                    $("button").hide();
+
                     $('div[contenteditable=true]').focusin(function(){
-                      console.log("!!");
+                      $("#btn_"+this.id).show("fast");
                     });
+                    $('div[contenteditable=true]').focusout(function(){
+                      $("#btn_"+this.id).delay(1500).hide("fast");
+                    });
+
                     $('div[contenteditable=true]').keydown(function(e) {
                        // trap the return key being pressed
                        if (e.keyCode == 13) {
                          // insert 2 br tags (if only one br tag is inserted the cursor won't go to the second line)
                          //document.execCommand('insertHTML', false, '<br><br>');
                          // prevent the default behaviour of return key pressed
-                         console.log($(this).attr('id')+"\t"+$(this).html());
+                         //console.log($(this).attr('id')+"\t"+$(this).html());
 
-                         var label= ["label","id","value"];
-                         var queries = $(this).attr('id').split('_');
-                         queries.push($(this).html());
-                         console.log(queries);
-                         var result = "";
-                         for(var i=0; i<label.length;i++)
-                           result += label[i]+"="+queries[i]+"&";
-                         window.location.href="http://localhost:1209/tagpart?"+result;
-                         $(this).blur();
-                         return false;
+                         partialUpdate($(this));
                        }
                      });
                    }
@@ -72,6 +69,19 @@ $(document).ready(function() {
 
 });
 
+function partialUpdate(element){
+  element.blur();
+  var label= ["id","label","value"];
+  var queries = element.attr('id').split('_');
+  var type= queries.shift()+'part';
+  queries.push(element.html());
+  console.log(queries);
+  var result = "";
+  for(var i=0; i<label.length;i++)
+    result += label[i]+"="+queries[i]+"&";
+  window.location.href="http://localhost:1209/"+type+"?"+result;
+}
+
 // returns a paperId, but a negative value for invalid link
 function getPaperID(){
   var element = window.location.href.split('?');
@@ -82,8 +92,12 @@ function getPaperID(){
   return -1;
 }
 
-function getPaperUpdateButton(paperColumns){
-  return "<button onclick=\"passPaperParameter()\">Submit</button>";
+function getUUID(type, id, label){
+  return type+"_"+id+"_"+label;
+}
+
+function getUpdateButton(type, id, label){
+  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passParameter("+getUUID(type,id,label)+")\">Update</button>";
 }
 
 function generatePaperPart(paperID, paperArray, paperColumns){
@@ -110,13 +124,13 @@ function generatePaperPart(paperID, paperArray, paperColumns){
     for(var i=0; i<paperArray[paperID].length ; i++){
       //result +="<td><input type=\"text\" value=\""+ paperArray[paperID][i]+"\"></td>";
       var downloadLink = "";
+      var label = keys[i].replace("/","").toLowerCase();
       if(i==paperArray[paperID].length-1)
         downloadLink = "<br><a href=\"resources/"+paperArray[paperID][i]+".pdf\" download>download</a>";
       if(i==0)
-        result +="<div id=\"paper_"+keys[i].toLowerCase()+"\" style=\"display:none;\">"+paperArray[paperID][i]+"</div>" ;
+        result +="<div id="+getUUID("paper",paperID,label)+" style=\"display:none;\">"+paperArray[paperID][i]+"</div>" ;
       else
-        result +="<td><div id=\"paper_"+keys[i].replace("/","").toLowerCase()+"\" contenteditable=\"true\">"+paperArray[paperID][i]+"</div>"+downloadLink+ "<br>" + getPaperUpdateButton()+"</td>";
-
+        result +="<td><div id="+getUUID("paper",paperID,label)+" contenteditable=\"true\">"+paperArray[paperID][i]+"</div>"+downloadLink+ "<br>" + getUpdateButton("paper",paperID,label)+"</td>";
     }
     result += "</tr>";
   }
@@ -182,17 +196,18 @@ function generateTagPart(paperID, tagArray, tagColumns){
     for(var i=0; i<tagArray[paperID].length ; i++){
       result += "<tr>";
       var id = tagArray[paperID][i][0];
+      console.log(id);
       for(var k=1; k<tagArray[paperID][i].length ; k++){
+        var label = keys[k].replace("/","").toLowerCase();
         //result +=
         if(k==tagArray[paperID][i].length-1){
           //var link = "window.location.href='http://localhost:1209/tag?id="+tagArray[paperID][i][0]+"&section="+tagArray[paperID][i][1]+"&comment="+tagArray[paperID][i][2]+"&tag="+tagArray[paperID][i][3]+"'";
           //var link = "window.location.href='http://localhost:1209/tag?"+getTagParameters(tagColumns, tagArray[paperID][i])+"'";
           //result += "<td><button onclick=\""+link+"\">Submit</button></td>";
-          result +="<td><div id=\""+keys[k].toLowerCase()+"_"+id+"\" contenteditable=\"true\">["+tagArray[paperID][i][k]+"]</div></td>";
-
+          result +="<td><div id="+getUUID("tag",id,label)+" contenteditable=\"true\">["+tagArray[paperID][i][k]+"]</div><br>" + getUpdateButton("tag",id,label)+"</td>";
         }
         else
-          result +="<td><div id=\""+keys[k].toLowerCase()+"_"+id+"\" contenteditable=\"true\">"+tagArray[paperID][i][k]+"</div></td>";
+          result +="<td><div id="+getUUID("tag",id,label)+" contenteditable=\"true\">"+tagArray[paperID][i][k]+"</div><br>" + getUpdateButton("tag",id,label)+"</td>";
       }
       result += "</tr>";
     }
@@ -201,12 +216,12 @@ function generateTagPart(paperID, tagArray, tagColumns){
     result += "<tr class=\"new_entry\">";
     //*
     for(var k=0; k<columnLength-1; k++){
+      var label = keys[k+1].replace("/","").toLowerCase();
       if(k==columnLength-2){
-        var hiddenItem = "<textarea id=\"new_tag_"+keys[k+1].toLowerCase()+"\" cols=\"20\" style=\"display:none;\"></textarea>";
-        result += "<td><button onclick=\"passNewTagEntryParameter("+paperID+")\">Submit</button>"+hiddenItem+"</td>";
-      }
-      else{
-          result +="<td><textarea id=\"new_tag_"+keys[k+1].replace('/','').toLowerCase()+"\" cols=\"20\"></textarea></td>";
+        var hiddenItem = "<textarea id=\"new_tag_"+label+"\" cols=\"20\" style=\"display:none;\"></textarea>";
+        result += "<td><input type='button' value='Submit' onclick=\"passNewTagEntryParameter("+paperID+")\">"+hiddenItem+"</td>";
+      }else{
+        result +="<td><textarea id=\"new_tag_"+label+"\" cols=\"20\"></textarea></td>";
       }
     }
     //*/
@@ -216,7 +231,6 @@ function generateTagPart(paperID, tagArray, tagColumns){
 }
 
 function passNewTagEntryParameter(paperID){
-
   var tagData = [];
   var tagHeader = [];
   for (var key in tagColumns) {
@@ -233,18 +247,21 @@ function passNewTagEntryParameter(paperID){
   window.location.href='http://localhost:1209/tag?'+getNewEntryParameters(tagHeader, tagData);
 }
 
-function passPaperParameter(){
+function passParameter(divElement){
+  partialUpdate($("#"+divElement.id));
+
+  // overall updates version
+  /*
   var paperData = [];
   for (var key in paperColumns) {
-    //*
     if (paperColumns.hasOwnProperty(key)) {
       var parameterName = '#paper_'+key.replace("/","").toLowerCase();
       paperData.push($(parameterName).text());
     }
-    //*/
   }
 
   var link = "window.location.href='http://localhost:1209/paper?"+getPaperParameters(paperColumns, paperData)+"'";
+  */
   //console.log(link);
-  window.location.href='http://localhost:1209/paper?'+getPaperParameters(paperColumns, paperData);
+  //window.location.href='http://localhost:1209/paper?'+getPaperParameters(paperColumns, paperData);
 }
