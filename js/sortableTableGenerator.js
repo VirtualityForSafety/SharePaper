@@ -165,7 +165,6 @@ function generatePaperTable(data) {
   for (var i=1; i<data.length; i++) {
     var tags = getPaperTags(i);
     var dataLine = "<tr class=\"clickable _tag "+tags+"\">";
-    console.log(dataLine);
     var shouldHighlighted = false;
     if(dateIndex >=0){
       shouldHighlighted = checkUpdated(data[i][dateIndex]);
@@ -199,7 +198,7 @@ function getPaperTags(index){
   if(tagArray[index]!=undefined && tagArray[index].length!=undefined){
     for(var k=0; k<tagArray[index].length ; k++){
       // should be refined
-      paperDetail += tagArray[index][k][3].replace(" ","_") + " ";
+      paperDetail += "_"+tagArray[index][k][3].replace(" ","_") + " ";
     }
   }
   return paperDetail;
@@ -234,19 +233,19 @@ function getMaxPaperID(data){
 }
 
 function generateTagArray(data) {
-  tagMap = new Array(getMaxPaperID(data)+1);
+  tagArray = new Array(getMaxPaperID(data)+1);
   for (var i=1; i<data.length; i++) {
     var paperID = data[i][data[i].length-1];
-    if(tagMap[paperID]!=undefined){
-      tagMap[paperID].push(data[i]);
+    if(tagArray[paperID]!=undefined){
+      tagArray[paperID].push(data[i]);
     }
     else{
       var tempArray = new Array();
       tempArray.push(data[i]);
-      tagMap[paperID] = tempArray;
+      tagArray[paperID] = tempArray;
     }
   }
-  return tagMap;
+  return tagArray;
 }
 
 function generateTagTable(data) {
