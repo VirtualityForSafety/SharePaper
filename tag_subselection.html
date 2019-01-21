@@ -1,7 +1,7 @@
 <html>
 <body>
   <table>
-    <tr class="tag tag1 tag2"><td>tag1+tag2</p></td><tr>
+    <tr class="tag tag1 tag2"><td>tag1+tag2+tag4</p></td><tr>
       <tr class="tag tag2 tag3"><td>tag2+tag3</p></td><tr>
         <tr class="tag tag1 tag2 tag3"><td>tag1+tag2+tag3</p></td><tr>
           </table>
@@ -11,6 +11,7 @@
 <button type="button" onclick="hide('tag2')">hide tag2</button>
 <button type="button" onclick="hide('tag3')">hide tag3</button>
 <button type="button" onclick="hideAll()">hide all</button>
+<button type="button" onclick="toggle_by_class('tag1')">toggle_by_class</button>
 <br>
 <a href="http://localhost:4000/tag_subselection.html?id=5">link</a>
 
@@ -18,17 +19,25 @@
   function hideAll() {
     var selected = document.getElementsByClassName('tag');
     for(var i=0; i< selected.length ; i++)
-      selected[i].style.visibility = "hidden";
+      selected[i].style.display = "none";
   }
   function showAll() {
     var selected = document.getElementsByClassName('tag');
     for(var i=0; i< selected.length ; i++)
-      selected[i].style.visibility = "visible";
+      selected[i].style.display = "";
   }
 function hide(tagName) {
   var selected = document.getElementsByClassName(tagName);
   for(var i=0; i< selected.length ; i++)
-    selected[i].style.visibility = "hidden";
+    selected[i].style.display = "none";
+}
+
+function toggle_by_class(cls) {
+    hideAll();
+    var lst = document.getElementsByClassName(cls);
+    for(var i = 0; i < lst.length; ++i) {
+        lst[i].style.display = "";
+    }
 }
 
 var aarr = window.location.href.split('?');
