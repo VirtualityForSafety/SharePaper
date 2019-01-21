@@ -27,6 +27,7 @@ $(document).ready(function() {
                        //sortTable(8,1);
                        //reverseTableRows(1);
 
+
                    $(".new_entry").hide();
                    $(".expandNewEntry").click(function () {
                        $(".new_entry").show("fast");
