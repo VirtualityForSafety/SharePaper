@@ -196,7 +196,7 @@ function generateTagPart(paperID, tagArray, tagColumns){
     for(var i=0; i<tagArray[paperID].length ; i++){
       result += "<tr>";
       var id = tagArray[paperID][i][0];
-      console.log(id);
+      console.log(tagArray[paperID][i]);
       for(var k=1; k<tagArray[paperID][i].length ; k++){
         var label = keys[k].replace("/","").toLowerCase();
         //result +=
@@ -204,6 +204,7 @@ function generateTagPart(paperID, tagArray, tagColumns){
           //var link = "window.location.href='http://localhost:1209/tag?id="+tagArray[paperID][i][0]+"&section="+tagArray[paperID][i][1]+"&comment="+tagArray[paperID][i][2]+"&tag="+tagArray[paperID][i][3]+"'";
           //var link = "window.location.href='http://localhost:1209/tag?"+getTagParameters(tagColumns, tagArray[paperID][i])+"'";
           //result += "<td><button onclick=\""+link+"\">Submit</button></td>";
+          console.log(id);
           result +="<td><div id="+getUUID("tag",id,label)+" contenteditable=\"true\">["+tagArray[paperID][i][k]+"]</div><br>" + getUpdateButton("tag",id,label)+"</td>";
         }
         else
