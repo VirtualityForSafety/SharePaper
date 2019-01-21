@@ -44,36 +44,29 @@ function processCSVData(allText) {
 
     for (var i=1; i<allTextLines.length-1; i++) {
         var data = allTextLines[i].split(',');
+
         if(data.length != headers.length){
             var corrected_line = reparseLine(allTextLines[i]);
             data = corrected_line.split(',');
         }
-        var subresult = "";
 
+        var subresult = "";
         var tags = data[5].split('/');
 
         for(var k= 0; k < tags.length; k++){
             names.push(tags[k]);
         }
-   var uniq = names.reduce(function(a,b){
-        if (a.indexOf(b) < 0 ) a.push(b);
-        return a;
-    },[]);
 
+        var uniq = names.reduce(function(a,b){
+            if (a.indexOf(b) < 0 ) a.push(b);
+            return a;
+        },[]);
 
     }
-    //console.log(uniq);
     for(var k=0; k<uniq.length; k++){
-      /*
-        string = "<div class=\"alignright\">";
-        string += "<a href=\"#\" class=\"tag\">"
-        string += uniq[k];
-        string += "</a>";
-        string += "</div>";
-        */
-        subresult+= "<button class=\"tag\">" + uniq[k] + "</button>";
+
+        subresult+= "<button class=\"tag\" onclick=\"toggle_by_class("+uniq[k].replace(" ","_")+")\">" + uniq[k] + "</button>";
     }
-        //subresult+= "<div class=\"content\"><p class=\"detail\">updated at " + data[2]+" by " + data[3] + "</br>Note: " + data[5] + "</p></div>";
 
     result += subresult;
 
