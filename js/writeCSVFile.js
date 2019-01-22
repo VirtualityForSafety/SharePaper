@@ -10,11 +10,11 @@ var fields = "";
 var newLine= "\r\n";
 //fs.readFile('metadata/papers.csv', 'utf8', function (err, data) {
 var fileToWrite = '';
-var paperFile = 'metadata/papers.csv';
-var tagFile = 'metadata/tags.csv';
-var columnFile = 'metadata/columns.csv';
 module.exports = {
-  write: function (type, passedParam) {
+  write: function (projectName, type, passedParam) {
+    var paperFile = 'metadata/'+projectName+'/papers.csv';
+    var tagFile = 'metadata/'+projectName+'/tags.csv';
+    var columnFile = 'metadata/'+projectName+'/columns.csv';
     if(type=='tag' || type=='tagpart' ){
       fields = "ID,Section,Comment,Tag,Contributor,Timestamp,Paper ID" + newLine;
       fileToWrite = tagFile;
@@ -37,7 +37,7 @@ module.exports = {
     fs.readFile(fileToWrite, 'utf8', function (err, data) {
       if (err == null) {
         contentRaw = data.toString();
-        dataArray = labelParser.parse(contentRaw);
+        dataArray = labelParser.parse(contentRaw).filter(String);
 
         if(type=='tagpart' || type=='paperpart'){
           return partialUpdate(fileToWrite, dataArray, passedParam);
@@ -128,6 +128,7 @@ function partialUpdate(fileToWrite, dataArray, passedParam){
       console.log(labelIndexMap[passedParam[1]]);
       console.log(passedParam[2]);
       console.log(dataArray[i][labelIndexMap[passedParam[1]]]);
+      console.log(fileToWrite);
       dataArray[i][labelIndexMap[passedParam[1]]] = passedParam[2];
       return appendToNewFile(fileToWrite, flatten(dataArray));
     }

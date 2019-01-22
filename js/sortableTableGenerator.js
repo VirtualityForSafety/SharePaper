@@ -114,7 +114,7 @@ function createNewEntryParameters(headers, data){
   return result;
 }
 
-function passNewEntryParameter(type){
+function passNewEntryParameter(projectName, type){
   // get values from using jquery
   var headers = ['id'];
   var data = [99999];
@@ -130,18 +130,18 @@ function passNewEntryParameter(type){
       });
 
   //console.log(createNewEntryParameters(headers,data));
-  window.location.href='http://localhost:1209/'+type+'?'+createNewEntryParameters(headers,data);
+  window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
 }
 
 function getUUID(type, id, label){
   return type+"_"+id+"_"+label;
 }
 
-function getUpdateButton(type, id, label){
-  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter("+getUUID(type,id,label)+")\">Update</button>";
+function getUpdateButton(projectName, type, id, label){
+  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter('"+projectName+"',"+getUUID(type,id,label)+")\">Update</button>";
 }
 
-function generatePaperTable(data, labels) {
+function generatePaperTable(projectName, data, labels) {
   //var result = "<table id=\"test\"><tbody><tr class=\"clickable\"><td>Paper info</td><td>Paper info</td><td>Paper info</td></tr><tr class=\"content\"><td colspan=3>Paper detail</td></tr></tbody></table><table id=\"paperTable\"><tr>";
   var result = "<table id=\"paperTable\"><tr>";
   var headers = [];
@@ -168,7 +168,7 @@ function generatePaperTable(data, labels) {
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
   result += "</tr>";
-  var submitButton = "<button onclick=\"passNewEntryParameter('paper')\">Submit</button>";
+  var submitButton = "<button onclick=\"passNewEntryParameter('"+projectName+"','paper')\">Submit</button>";
   result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
 
   var _paperID = -1;
@@ -192,10 +192,10 @@ function generatePaperTable(data, labels) {
         if(shouldHighlighted)
           highLightStyle ="class='highlight'";
         if(k==data[i].length-1)
-          dataLine += "<td "+"><a href=\"detail.html?id="+(_paperID+"")+"\">link</a></td>";
+          dataLine += "<td "+"><a href=\"detail.html?proj="+projectName+"&id="+(_paperID+"")+"\">link</a></td>";
         else
         {
-          dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ data[i][k] + "</div><br>" + getUpdateButton("paper",id,label)+"</td>";
+          dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ data[i][k] + "</div><br>" + getUpdateButton(projectName, "paper",id,label)+"</td>";
           //console.log( data[i][k]);
         }
 
@@ -264,7 +264,7 @@ function generateTagArray(data) {
   return tagArray;
 }
 
-function generateTagTable(data, labels) {
+function generateTagTable(projectName, data, labels) {
     var result = "<table id=\"paperTable\"><tr class=\"nodrop nodrag\">";
 
     var headers = [];
@@ -291,7 +291,7 @@ function generateTagTable(data, labels) {
       // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
     }
     result += "</tr>";
-    var submitButton = "<button onclick=\"passNewEntryParameter('tag')\">Submit</button>";
+    var submitButton = "<button onclick=\"passNewEntryParameter('"+projectName+"','tag')\">Submit</button>";
     result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
 
     for (var i=data.length-1; i>=1; i--) {
@@ -316,7 +316,7 @@ function generateTagTable(data, labels) {
                 dataLine+= dataRow[k] + "</a></td>";
               }
               else if(k==dataRow.length-1)
-                dataLine += "<td><a href=\"detail.html?id="+dataRow[k]+"\">link</a></td>";
+                dataLine += "<td><a href=\"detail.html?proj="+projectName+"&id="+dataRow[k]+"\">link</a></td>";
               else
                 dataLine+= "<td>"+ dataRow[k] + "</td>";
               }
