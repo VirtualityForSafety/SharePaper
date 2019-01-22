@@ -50,7 +50,7 @@ module.exports = {
                 //write the actual data and end with newline
                 dataArray.push(passedParam);
 
-                fs.writeFile(fileToWrite, contentRaw+newLine+passedParam+newLine, function (err, stat) {
+                fs.writeFile(fileToWrite, contentRaw+passedParam+newLine, function (err, stat) {
                 //fs.appendFile(fileToWrite, csv, function (err) {
                     if (err) throw err;
                     console.log('The "data to append" was appended to file!');
