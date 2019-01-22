@@ -164,11 +164,11 @@ function generatePaperTable(data, labels) {
   result += "<tr class=\"new_entry\">";
   //*
   for(var k=0; k<headers.length-1; k++){
-    var submitButton = "<button onclick=\"passNewEntryParameter('paper')\">Submit</button>";
     result +="<td><textarea id=\"new_paper_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
   result += "</tr>";
+  var submitButton = "<button onclick=\"passNewEntryParameter('paper')\">Submit</button>";
   result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
 
   var _paperID = -1;
@@ -286,14 +286,12 @@ function generateTagTable(data, labels) {
     // for new entry
     result += "<tr class=\"new_entry\">";
     //*
-    console.log(headers);
     for(var k=0; k<headers.length-1; k++){
-      var submitButton = "<button onclick=\"passNewEntryParameter('tag')\">Submit</button>";
-      console.log(headers[k]);
       result +="<td><textarea id=\"new_tag_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
       // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
     }
     result += "</tr>";
+    var submitButton = "<button onclick=\"passNewEntryParameter('tag')\">Submit</button>";
     result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
 
     for (var i=data.length-1; i>=1; i--) {

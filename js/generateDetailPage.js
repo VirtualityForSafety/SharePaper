@@ -107,10 +107,10 @@ function generatePaperPart(paperID, paperArray, paperColumns){
   var result = "<table id=\"paperTable\"><tr>";
   // for header
   var index =0;
-  var keys = [];
+  var headers = [];
   for (var key in paperColumns) {
     if (paperColumns.hasOwnProperty(key)) {
-      keys.push(key+"");
+      headers.push(key+"");
       index += 1;
       if(index==1)
         result+= "<th style=\"display:none;\">"+ key + "</th>";
@@ -127,7 +127,7 @@ function generatePaperPart(paperID, paperArray, paperColumns){
     for(var i=0; i<paperArray[paperID].length ; i++){
       //result +="<td><input type=\"text\" value=\""+ paperArray[paperID][i]+"\"></td>";
       var downloadLink = "";
-      var label = keys[i].replace("/","").toLowerCase();
+      var label = headers[i].replace("/","").toLowerCase();
       if(i==paperArray[paperID].length-1)
         downloadLink = "<br><a href=\"resources/"+paperArray[paperID][i]+".pdf\" download>download</a>";
       if(i==0)
@@ -180,10 +180,10 @@ function generateTagPart(paperID, tagArray, tagColumns){
   var result = "<table id=\"tagTable\"><tr>";
   // for header
   var columnLength =0;
-  var keys = [];
+  var headers = [];
   for (var key in tagColumns) {
     if (tagColumns.hasOwnProperty(key)) {
-      keys.push(key+"");
+      headers.push(key+"");
       columnLength += 1;
       if(columnLength==1)
         result+= "<th style=\"display:none;\">"+ key + "</th>";
@@ -193,62 +193,59 @@ function generateTagPart(paperID, tagArray, tagColumns){
     }
   }
   result += "</tr>";
+
+  // for new entry
+  result += "<tr class=\"new_entry\">";
+  //*
+  for(var k=0; k<columnLength-1; k++){
+    var label = headers[k+1].replace(/ /g,"").replace("/","").toLowerCase();
+    result +="<td><textarea id=\"new_tag_"+label+"\" cols=\"20\"></textarea></td>";
+  }
+  //*/
+  result += "</tr>";
+  var submitButton = "<button onclick=\"passNewEntryParameter('tag')\">Submit</button>";
+  result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
+
   // for tag elements
   if(tagArray[paperID]!=undefined)
   {
-    for(var i=0; i<tagArray[paperID].length ; i++){
+    for(var i=tagArray[paperID].length-1; i>=0; i--){
       result += "<tr>";
       var id = tagArray[paperID][i][0];
-      console.log(tagArray[paperID][i]);
       for(var k=1; k<tagArray[paperID][i].length ; k++){
-        var label = keys[k].replace("/","").toLowerCase();
+        var label = headers[k].replace("/","").toLowerCase();
         //result +=
-        if(k==tagArray[paperID][i].length-1){
-          //var link = "window.location.href='http://localhost:1209/tag?id="+tagArray[paperID][i][0]+"&section="+tagArray[paperID][i][1]+"&comment="+tagArray[paperID][i][2]+"&tag="+tagArray[paperID][i][3]+"'";
-          //var link = "window.location.href='http://localhost:1209/tag?"+getTagParameters(tagColumns, tagArray[paperID][i])+"'";
-          //result += "<td><button onclick=\""+link+"\">Submit</button></td>";
-          console.log(id);
-          result +="<td><div id="+getUUID("tag",id,label)+" contenteditable=\"true\">["+tagArray[paperID][i][k]+"]</div><br>" + getUpdateButton("tag",id,label)+"</td>";
-        }
-        else
-          result +="<td><div id="+getUUID("tag",id,label)+" contenteditable=\"true\">"+tagArray[paperID][i][k]+"</div><br>" + getUpdateButton("tag",id,label)+"</td>";
+        result +="<td><div id="+getUUID("tag",id,label)+" contenteditable=\"true\">"+tagArray[paperID][i][k]+"</div><br>" + getUpdateButton("tag",id,label)+"</td>";
       }
       result += "</tr>";
     }
-
-    // for new entry
-    result += "<tr class=\"new_entry\">";
-    //*
-    for(var k=0; k<columnLength-1; k++){
-      var label = keys[k+1].replace(/ /g,"").replace("/","").toLowerCase();
-      if(k==columnLength-2){
-        var hiddenItem = "<textarea id=\"new_tag_"+label+"\" cols=\"20\" style=\"display:none;\"></textarea>";
-        result += "<td><input type='button' value='Submit' onclick=\"passNewTagEntryParameter("+paperID+")\">"+hiddenItem+"</td>";
-      }else{
-        result +="<td><textarea id=\"new_tag_"+label+"\" cols=\"20\"></textarea></td>";
-      }
-    }
-    //*/
-    result += "</tr>";
   }
   return result + "</table>";
 }
 
-function passNewTagEntryParameter(paperID){
-  var tagData = [];
-  var tagHeader = [];
-  for (var key in tagColumns) {
-    if (tagColumns.hasOwnProperty(key)) {
-      tagHeader.push(key.replace('/','').toLowerCase());
-      var parameterName = 'textarea#new_tag_'+key.replace(" ","").toLowerCase();
-      console.log(parameterName + "\t" + key);
-      tagData.push($(parameterName).val());
+function createNewEntryParameters(headers, data){
+  var result ="";
+  for (var i=0 ; i<headers.length ; i++)
+    result+= headers[i] + "=" + data[i]+"&";
+  return result;
+}
+
+function passNewEntryParameter(type){
+  // get values from using jquery
+  var headers = ['id'];
+  var data = [99999];
+  $(".new_entry").each(function(){
+    var tdElements = $(this).find('textarea');
+    if (tdElements.length>1){
+      for(var i=0; i<tdElements.length;i++){
+        headers.push(tdElements[i].id.split("_").pop());
+        data.push($("#"+tdElements[i].id).val());
+      }
     }
-  }
-  tagData[0] = 99999; // declare this is new item
-  tagData[tagData.length-1] = paperID;
-  console.log(getNewEntryParameters(tagHeader, tagData));
-  window.location.href='http://localhost:1209/tag?'+getNewEntryParameters(tagHeader, tagData);
+  });
+  //console.log(headers);
+  //console.log(createNewEntryParameters(headers,data));
+  window.location.href='http://localhost:1209/'+type+'?'+createNewEntryParameters(headers,data);
 }
 
 function passOneParameter(divElement){
