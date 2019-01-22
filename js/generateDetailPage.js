@@ -40,7 +40,10 @@ $(document).ready(function() {
                         $(".new_entry").show("fast");
                     });
 
-                    $("button").hide();
+                    $("button").each(function( index ) {
+                      if($(this).hasClass("rowSubmitButton"))
+                       $(this).hide();
+                     });
 
                     $('div[contenteditable=true]').focusin(function(){
                       $("#btn_"+this.id).show("fast");

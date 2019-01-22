@@ -137,6 +137,10 @@ function getUUID(type, id, label){
   return type+"_"+id+"_"+label;
 }
 
+function getUpdateButton(type, id, label){
+  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter("+getUUID(type,id,label)+")\">Update</button>";
+}
+
 function generatePaperTable(data, labels) {
   //var result = "<table id=\"test\"><tbody><tr class=\"clickable\"><td>Paper info</td><td>Paper info</td><td>Paper info</td></tr><tr class=\"content\"><td colspan=3>Paper detail</td></tr></tbody></table><table id=\"paperTable\"><tr>";
   var result = "<table id=\"paperTable\"><tr>";
@@ -191,7 +195,7 @@ function generatePaperTable(data, labels) {
           dataLine += "<td "+"><a href=\"detail.html?id="+(_paperID+"")+"\">link</a></td>";
         else
         {
-          dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ data[i][k] + "</div></td>";
+          dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ data[i][k] + "</div><br>" + getUpdateButton("paper",id,label)+"</td>";
           //console.log( data[i][k]);
         }
 

@@ -101,6 +101,23 @@ function toggle_by_class(cls) {
       lst[i].style.display = "";
   }
 }
+
+function passOneParameter(divElement){
+  partialUpdate($("#"+divElement.id));
+}
+
+function partialUpdate(element){
+  element.blur();
+  var label= ["id","label","value"];
+  var queries = element.attr('id').split('_');
+  var type= queries.shift()+'part';
+  queries.push(element.html());
+  console.log(queries);
+  var result = "";
+  for(var i=0; i<label.length;i++)
+    result += label[i]+"="+queries[i]+"&";
+  window.location.href="http://localhost:1209/"+type+"?"+result;
+}
 </script>
 
 </body>

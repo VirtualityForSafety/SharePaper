@@ -15,11 +15,11 @@ var tagFile = 'metadata/tags.csv';
 var columnFile = 'metadata/columns.csv';
 module.exports = {
   write: function (type, passedParam) {
-    if(type=='tag'){
+    if(type=='tag' || type=='tagpart' ){
       fields = "ID,Section,Comment,Tag,Contributor,Timestamp,Paper ID" + newLine;
       fileToWrite = tagFile;
     }
-    else if(type=='paper'){
+    else if(type=='paper' || type=='paperpart' ){
       fields = "ID,Title,Year,Journal/Conference,Author,Keyword,Quality,Summary,Timestamp,Contributor,Link" + newLine;
       fileToWrite = paperFile;
     }
@@ -39,10 +39,14 @@ module.exports = {
         contentRaw = data.toString();
         dataArray = labelParser.parse(contentRaw);
 
+        if(type=='tagpart' || type=='paperpart'){
+          return partialUpdate(fileToWrite, dataArray, passedParam);
+        }
+
         fs.stat(fileToWrite, function (err, stat) {
             if (err == null) {
                 console.log('File exists');
-                passedParam[0] = getMaxPaperID(dataArray)+1;
+                passedParam[0] = getMaxID(dataArray)+1;
                 //write the actual data and end with newline
                 dataArray.push(passedParam);
 
@@ -79,7 +83,59 @@ module.exports = {
   }
 };
 
-function getMaxPaperID(data){
+function appendToNewFile(fileName, content){
+  //write the actual data and end with newline
+  fs.writeFile(fileName, content, function (err, stat) {
+  //fs.appendFile(fileToWrite, csv, function (err) {
+      if (err) throw err;
+      console.log('Updated successfully.');
+      return true;
+  });
+}
+
+function flatten(dataArray){
+  var result=[];
+  for(var i=0; i<dataArray.length ; i++){
+    if(i>0){
+      for(var t=0; t<dataArray[i].length ; t++){
+        if(dataArray[0][t]=='Summary' || dataArray[0][t]=='Comment' || dataArray[i][t].includes(','))
+          dataArray[i][t] = "\""+dataArray[i][t]+"\"";
+      }
+    }
+    result.push(dataArray[i].join(","));
+  }
+  return result.join("\n");
+}
+
+function getLabelIndexMap(dataArray){
+  var labelIndexMap = {};
+  var labelArray = dataArray[0];
+  for(var i=0; i<labelArray.length ; i++)
+    labelIndexMap[labelArray[i].replace(' ', '').replace('/','').toLowerCase()] = i;
+  return labelIndexMap;
+}
+
+function partialUpdate(fileToWrite, dataArray, passedParam){
+  var labelIndexMap = getLabelIndexMap(dataArray);
+  for(var i=0; i<dataArray.length;i++){
+    var data = dataArray[i];
+    var id = data[0];
+    console.log(id +'\t' + passedParam[0]);
+    if(id==passedParam[0]){
+      console.log("Same ID found");
+      console.log(labelIndexMap);
+      console.log(passedParam[1]);
+      console.log(labelIndexMap[passedParam[1]]);
+      console.log(passedParam[2]);
+      console.log(dataArray[i][labelIndexMap[passedParam[1]]]);
+      dataArray[i][labelIndexMap[passedParam[1]]] = passedParam[2];
+      return appendToNewFile(fileToWrite, flatten(dataArray));
+    }
+  }
+  return false;
+}
+
+function getMaxID(data){
   var maxID = 0;
   for (var i=1; i<data.length; i++) {
     var paperID = data[i][0] * 1;
