@@ -182,7 +182,7 @@ function generatePaperTable(data, labels) {
     var id = i;
     for(var k=0; k<data[i].length ; k++){
 
-      var label = headers[k].replace("/","").toLowerCase();
+      var label = headers[k];
       if(k==0){
         _paperID = data[i][k];
         dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
