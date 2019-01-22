@@ -12,6 +12,20 @@ function getProjectNameFromLink(){
 }
 
 var projectName = getProjectNameFromLink();
+function getProjectNameFromLink(){
+  var element = window.location.href.split('?');
+  if(element.length>1){
+    var item = element[element.length -1].split('&');
+    for(var i=0; i<item.length ; i++){
+      var subItem = item[i].split('=');
+      if(subItem[0] == 'proj')
+        return subItem[1];
+    }
+  }
+  return undefined;
+}
+
+var projectName = getProjectNameFromLink();
 
 $(document).ready(function() {
 
