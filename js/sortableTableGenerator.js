@@ -4,21 +4,20 @@ function hasClass(element, cls) {
     return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 }
 
-function reverseTableRows(interval) {
+function reverseTableRows(skipInterval) {
 
     var table = document.getElementById("paperTable"),
         newTbody = document.createElement('tbody'),
         oldTbody = table.tBodies[0],
         rows = table.rows,
         i = rows.length - 1;
-        newTbody.appendChild(rows[0]); // header
-        newTbody.appendChild(rows[0]); // new_entry
-        for (i = rows.length-interval; i >= 0; i-=interval) {
+        for(var i=0; i<skipInterval ; i++){
+          newTbody.appendChild(rows[0]); // header
+        }
+        for (i = rows.length-1; i >= 0; i-=1) {
 
           //console.log(rows[i+1]);
           newTbody.appendChild(rows[i]);
-          if(interval==2)
-            newTbody.appendChild(rows[rows.length-1]);
         }
     oldTbody.parentNode.replaceChild(newTbody, oldTbody);
 }
@@ -36,7 +35,7 @@ function invalidateSortingState(){
       sortingState[t]=0;
 }
 
-function sortTable(numElement, interval, priorityMap) {
+function sortTable(numElement, skipInterval, priorityMap) {
   var priorityMap = labelPriorityMaps[numElement];
   var table, rows, switching, i, x, y, shouldSwitch;
   table = document.getElementById("paperTable");
@@ -51,7 +50,7 @@ function sortTable(numElement, interval, priorityMap) {
       rows = table.rows;
       /*Loop through all table rows (except the
       first, which contains table headers):*/
-      for (i = 1; i < (rows.length - interval); i+=interval) {
+      for (i = skipInterval; i < (rows.length - 1); i+=1) {
         if(hasClass(rows[i],"new_entry"))
           continue;
         //start by saying there should be no switching:
@@ -59,7 +58,7 @@ function sortTable(numElement, interval, priorityMap) {
         /*Get the two elements you want to compare,
         one from current row and one from the next:*/
         x = getContentOnly(rows[i].getElementsByTagName("TD")[numElement]);
-        y = getContentOnly(rows[i + interval].getElementsByTagName("TD")[numElement]);
+        y = getContentOnly(rows[i + 1].getElementsByTagName("TD")[numElement]);
         //check if the two rows should switch place:
         if(compareWithContext(x.toLowerCase(),y.toLowerCase(),priorityMap)){
           shouldSwitch=true;
@@ -69,9 +68,7 @@ function sortTable(numElement, interval, priorityMap) {
       if (shouldSwitch) {
         /*If a switch has been marked, make the switch
         and mark that a switch has been done:*/
-        rows[i].parentNode.insertBefore(rows[i + interval], rows[i]);
-        if(interval==2)
-          rows[i].parentNode.insertBefore(rows[i + 3], rows[i+1]);
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
         switching = true;
       }
     }
@@ -80,7 +77,7 @@ function sortTable(numElement, interval, priorityMap) {
     sortingState[numElement]=1;
   }
   else if(sortingState[numElement]>0){ //no sorted state
-    reverseTableRows(interval);
+    reverseTableRows(skipInterval);
   }
 
 }
@@ -110,43 +107,51 @@ function checkUpdated(dateString){
 
 //////////////////////////////////// paper part ////////////////////////////////////
 
-function getNewEntryParameters(paperHeader, id,item){
+function createNewEntryParameters(headers, data){
   var result ="";
-  for (var i=0 ; i<paperHeader.length ; i++) {
-    if(i==0){
-        result+= paperHeader[i].replace(/ /g,"").toLowerCase() + "=" + id+"&";
-      continue;
-    }
-    else{
-        result+= paperHeader[i].replace(/ /g,"").toLowerCase() + "=" + item[i-1]+"&";
-    }
-  }
+  for (var i=0 ; i<headers.length ; i++)
+    result+= headers[i] + "=" + data[i]+"&";
   return result;
 }
 
-function passNewPaperEntryParameter(){
-  var paperHeader = [];
-  for (var key in paperColumns) {
-    if (paperColumns.hasOwnProperty(key)) {
-      var parameterName = 'textarea#new_paper_'+key.replace(" ","").toLowerCase();
-      paperHeader.push($(parameterName).val());
+function passNewEntryParameter(type){
+  // get values from using jquery
+  var headers = ['id'];
+  var data = [99999];
+  $(".new_entry").each(function(){
+    var tdElements = $(this).find('textarea');
+    if (tdElements.length>1){
+      for(var i=0; i<tdElements.length;i++){
+        headers.push(tdElements[i].id.split("_").pop());
+        data.push($("#"+tdElements[i].id).val());
+      }
     }
-  }
-  window.location.href='http://localhost:1209/paper?'+getNewEntryParameters(paperHeader, 99999, newItemArray);
+
+      });
+
+  //console.log(createNewEntryParameters(headers,data));
+  window.location.href='http://localhost:1209/'+type+'?'+createNewEntryParameters(headers,data);
 }
 
-function generatePaperTable(data) {
+function getUUID(type, id, label){
+  return type+"_"+id+"_"+label;
+}
+
+function generatePaperTable(data, labels) {
   //var result = "<table id=\"test\"><tbody><tr class=\"clickable\"><td>Paper info</td><td>Paper info</td><td>Paper info</td></tr><tr class=\"content\"><td colspan=3>Paper detail</td></tr></tbody></table><table id=\"paperTable\"><tr>";
   var result = "<table id=\"paperTable\"><tr>";
-  var header = data[0];
-  var titleIndex = header.indexOf("Title");
-  var dateIndex = header.indexOf("Timestamp");
-  for( var k=0; k<header.length ; k++){
+  var headers = [];
+  for(var i=0; i<data[0].length ; i++)
+    headers.push((data[0][i]+"").replace(/ /g,"").replace("/","").toLowerCase());
+  var titleIndex = headers.indexOf("title");
+  var dateIndex = headers.indexOf("timestamp");
+
+  for( var k=0; k<data[0].length ; k++){
     if(k==0){
-        result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
+        result+= "<th style=\"display:none;\">"+ data[0][k] + "</th>";
     }
     else{
-      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",1)\">"+ header[k] + "<span class=\"description\">"+labelDescription[header[k]]+"</span></button></th>";
+      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",3)\">"+ data[0][k] + "<span class=\"description\">"+labelDescription[data[0][k]]+"</span></button></th>";
     }
   }
   result += "</tr>";
@@ -154,15 +159,16 @@ function generatePaperTable(data) {
   // for new entry
   result += "<tr class=\"new_entry\">";
   //*
-  for(var k=0; k<header.length-1; k++){
-    var submitButton = "<button onclick=\"passNewEntryParameter(99999)\">Submit</button>";
-    result +="<td><textarea id=\"new_paper_"+header[k+1].replace("/","").toLowerCase()+"\" cols=\"20\"></textarea><br>"+submitButton+"</td>";
+  for(var k=0; k<headers.length-1; k++){
+    var submitButton = "<button onclick=\"passNewEntryParameter('paper')\">Submit</button>";
+    result +="<td><textarea id=\"new_paper_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
   result += "</tr>";
+  result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
 
   var _paperID = -1;
-  for (var i=1; i<data.length; i++) {
+  for (var i=data.length-1; i>=1; i--) {
     var tags = getPaperTags(i);
     var dataLine = "<tr class=\"clickable _tag "+tags+"\">";
     var shouldHighlighted = false;
@@ -171,6 +177,8 @@ function generatePaperTable(data) {
     }
     var id = i;
     for(var k=0; k<data[i].length ; k++){
+
+      var label = headers[k].replace("/","").toLowerCase();
       if(k==0){
         _paperID = data[i][k];
         dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
@@ -180,9 +188,13 @@ function generatePaperTable(data) {
         if(shouldHighlighted)
           highLightStyle ="class='highlight'";
         if(k==data[i].length-1)
-          dataLine += "<td "+"><a href=\"paper.html?id="+(_paperID+"")+"\">link</a></td>";
+          dataLine += "<td "+"><a href=\"detail.html?id="+(_paperID+"")+"\">link</a></td>";
         else
-          dataLine+= "<td "+"><div id=\""+(data[0][k]).replace("/","").toLowerCase()+"_"+id+"\" contenteditable=\"true\">"+ data[i][k] + "</div></td>";
+        {
+          dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ data[i][k] + "</div></td>";
+          //console.log( data[i][k]);
+        }
+
       }
     }
     result += dataLine + "</tr>";
@@ -248,17 +260,21 @@ function generateTagArray(data) {
   return tagArray;
 }
 
-function generateTagTable(data) {
+function generateTagTable(data, labels) {
     var result = "<table id=\"paperTable\"><tr class=\"nodrop nodrag\">";
-    var header = data[0];
-    var dateIndex = header.indexOf("Timestamp");
-    var commentIndex = header.indexOf("Comment");
-    for( var k=0; k<header.length ; k++){
+
+    var headers = [];
+    for(var i=0; i<data[0].length ; i++)
+      headers.push((data[0][i]+"").replace(/ /g,"").replace("/","").toLowerCase());
+    var dateIndex = headers.indexOf("timestamp");
+    var commentIndex = headers.indexOf("comment");
+    var tagIndex = headers.indexOf("tag");
+    for( var k=0; k<data[0].length ; k++){
       if(k==0){
-          result+= "<th style=\"display:none;\">"+ header[k] + "</th>";
+          result+= "<th style=\"display:none;\">"+ data[0][k] + "</th>";
         }
         else{
-          result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",1)\">"+ header[k] + "<span class=\"description\">"+labelDescription[header[k]]+"</span></button></th>";
+          result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",3)\">"+ data[0][k] + "<span class=\"description\">"+labelDescription[data[0][k]]+"</span></button></th>";
           }
       }
     result += "</tr>";
@@ -266,15 +282,19 @@ function generateTagTable(data) {
     // for new entry
     result += "<tr class=\"new_entry\">";
     //*
-    for(var k=0; k<header.length-1; k++){
-      var submitButton = "<button onclick=\"passNewEntryParameter(99999)\">Submit</button>";
-      result +="<td><textarea id=\"new_tag_"+header[k+1].replace("/","").toLowerCase()+"\" cols=\"20\"></textarea><br>"+submitButton+"</td>";
+    console.log(headers);
+    for(var k=0; k<headers.length-1; k++){
+      var submitButton = "<button onclick=\"passNewEntryParameter('tag')\">Submit</button>";
+      console.log(headers[k]);
+      result +="<td><textarea id=\"new_tag_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
       // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
     }
     result += "</tr>";
+    result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
 
-    for (var i=1; i<data.length; i++) {
-      var dataLine = "<tr>";
+    for (var i=data.length-1; i>=1; i--) {
+      var tagName = ("_"+data[i][tagIndex]).replace(" ","_");
+      var dataLine = "<tr class=\"_tag "+tagName+"\">";
         var dataRow = data[i];
         var shouldHighlighted = checkUpdated(dataRow[dateIndex]);
         var id=i;
@@ -294,7 +314,7 @@ function generateTagTable(data) {
                 dataLine+= dataRow[k] + "</a></td>";
               }
               else if(k==dataRow.length-1)
-                dataLine += "<td><a href=\"paper.html?id="+dataRow[k]+"\">link</a></td>";
+                dataLine += "<td><a href=\"detail.html?id="+dataRow[k]+"\">link</a></td>";
               else
                 dataLine+= "<td>"+ dataRow[k] + "</td>";
               }

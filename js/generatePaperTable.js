@@ -23,7 +23,7 @@ $(document).ready(function() {
                    url: "metadata/papers.csv",
                    dataType: "text",
                    success: function(csvData) {
-                       document.getElementById("paper").innerHTML = generatePaperTable(parseText(csvData));
+                       document.getElementById("paper").innerHTML = generatePaperTable(parseText(csvData),labelDescription);
                        //sortTable(8,1);
                        //reverseTableRows(1);
 

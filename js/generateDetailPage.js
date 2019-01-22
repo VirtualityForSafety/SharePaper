@@ -97,7 +97,7 @@ function getUUID(type, id, label){
 }
 
 function getUpdateButton(type, id, label){
-  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passParameter("+getUUID(type,id,label)+")\">Update</button>";
+  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter("+getUUID(type,id,label)+")\">Update</button>";
 }
 
 function generatePaperPart(paperID, paperArray, paperColumns){
@@ -217,7 +217,7 @@ function generateTagPart(paperID, tagArray, tagColumns){
     result += "<tr class=\"new_entry\">";
     //*
     for(var k=0; k<columnLength-1; k++){
-      var label = keys[k+1].replace("/","").toLowerCase();
+      var label = keys[k+1].replace(/ /g,"").replace("/","").toLowerCase();
       if(k==columnLength-2){
         var hiddenItem = "<textarea id=\"new_tag_"+label+"\" cols=\"20\" style=\"display:none;\"></textarea>";
         result += "<td><input type='button' value='Submit' onclick=\"passNewTagEntryParameter("+paperID+")\">"+hiddenItem+"</td>";
@@ -248,7 +248,7 @@ function passNewTagEntryParameter(paperID){
   window.location.href='http://localhost:1209/tag?'+getNewEntryParameters(tagHeader, tagData);
 }
 
-function passParameter(divElement){
+function passOneParameter(divElement){
   partialUpdate($("#"+divElement.id));
 
   // overall updates version

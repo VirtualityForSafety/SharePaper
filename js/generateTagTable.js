@@ -18,7 +18,7 @@ $(document).ready(function() {
         url: "metadata/tags.csv",
         dataType: "text",
         success: function(csvData) {
-            document.getElementById("tags").innerHTML = generateTagTable(parseText(csvData));
+            document.getElementById("tags").innerHTML = generateTagTable(parseText(csvData), labelDescription);
             //sortTable(5,1);
             //reverseTableRows(1);
 
