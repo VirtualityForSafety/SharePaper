@@ -37,7 +37,7 @@ $(document).ready(function() {
                    url: "metadata/"+projectName+"/papers.csv",
                    dataType: "text",
                    success: function(csvData) {
-                       document.getElementById("paper").innerHTML = generatePaperTable(parseText(csvData),labelDescription);
+                       document.getElementById("paper").innerHTML = generatePaperTable(projectName, parseText(csvData),labelDescription);
                        //sortTable(8,1);
                        //reverseTableRows(1);
 
@@ -67,7 +67,7 @@ $(document).ready(function() {
                         // prevent the default behaviour of return key pressed
                         //console.log($(this).attr('id')+"\t"+$(this).html());
 
-                        partialUpdate($(this));
+                        partialUpdate(projectName, $(this));
                       }
                     });
                      }

@@ -102,11 +102,11 @@ function toggle_by_class(cls) {
   }
 }
 
-function passOneParameter(divElement){
-  partialUpdate($("#"+divElement.id));
+function passOneParameter(projectName, divElement){
+  partialUpdate(projectName, $("#"+divElement.id));
 }
 
-function partialUpdate(element){
+function partialUpdate(projectName, element){
   element.blur();
   var label= ["id","label","value"];
   var queries = element.attr('id').split('_');
@@ -116,7 +116,7 @@ function partialUpdate(element){
   var result = "";
   for(var i=0; i<label.length;i++)
     result += label[i]+"="+queries[i]+"&";
-  window.location.href="http://localhost:1209/"+type+"?"+result;
+  window.location.href="http://localhost:1209/"+type+"?proj="+projectName+"&"+result;
 }
 </script>
 

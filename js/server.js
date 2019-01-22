@@ -25,6 +25,7 @@ function getCurrentTime(){
 // routes will go here
 app.get('/:type', function(req, res) {
   if(req.params.type == 'tag'){
+    var projectName = req.param('proj');
     var tag_id = req.param('id');
     var tag_section = req.param('section');
     var tag_comment = req.param('comment');
@@ -33,11 +34,12 @@ app.get('/:type', function(req, res) {
     var tag_timestamp = getCurrentTime();
     var tag_paperID = req.param('paperid');
     var passedParam = [tag_id, tag_section, tag_comment, tag_tag, tag_contributor, tag_timestamp, tag_paperID];
-    writer.write('tag',passedParam);
+    writer.write(projectName, 'tag',passedParam);
     res.send('Updated successfully! :' + req.params.type+':'+tag_id+'<br>' +tag_section + '<br>' + tag_comment + '<br>' + tag_tag
   + '<br>' + tag_contributor+ '<br>' + tag_timestamp+ '<br>' + tag_paperID+"<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
   }
   else if(req.params.type == 'paper'){
+    var projectName = req.param('proj');
     var paper_id = req.param('id');
     var paper_title = req.param('title');
     var paper_year = req.param('year');
@@ -51,15 +53,16 @@ app.get('/:type', function(req, res) {
     var paper_link = req.param('link');
     var passedParam = [paper_id, paper_title, paper_year, paper_journalconference, paper_author,
      paper_keyword,paper_quality,paper_summary,paper_timestamp,paper_contributor,paper_link];
-    writer.write('paper',passedParam);
+    writer.write(projectName, 'paper',passedParam);
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
   }
   else if(req.params.type == 'paperpart' || req.params.type == 'tagpart'){
+    var projectName = req.param('proj');
     var data_type = req.param('label');
     var data_id = req.param('id');
     var data_value = req.param('value');
     var passedParam = [data_id, data_type, data_value];
-    writer.write(req.params.type, passedParam);
+    writer.write(projectName, req.params.type, passedParam);
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
   }
 });

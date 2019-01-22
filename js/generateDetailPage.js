@@ -12,7 +12,6 @@ function getProjectNameFromLink(){
 }
 
 var projectName = getProjectNameFromLink();
-
 $(document).ready(function() {
   $.ajax({
      type: "GET",
@@ -24,7 +23,6 @@ $(document).ready(function() {
         paperColumns = generateLabel("Paper", csvDataText);
          tagColumns = generateLabel("Tag", csvDataText);
          tagHeader = getTagHeader(csvDataText);
-
          $.ajax({
             type: "GET",
             //url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/tags.csv",
@@ -44,8 +42,8 @@ $(document).ready(function() {
                      if(paperID>=0)
                       paperArray = parseText(csvData);
 
-                     document.getElementById("paperDetail").innerHTML = generatePaperPart(paperID, paperArray, paperColumns);
-                    document.getElementById("tagDetail").innerHTML = generateTagPart(paperID, tagArray, tagColumns);
+                     document.getElementById("paperDetail").innerHTML = generatePaperPart(projectName, paperID, paperArray, paperColumns);
+                    document.getElementById("tagDetail").innerHTML = generateTagPart(projectName, paperID, tagArray, tagColumns);
                      function resizeInput() {
                       $(this).attr('size', $(this).val().length);
                     }
@@ -74,7 +72,7 @@ $(document).ready(function() {
                          // prevent the default behaviour of return key pressed
                          //console.log($(this).attr('id')+"\t"+$(this).html());
 
-                         partialUpdate($(this));
+                         partialUpdate(projectName, $(this));
                        }
                      });
                    }
@@ -86,24 +84,24 @@ $(document).ready(function() {
 
 });
 
-function partialUpdate(element){
+function partialUpdate(projectName, element){
   element.blur();
   var label= ["id","label","value"];
   var queries = element.attr('id').split('_');
   var type= queries.shift()+'part';
   queries.push(element.html());
-  console.log(queries);
   var result = "";
   for(var i=0; i<label.length;i++)
     result += label[i]+"="+queries[i]+"&";
-  window.location.href="http://localhost:1209/"+type+"?"+result;
+  window.location.href="http://localhost:1209/"+type+"?"+'proj='+projectName+'&'+result;
 }
 
 // returns a paperId, but a negative value for invalid link
 function getPaperIDFromLink(){
   var element = window.location.href.split('?');
   if(element.length>1){
-    var id = element[element.length -1].split('=')[1];
+    var subElement = element[element.length -1].split('=');
+    var id = subElement[subElement.length-1];
     return id;
   }
   return -1;
@@ -113,11 +111,11 @@ function getUUID(type, id, label){
   return type+"_"+id+"_"+label;
 }
 
-function getUpdateButton(type, id, label){
-  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter("+getUUID(type,id,label)+")\">Update</button>";
+function getUpdateButton(projectName, type, id, label){
+  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter('"+projectName+"',"+getUUID(type,id,label)+")\">Update</button>";
 }
 
-function generatePaperPart(paperID, paperArray, paperColumns){
+function generatePaperPart(projectName, paperID, paperArray, paperColumns){
   var result = "<table id=\"paperTable\"><tr>";
   // for header
   var index =0;
@@ -143,11 +141,11 @@ function generatePaperPart(paperID, paperArray, paperColumns){
       var downloadLink = "";
       var label = headers[i].replace("/","").toLowerCase();
       if(i==paperArray[paperID].length-1)
-        downloadLink = "<br><a href=\"resources/"+paperArray[paperID][i]+".pdf\" download>download</a>";
+        downloadLink = "<br><a href=\"resources/"+projectName+"/"+paperArray[paperID][i]+".pdf\" download>download</a>";
       if(i==0)
         result +="<div id="+getUUID("paper",paperID,label)+" style=\"display:none;\">"+paperArray[paperID][i]+"</div>" ;
       else
-        result +="<td><div id="+getUUID("paper",paperID,label)+" contenteditable=\"true\">"+paperArray[paperID][i]+"</div>"+downloadLink+ "<br>" + getUpdateButton("paper",paperID,label)+"</td>";
+        result +="<td><div id="+getUUID("paper",paperID,label)+" contenteditable=\"true\">"+paperArray[paperID][i]+"</div>"+downloadLink+ "<br>" + getUpdateButton(projectName, "paper",paperID,label)+"</td>";
     }
     result += "</tr>";
   }
@@ -190,7 +188,7 @@ function getTagParameters(tagColumns, item){
   return result;
 }
 
-function generateTagPart(paperID, tagArray, tagColumns){
+function generateTagPart(projectName, paperID, tagArray, tagColumns){
   var result = "<table id=\"tagTable\"><tr>";
   // for header
   var columnLength =0;
@@ -217,7 +215,7 @@ function generateTagPart(paperID, tagArray, tagColumns){
   }
   //*/
   result += "</tr>";
-  var submitButton = "<button onclick=\"passNewEntryParameter('tag')\">Submit</button>";
+  var submitButton = "<button onclick=\"passNewEntryParameter('"+projectName+"','tag')\">Submit</button>";
   result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
 
   // for tag elements
@@ -227,9 +225,10 @@ function generateTagPart(paperID, tagArray, tagColumns){
       result += "<tr>";
       var id = tagArray[paperID][i][0];
       for(var k=1; k<tagArray[paperID][i].length ; k++){
-        var label = headers[k].replace("/","").toLowerCase();
+        var label = headers[k].replace(/ /g,"").replace("/","").toLowerCase();
         //result +=
-        result +="<td><div id="+getUUID("tag",id,label)+" contenteditable=\"true\">"+tagArray[paperID][i][k]+"</div><br>" + getUpdateButton("tag",id,label)+"</td>";
+
+        result +="<td><div id="+getUUID("tag",id,label)+" contenteditable=\"true\">"+tagArray[paperID][i][k]+"</div><br>" + getUpdateButton(projectName, "tag",id,label)+"</td>";
       }
       result += "</tr>";
     }
@@ -244,7 +243,7 @@ function createNewEntryParameters(headers, data){
   return result;
 }
 
-function passNewEntryParameter(type){
+function passNewEntryParameter(projectName, type){
   // get values from using jquery
   var headers = ['id'];
   var data = [99999];
@@ -259,11 +258,11 @@ function passNewEntryParameter(type){
   });
   //console.log(headers);
   //console.log(createNewEntryParameters(headers,data));
-  window.location.href='http://localhost:1209/'+type+'?'+createNewEntryParameters(headers,data);
+  window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
 }
 
-function passOneParameter(divElement){
-  partialUpdate($("#"+divElement.id));
+function passOneParameter(projectName, divElement){
+  partialUpdate(projectName, $("#"+divElement.id));
 
   // overall updates version
   /*

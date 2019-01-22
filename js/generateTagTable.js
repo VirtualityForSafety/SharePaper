@@ -30,7 +30,7 @@ $(document).ready(function() {
             url: "metadata/"+projectName+"/tags.csv",
             dataType: "text",
             success: function(csvData) {
-                document.getElementById("tags").innerHTML = generateTagTable(parseText(csvData), labelDescription);
+                document.getElementById("tags").innerHTML = generateTagTable(projectName, parseText(csvData), labelDescription);
                 //sortTable(5,1);
                 //reverseTableRows(1);
 
