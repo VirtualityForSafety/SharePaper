@@ -1,9 +1,23 @@
+function getProjectNameFromLink(){
+  var element = window.location.href.split('?');
+  if(element.length>1){
+    var item = element[element.length -1].split('&');
+    for(var i=0; i<item.length ; i++){
+      var subItem = item[i].split('=');
+      if(subItem[0] == 'proj')
+        return subItem[1];
+    }
+  }
+  return undefined;
+}
+
+var projectName = getProjectNameFromLink();
 
 $(document).ready(function() {
   $.ajax({
      type: "GET",
      //url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/columns.csv",
-     url: "metadata/columns.csv",
+     url: "metadata/"+projectName+"/columns.csv",
      dataType: "text",
      success: function(csvData) {
        var csvDataText = parseText(csvData);
@@ -14,7 +28,7 @@ $(document).ready(function() {
          $.ajax({
             type: "GET",
             //url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/tags.csv",
-            url: "metadata/tags.csv",
+            url: "metadata/"+projectName+"/tags.csv",
             dataType: "text",
             success: function(csvData) {
                 tagArray = generateTagArray(parseText(csvData));
@@ -22,10 +36,10 @@ $(document).ready(function() {
                 $.ajax({
                    type: "GET",
                    //url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/papers.csv",
-                   url: "metadata/papers.csv",
+                   url: "metadata/"+projectName+"/papers.csv",
                    dataType: "text",
                    success: function(csvData) {
-                     var paperID = getPaperID();
+                     var paperID = getPaperIDFromLink();
 
                      if(paperID>=0)
                       paperArray = parseText(csvData);
@@ -86,7 +100,7 @@ function partialUpdate(element){
 }
 
 // returns a paperId, but a negative value for invalid link
-function getPaperID(){
+function getPaperIDFromLink(){
   var element = window.location.href.split('?');
   if(element.length>1){
     var id = element[element.length -1].split('=')[1];
