@@ -67,6 +67,11 @@ app.get('/:type', function(req, res) {
   }
 });
 
-// start the server
-app.listen(port);
-console.log('Server started! At http://localhost:' + port);
+var connect = require('connect');
+var serveStatic = require('serve-static');
+connect().use(serveStatic("./")).listen(4000, function(){
+  // start the server
+  app.listen(port);
+  console.log('data server started! At http://localhost:' + port);
+    console.log('web server running on 4000...');
+});
