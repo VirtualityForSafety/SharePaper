@@ -172,6 +172,7 @@ function generateTagPart(projectName, paperID, tagArray, tagColumns){
 
   var contributorIndex = headers.indexOf("contributor");
   var dateIndex = headers.indexOf("timestamp");
+  var paperIDIndex = headers.indexOf("paperid");
   // for new entry
   result += "<tr class=\"new_entry\">";
   //*
@@ -181,6 +182,8 @@ function generateTagPart(projectName, paperID, tagArray, tagColumns){
       result +="<td><textarea id=\"new_tag_"+label+"\" cols=\"20\">"+getValueFromLS()+"</textarea></td>";
     else if(k+1==dateIndex)
       result +="<td><textarea style=\"display:none;\" id=\"new_tag_"+label+"\" cols=\"20\"></textarea></td>";
+    else if(k+1==paperIDIndex)
+      result +="<td><textarea id=\"new_tag_"+label+"\" cols=\"20\">"+paperID+"</textarea></td>";
     else
       result +="<td><textarea id=\"new_tag_"+label+"\" cols=\"20\"></textarea></td>";
   }
