@@ -9,10 +9,38 @@
 
 </head>
 <body>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <script src="js/index.js"></script>
+
   <center>
-<h1>Welcome to SharePaper</h1>
-<br><br><br>
+<h1>SharePaper</h1>
+<div class="small-container">
+    <h2>Welcome, <div id="user" contenteditable="true"></div></h2>
+  </div>
+
 <h2><a href="share.html?proj=sample">Sample</a></h2>
+<script>
+var userEntry = document.getElementById("user");
+console.log(getValueFromLS());
+userEntry.innerHTML = ""+getValueFromLS();
+
+$('div[contenteditable=true]').keydown(function(e) {
+   // trap the return key being pressed
+   if (e.keyCode == 13) {
+     // insert 2 br tags (if only one br tag is inserted the cursor won't go to the second line)
+     //document.execCommand('insertHTML', false, '<br><br>');
+     // prevent the default behaviour of return key pressed
+     //console.log($(this).attr('id')+"\t"+$(this).html());
+     var userEntry = document.getElementById("user");
+     var value = userEntry.textContent;
+     setValueToLS(value);
+     $(this).blur();
+     console.log(value);
+   }
+ });
+
+</script>
 </center>
 </body>
 </html>
