@@ -13,28 +13,30 @@ function zeroPad(nr,base){
 
 function getCurrentTime(){
   var date = new Date();
-  //var localDate = convertUTCDateToLocalDate(date);
-  console.log(date.toString());
-  var datevalues = [
-   zeroPad(date.getFullYear(),1000),
-   zeroPad(date.getMonth()+1,10),
-   zeroPad(date.getDate(),10),
-   zeroPad(date.getHours(),10),
-   zeroPad(date.getMinutes(),10),
-   zeroPad(date.getSeconds(),10)
-];
-  var dateRaw = date.toString();
-  var dateUTC = date.toUTCString();
-  var dateLOCAL = date.toLocaleString();
-  return dateRaw + dateUTC + dateLOCAL;
+  var dateUTC = convertLocalDateToUTCDate(date);
+  //return dateRaw + dateUTC + localDate;
+  return dateUTC;
 }
 
-function convertUTCDateToLocalDate(date) {
-  var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+function convertLocalDateToUTCDate(date) {
+  var newDate = new Date(date.getTime()-date.getTimezoneOffset()*60*1000);
+  
   var offset = date.getTimezoneOffset() / 60;
+  console.log(offset);
   var hours = date.getHours();
-  newDate.setHours(hours - offset);
-  return newDate;   
+  newDate.setHours(hours + offset);
+  // var datevalues = [
+  //   zeroPad(newDate.getFullYear(),1000),
+  //   zeroPad(newDate.getMonth()+1,10),
+  //   zeroPad(newDate.getDate(),10),
+  //   zeroPad(newDate.getHours(),10),
+  //   zeroPad(newDate.getMinutes(),10),
+  //   zeroPad(newDate.getSeconds(),10)
+  // ];
+  var dateString = newDate.getFullYear() +"/"+ newDate.getMonth()+1 + "/"+ newDate.getDate() 
+    + "/"+ newDate.getHours()+ "/"+ newDate.getMinutes() + "/"+ newDate.getSeconds();
+  return dateString;
+  // return datevalues.join('/');
 }
 
 // routes will go here

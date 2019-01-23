@@ -195,7 +195,10 @@ function generatePaperTable(projectName, data, labels) {
           dataLine += "<td "+"><a href=\"detail.html?proj="+projectName+"&id="+(_paperID+"")+"\">link</a></td>";
         else
         {
-          dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ data[i][k] + "</div><br>" + getUpdateButton(projectName, "paper",id,label)+"</td>";
+          if(label =='timestamp') {
+            dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ convertUTCDateToLocalDate(data[i][k]) + "</div><br>" + getUpdateButton(projectName, "paper",id,label)+"</td>";
+          }
+          else dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ data[i][k] + "</div><br>" + getUpdateButton(projectName, "paper",id,label)+"</td>";
           //console.log( data[i][k]);
         }
 
@@ -209,6 +212,19 @@ function generatePaperTable(projectName, data, labels) {
   return result + "</table>";
 }
 
+function convertUTCDateToLocalDate(string) {
+  console.log(string);
+  var timestamp = string.split('/');
+  var date = new Date(timestamp[0], timestamp[1], timestamp[2], timestamp[3], timestamp[4], timestamp[5]);
+
+  var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+  
+  var offset = date.getTimezoneOffset() / 60;
+  // console.log(offset);
+  var hours = date.getHours();
+  newDate.setHours(hours - offset);
+  return newDate;   
+}
 function getPaperTags(index){
   var paperDetail = "";
   if(tagArray[index]!=undefined && tagArray[index].length!=undefined){
