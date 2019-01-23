@@ -11,6 +11,7 @@
 <body>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <script src="js/csvParser.js"></script>
   <script src="js/index.js"></script>
 
   <center>
@@ -19,10 +20,9 @@
     <h2>Welcome, <div id="user" contenteditable="true"></div></h2>
   </div>
 
-<h2><a href="share.html?proj=sample">Sample</a></h2>
+<section id="projectList"></section>
 <script>
 var userEntry = document.getElementById("user");
-console.log(getValueFromLS());
 userEntry.innerHTML = ""+getValueFromLS();
 
 $('div[contenteditable=true]').keydown(function(e) {
@@ -36,7 +36,6 @@ $('div[contenteditable=true]').keydown(function(e) {
      var value = userEntry.textContent;
      setValueToLS(value);
      $(this).blur();
-     console.log(value);
    }
  });
 
