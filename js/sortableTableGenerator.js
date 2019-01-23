@@ -118,19 +118,40 @@ function passNewEntryParameter(projectName, type){
   // get values from using jquery
   var headers = ['id'];
   var data = [99999];
-  $(".new_entry").each(function(){
-    var tdElements = $(this).find('textarea');
-    if (tdElements.length>1){
-      for(var i=0; i<tdElements.length;i++){
-        headers.push(tdElements[i].id.split("_").pop());
-        data.push($("#"+tdElements[i].id).val());
-      }
-    }
+
+  $("#submit_").click(function(e) {
+    e.preventDefault();
+    var title_ = $("#new_paper_title").val();
+    var year_ = $("#new_paper_year").val();
+    var journal_ = $("#new_paper_journalconference").val();
+    var author_ = $("#new_paper_author").val();
+    var keyword_ = $("#new_paper_keyword").val();
+    var quality_ = $("#new_paper_quality").val();
+    var timestamp_ = $("#new_paper_timestamp").val();
+    var contributor_ = $("#new_paper_contributor").val();
+    var link_ = $("#new_paper_link").val();
+    if (!(title_ == '' || year_ == '' || journal_ == ''|| author_ == ''|| keyword_ == ''|| quality_ == ''|| timestamp_ == ''|| contributor_ == ''|| link_ == '')) {
+      $(".new_entry").each(function(){
+        var tdElements = $(this).find('textarea');
+        if (tdElements.length>1){
+          for(var i=0; i<tdElements.length;i++){
+            headers.push(tdElements[i].id.split("_").pop());
+            data.push($("#"+tdElements[i].id).val());
+          }
+        }
+
 
       });
 
-  //console.log(createNewEntryParameters(headers,data));
-  window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
+      //console.log(createNewEntryParameters(headers,data));
+      window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
+
+  } else {
+      console.log("fill more");
+      //alert("Please Fill All Fields.");
+    }
+  });
+
 }
 
 function getUUID(type, id, label){
@@ -168,7 +189,8 @@ function generatePaperTable(projectName, data, labels) {
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
   result += "</tr>";
-  var submitButton = "<button onclick=\"passNewEntryParameter('"+projectName+"','paper')\">Submit</button>";
+  var submitButton = "<button id=\"submit_\" onclick=\"passNewEntryParameter('paper')\">Submit</button>";
+
   result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
 
   var _paperID = -1;
