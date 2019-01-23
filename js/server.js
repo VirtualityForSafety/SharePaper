@@ -13,6 +13,8 @@ function zeroPad(nr,base){
 
 function getCurrentTime(){
   var date = new Date();
+  //date = convertUTCDateToLocalDate(date);
+  console.log(date.toString());
   var datevalues = [
    zeroPad(date.getFullYear(),1000),
    zeroPad(date.getMonth()+1,10),
@@ -21,7 +23,15 @@ function getCurrentTime(){
    zeroPad(date.getMinutes(),10),
    zeroPad(date.getSeconds(),10)
 ];
-  return datevalues.join('/');
+  return date.toString();
+}
+
+function convertUTCDateToLocalDate(date) {
+  var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+  var offset = date.getTimezoneOffset() / 60;
+  var hours = date.getHours();
+  newDate.setHours(hours - offset);
+  return newDate;   
 }
 
 // routes will go here
@@ -33,7 +43,7 @@ app.get('/:type', function(req, res) {
     var tag_comment = req.param('comment');
     var tag_tag = req.param('tag');
     var tag_contributor = req.param('contributor');
-    var tag_timestamp = getCurrentTime();
+    var paper_timestamp = getCurrentTime();
     var tag_paperID = req.param('paperid');
     var passedParam = [tag_id, tag_section, tag_comment, tag_tag, tag_contributor, tag_timestamp, tag_paperID];
     csvFileManager.update(projectName, 'tag',passedParam);
