@@ -13,7 +13,7 @@ function zeroPad(nr,base){
 
 function getCurrentTime(){
   var date = new Date();
-  //date = convertUTCDateToLocalDate(date);
+  var localDate = convertUTCDateToLocalDate(date);
   console.log(date.toString());
   var datevalues = [
    zeroPad(date.getFullYear(),1000),
@@ -23,7 +23,7 @@ function getCurrentTime(){
    zeroPad(date.getMinutes(),10),
    zeroPad(date.getSeconds(),10)
 ];
-  return date.toString();
+  return date.toString() + localDate.toString();
 }
 
 function convertUTCDateToLocalDate(date) {
