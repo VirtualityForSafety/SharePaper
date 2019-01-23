@@ -1,0 +1,19 @@
+ID,Group,Name,Description,Value,Maintainer
+1,Paper,ID,ID represents the UUID of the paper. It is hidden by default.,,default
+2,Paper,Title,Title indicates the title of the paper.,,default
+3,Paper,Year,Year indicates the year in which the article was published.,,default
+4,Paper,Journal/Conference,Journal/Conference represents the journal or conference in which the article was published.,,default
+5,Paper,Author,Author represents the authors of the paper.,,default
+6,Paper,Keyword,Keyword represents keywords that can summarize the paper.,,default
+7,Paper,Quality,"Quality shows the integrity of the paper, taking into account the structure, writing, result, and impact of the paper.",high/medium/low,default
+8,Paper,Summary,Summary represents an abstract outline of the paper.,,default
+9,Paper,Timestamp,Timestamp represents when the paper was uploaded.,,default
+10,Paper,Contributor,Contributor indicates who uploaded the paper for the first time.,,default
+11,Paper,Link,Link represents a link to download the pdf file.,,default
+12,Tag,ID,ID represents the UUID of the tag. It is hidden by default.,,default
+13,Tag,Section,Section corresponds to sections of the paper related to the tag and the comment.,introduction/related works/method/experiment/result/discussion/conclusion,default
+14,Tag,Comment,Comment represents a comment that you can put directly into a section.,,default
+15,Tag,Tag,Tag represents the context associated with the comment as a word.,,default
+16,Tag,Contributor,Contributor indicates who uploaded the paper for the first time.,,default
+17,Tag,Timestamp,Timestamp represents when the tag was uploaded.,,default
+18,Tag,Paper ID,Paper ID provides a link to the related paper.,,default
