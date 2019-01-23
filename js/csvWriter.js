@@ -72,17 +72,24 @@ function appendToNewFile(fileName, content){
   });
 }
 
+
+String.prototype.allReplace = function(obj) {
+    var retStr = this;
+    for (var x in obj) {
+        retStr = retStr.replace(new RegExp(x, 'g'), obj[x]);
+    }
+    return retStr;
+};
+
 function flatten(dataArray){
   var result=[];
   for(var i=0; i<dataArray.length ; i++){
     if(i>0){
       for(var t=0; t<dataArray[i].length ; t++){
-        console.log(dataArray[0]);
-        console.log(dataArray[0][t]);
         if(dataArray[0][t]=='Summary' || dataArray[0][t]=='Comment' || (dataArray[i][t]+"").includes(','))
         {
-          console.log(dataArray[i][t]);
-            dataArray[i][t] = "'"+dataArray[i][t]+"'";
+            dataArray[i][t] = "\""+dataArray[i][t].allReplace({"'": '', "\"": ''})+"\"";
+            console.log(dataArray[i][t]);
         }
       }
     }
