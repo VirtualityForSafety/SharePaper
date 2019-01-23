@@ -27,7 +27,7 @@ function convertLocalDateToUTCDate(date) {
   var datevalues = [
     zeroPad(newDate.getFullYear(),1000),
     zeroPad(newDate.getMonth()+1,10),
-    zeroPad(newDate.getDate()-1,10),
+    zeroPad(newDate.getDate(),10),
     zeroPad(newDate.getHours(),10),
     zeroPad(newDate.getMinutes(),10),
     zeroPad(newDate.getSeconds(),10)
