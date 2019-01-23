@@ -14,7 +14,6 @@ function zeroPad(nr,base){
 function getCurrentTime(){
   var date = new Date();
   var dateUTC = convertLocalDateToUTCDate(date);
-  //return dateRaw + dateUTC + localDate;
   return dateUTC;
 }
 
@@ -25,18 +24,15 @@ function convertLocalDateToUTCDate(date) {
   console.log(offset);
   var hours = date.getHours();
   newDate.setHours(hours + offset);
-  // var datevalues = [
-  //   zeroPad(newDate.getFullYear(),1000),
-  //   zeroPad(newDate.getMonth()+1,10),
-  //   zeroPad(newDate.getDate(),10),
-  //   zeroPad(newDate.getHours(),10),
-  //   zeroPad(newDate.getMinutes(),10),
-  //   zeroPad(newDate.getSeconds(),10)
-  // ];
-  var dateString = newDate.getFullYear() +"/"+ newDate.getMonth()+1 + "/"+ newDate.getDate() 
-    + "/"+ newDate.getHours()+ "/"+ newDate.getMinutes() + "/"+ newDate.getSeconds();
-  return dateString;
-  // return datevalues.join('/');
+  var datevalues = [
+    zeroPad(newDate.getFullYear(),1000),
+    zeroPad(newDate.getMonth()+1,10),
+    zeroPad(newDate.getDate()-1,10),
+    zeroPad(newDate.getHours(),10),
+    zeroPad(newDate.getMinutes(),10),
+    zeroPad(newDate.getSeconds(),10)
+  ];
+   return datevalues.join('/');
 }
 
 // routes will go here
