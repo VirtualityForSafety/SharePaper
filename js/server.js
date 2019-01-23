@@ -2,7 +2,9 @@
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 1209;
-var writer = require('./writeCSVFile');
+var csvFileManager = require('./csvFileManager');
+var connect = require('connect');
+var serveStatic = require('serve-static');
 
 function zeroPad(nr,base){
   var  len = (String(base).length - String(nr).length)+1;
@@ -34,7 +36,7 @@ app.get('/:type', function(req, res) {
     var tag_timestamp = getCurrentTime();
     var tag_paperID = req.param('paperid');
     var passedParam = [tag_id, tag_section, tag_comment, tag_tag, tag_contributor, tag_timestamp, tag_paperID];
-    writer.write(projectName, 'tag',passedParam);
+    csvFileManager.update(projectName, 'tag',passedParam);
     res.send('Updated successfully! :' + req.params.type+':'+tag_id+'<br>' +tag_section + '<br>' + tag_comment + '<br>' + tag_tag
   + '<br>' + tag_contributor+ '<br>' + tag_timestamp+ '<br>' + tag_paperID+"<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
   }
@@ -53,7 +55,7 @@ app.get('/:type', function(req, res) {
     var paper_link = req.param('link');
     var passedParam = [paper_id, paper_title, paper_year, paper_journalconference, paper_author,
      paper_keyword,paper_quality,paper_summary,paper_timestamp,paper_contributor,paper_link];
-    writer.write(projectName, 'paper',passedParam);
+    csvFileManager.update(projectName, 'paper',passedParam);
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
   }
   else if(req.params.type == 'paperpart' || req.params.type == 'tagpart'){
@@ -62,13 +64,25 @@ app.get('/:type', function(req, res) {
     var data_id = req.param('id');
     var data_value = req.param('value');
     var passedParam = [data_id, data_type, data_value];
-    writer.write(projectName, req.params.type, passedParam);
+    csvFileManager.update(projectName, req.params.type, passedParam);
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
+  }
+  else if(req.params.type == 'project'){
+    var projectName = req.param('proj');
+    var projectDescription = req.param('desc');
+    var result = csvFileManager.add(projectName, projectDescription);
+    if(result<0){
+      res.send('Failed to create project <b>'+projectName+"</b><br><b>"+projectName + '</b> project already exists.');
+    }
+    else if(result ==0){
+      res.send('Failed to create project '+projectName);
+    }
+    else{
+      res.send(projectName + ' succesfully created!');
+    }
   }
 });
 
-var connect = require('connect');
-var serveStatic = require('serve-static');
 connect().use(serveStatic("./")).listen(4000, function(){
   // start the server
   app.listen(port);

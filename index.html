@@ -86,9 +86,8 @@
 
   <center>
 <h1>SharePaper</h1>
-<div class="small-container">
-    <h2>Welcome, <div id="user" contenteditable="true"></div></h2>
-  </div>
+<h2>Welcome, <div id="user" contenteditable="true"></div></h2>
+
 
 <section id="projectList"></section>
 <script>
@@ -120,21 +119,33 @@ forked from <a href="https://github.com/VirtualityForSafety/SharePaper">SharePap
 powered by <a href="https://github.com/">GitHub</a>
 
 <div class="form-popup" id="myForm">
-  <form action="/action_page.php" class="form-container">
+  <form class="form-container">
     <h1>Add new project</h1>
 
     <label for="projectName"><b>Title</b></label>
-    <input type="text" placeholder="Enter project title" name="projectName" required>
+    <input type="text" placeholder="Enter project title" id="projectName" required>
 
     <label for="projectDescription"><b>Description</b></label>
-    <input type="text" placeholder="Enter description" name="projectDescription" required>
+    <input type="text" placeholder="Enter description" id="projectDescription" required>
 
-    <button type="submit" class="btn">Create</button>
+    <button type="submit" onclick="passProjectParam()" class="btn">Create</button>
     <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
   </form>
 </div>
 
 <script>
+
+$("#myForm").submit(function(e) {
+    e.preventDefault();
+    passProjectParam();
+});
+
+function passProjectParam(){
+  var projectName = $('#projectName').val();
+  var projectDescription = $('#projectDescription').val();
+  window.location.href="http://localhost:1209/project?proj="+projectName+"&desc="+projectDescription;
+}
+
 function openForm() {
   document.getElementById("myForm").style.display = "block";
 }
