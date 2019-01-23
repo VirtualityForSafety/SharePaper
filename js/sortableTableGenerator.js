@@ -212,18 +212,26 @@ function generatePaperTable(projectName, data, labels) {
   return result + "</table>";
 }
 
+function zeroPad(nr,base){
+  var  len = (String(base).length - String(nr).length)+1;
+  return len > 0? new Array(len).join('0')+nr : nr;
+}
+
 function convertUTCDateToLocalDate(string) {
   console.log(string);
   var timestamp = string.split('/');
-  var date = new Date(timestamp[0], timestamp[1], timestamp[2], timestamp[3], timestamp[4], timestamp[5]);
-  var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
-  var offset = date.getTimezoneOffset() / 60;
-  var hours = date.getHours();
-  newDate.setHours(hours - offset);
-  var dateString = newDate.getFullYear() +"/"+ newDate.getMonth()+1 + "/"+ newDate.getDate() 
-  + "/"+ newDate.getHours()+ "/"+ newDate.getMinutes() + "/"+ newDate.getSeconds();
-  //return newDate;
-  return dateString;   
+  var date = new Date(Number(timestamp[0]), Number(timestamp[1]-1), Number(timestamp[2]), Number(timestamp[3])+2, Number(timestamp[4]), Number(timestamp[5]));
+  var newDate = new Date(date.getTime() - date.getTimezoneOffset()*60*1000);
+  var datevalues = [
+    zeroPad(newDate.getFullYear(),1000),
+    zeroPad(newDate.getMonth()+1,10),
+    zeroPad(newDate.getDate(),10),
+    zeroPad(newDate.getHours(),10),
+    zeroPad(newDate.getMinutes(),10),
+    zeroPad(newDate.getSeconds(),10)
+  ];
+  console.log(datevalues)
+  return datevalues.join('/');
 }
 
 function getPaperTags(index){
