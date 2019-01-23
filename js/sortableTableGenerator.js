@@ -164,6 +164,10 @@ function generatePaperTable(data, labels) {
   result += "<tr class=\"new_entry\">";
   //*
   for(var k=0; k<headers.length-1; k++){
+    if(headers[k+1]=='link'){
+      result+="<td><button id=add_link onclick=\"fileup()\">add_paper</button><td>";
+      continue;
+    }
     result +="<td><textarea id=\"new_paper_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
@@ -208,7 +212,9 @@ function generatePaperTable(data, labels) {
   //*/
   return result + "</table>";
 }
+function fileup(){
 
+}
 function getPaperTags(index){
   var paperDetail = "";
   if(tagArray[index]!=undefined && tagArray[index].length!=undefined){
