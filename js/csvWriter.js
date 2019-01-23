@@ -80,7 +80,10 @@ function flatten(dataArray){
         console.log(dataArray[0]);
         console.log(dataArray[0][t]);
         if(dataArray[0][t]=='Summary' || dataArray[0][t]=='Comment' || (dataArray[i][t]+"").includes(','))
-          dataArray[i][t] = "\""+dataArray[i][t]+"\"";
+        {
+          console.log(dataArray[i][t]);
+            dataArray[i][t] = "'"+dataArray[i][t]+"'";
+        }
       }
     }
     result.push(dataArray[i].join(","));

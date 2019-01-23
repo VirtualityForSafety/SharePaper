@@ -109,8 +109,12 @@ function checkUpdated(dateString){
 
 function createNewEntryParameters(headers, data){
   var result ="";
-  for (var i=0 ; i<headers.length ; i++)
-    result+= headers[i] + "=" + data[i]+"&";
+  for (var i=0 ; i<headers.length ; i++){
+    if(i==0)
+      result+= headers[i] + "=" + data[i]+"&";
+    else
+      result+= headers[i] + "='" + data[i]+"'&";
+  }
   return result;
 }
 
@@ -127,8 +131,7 @@ function passNewEntryParameter(projectName, type){
       }
     }
 
-      });
-
+    });
   //console.log(createNewEntryParameters(headers,data));
   window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
 }
@@ -142,6 +145,7 @@ function getUpdateButton(projectName, type, id, label){
 }
 
 function generatePaperTable(projectName, data, labels) {
+  console.log(data);
   //var result = "<table id=\"test\"><tbody><tr class=\"clickable\"><td>Paper info</td><td>Paper info</td><td>Paper info</td></tr><tr class=\"content\"><td colspan=3>Paper detail</td></tr></tbody></table><table id=\"paperTable\"><tr>";
   var result = "<table id=\"paperTable\"><tr>";
   var headers = [];
@@ -183,6 +187,7 @@ function generatePaperTable(projectName, data, labels) {
     for(var k=0; k<data[i].length ; k++){
 
       var label = headers[k];
+      console.log(data[i][k]);
       if(k==0){
         _paperID = data[i][k];
         dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
