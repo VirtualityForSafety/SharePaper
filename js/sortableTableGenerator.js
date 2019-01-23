@@ -216,15 +216,16 @@ function convertUTCDateToLocalDate(string) {
   console.log(string);
   var timestamp = string.split('/');
   var date = new Date(timestamp[0], timestamp[1], timestamp[2], timestamp[3], timestamp[4], timestamp[5]);
-
   var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
-  
   var offset = date.getTimezoneOffset() / 60;
-  // console.log(offset);
   var hours = date.getHours();
   newDate.setHours(hours - offset);
-  return newDate;   
+  var dateString = newDate.getFullYear() +"/"+ newDate.getMonth()+1 + "/"+ newDate.getDate() 
+  + "/"+ newDate.getHours()+ "/"+ newDate.getMinutes() + "/"+ newDate.getSeconds();
+  //return newDate;
+  return dateString;   
 }
+
 function getPaperTags(index){
   var paperDetail = "";
   if(tagArray[index]!=undefined && tagArray[index].length!=undefined){
