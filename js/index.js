@@ -18,6 +18,7 @@ function getProject(csvData){
   for(var i=1 ; i<data.length ; i++){
     result += "<tr><td><div OnClick=\"location.href='share.html?proj="+getRawText(data[i][1])+"'\"><h3>"+data[i][1]+"</h3>"+data[i][2]+"</td></div></tr>";
   }
+  result += "<tr><td><center><div onclick=\"openForm()\"><h2>+</h2></center></td></div></tr>";
   result += "</table>";
   return result;
 }

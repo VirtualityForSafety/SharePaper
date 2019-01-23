@@ -75,6 +75,8 @@ function processCSVData(allText) {
         },[]);
 
     }
+    if(uniq==undefined)
+      return result;
     for(var k=0; k<uniq.length; k++){
 
         subresult+= "<button class=\"tag\" onclick=\"toggle_by_class('_"+uniq[k].replace(" ","_")+"')\">" + uniq[k] + "</button>";
