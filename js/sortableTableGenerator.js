@@ -199,7 +199,6 @@ function generatePaperTable(projectName, data, labels) {
             dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ convertUTCDateToLocalDate(data[i][k]) + "</div><br>" + getUpdateButton(projectName, "paper",id,label)+"</td>";
           }
           else dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ data[i][k] + "</div><br>" + getUpdateButton(projectName, "paper",id,label)+"</td>";
-          //console.log( data[i][k]);
         }
 
       }
@@ -218,12 +217,9 @@ function zeroPad(nr,base){
 }
 
 function convertUTCDateToLocalDate(string) {
-  console.log(string);
   var timestamp = string.split('/');
   var date = new Date(Date.UTC(Number(timestamp[0]), Number(timestamp[1]-1), Number(timestamp[2]), 
     Number(timestamp[3]), Number(timestamp[4]), Number(timestamp[5])));
-  console.log(date.toString());
-  console.log(Number(date.getTime()) - date.getTimezoneOffset()*60*1000);
   var datevalues = [
     zeroPad(date.getFullYear(),1000),
     zeroPad(date.getMonth()+1,10),
@@ -232,7 +228,6 @@ function convertUTCDateToLocalDate(string) {
     zeroPad(date.getMinutes(),10),
     zeroPad(date.getSeconds(),10)
   ];
-  console.log(datevalues)
   return datevalues.join('/');
 }
 

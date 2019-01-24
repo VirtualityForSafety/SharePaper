@@ -19,9 +19,7 @@ function getCurrentTime(){
 
 function convertLocalDateToUTCDate(date) {
   var newDate = new Date(date.getTime()-date.getTimezoneOffset()*60*1000);
-  
   var offset = date.getTimezoneOffset() / 60;
-  console.log(offset);
   var hours = date.getHours();
   newDate.setHours(hours + offset);
   var datevalues = [
@@ -33,8 +31,6 @@ function convertLocalDateToUTCDate(date) {
     zeroPad(newDate.getSeconds(),10)
   ];
    return datevalues.join('/');
-  //return newDate;
-  return dateString; 
 }
 
 // routes will go here
