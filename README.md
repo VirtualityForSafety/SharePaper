@@ -26,9 +26,9 @@ The project was initiated by [Jinki Jung](https://github.com/jinkijung), and the
  - A demo video will be posted.
 
 ## Contributor
- - [Soyeon Kim](https://github.com/soykim314): data filter implementation by tag
- - [Sua Lee](https://github.com/otterlee): 'Paper' page interaction implementation
- - [Sangho Lee](https://github.com/kimmydkemf): sorting implementation
+ - [Soyeon Kim](https://github.com/soykim314): data filtering and integrity
+ - [Sua Lee](https://github.com/otterlee): interactive table and timezone converting
+ - [Sangho Lee](https://github.com/kimmydkemf): data sorting and file I/O
  - [Jinki Jung](https://github.com/jinkijung): frameworking and refactoring
 
 ## Special thanks to

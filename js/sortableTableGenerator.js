@@ -107,31 +107,7 @@ function checkUpdated(dateString){
 
 //////////////////////////////////// paper part ////////////////////////////////////
 
-function createNewEntryParameters(headers, data){
-  var result ="";
-  for (var i=0 ; i<headers.length ; i++)
-    result+= headers[i] + "=" + data[i]+"&";
-  return result;
-}
 
-function passNewEntryParameter(projectName, type){
-  // get values from using jquery
-  var headers = ['id'];
-  var data = [99999];
-  $(".new_entry").each(function(){
-    var tdElements = $(this).find('textarea');
-    if (tdElements.length>1){
-      for(var i=0; i<tdElements.length;i++){
-        headers.push(tdElements[i].id.split("_").pop());
-        data.push($("#"+tdElements[i].id).val());
-      }
-    }
-
-      });
-
-  //console.log(createNewEntryParameters(headers,data));
-  window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
-}
 
 function getUUID(type, id, label){
   return type+"_"+id+"_"+label;
@@ -142,6 +118,7 @@ function getUpdateButton(projectName, type, id, label){
 }
 
 function generatePaperTable(projectName, data, labels) {
+  console.log(data);
   //var result = "<table id=\"test\"><tbody><tr class=\"clickable\"><td>Paper info</td><td>Paper info</td><td>Paper info</td></tr><tr class=\"content\"><td colspan=3>Paper detail</td></tr></tbody></table><table id=\"paperTable\"><tr>";
   var result = "<table id=\"paperTable\"><tr>";
   var headers = [];
@@ -149,6 +126,7 @@ function generatePaperTable(projectName, data, labels) {
     headers.push((data[0][i]+"").replace(/ /g,"").replace("/","").toLowerCase());
   var titleIndex = headers.indexOf("title");
   var dateIndex = headers.indexOf("timestamp");
+  var contributorIndex = headers.indexOf("contributor");
 
   for( var k=0; k<data[0].length ; k++){
     if(k==0){
@@ -164,7 +142,13 @@ function generatePaperTable(projectName, data, labels) {
   result += "<tr class=\"new_entry\">";
   //*
   for(var k=0; k<headers.length-1; k++){
-    result +="<td><textarea id=\"new_paper_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
+    var textValue="";
+    if(k+1==contributorIndex)
+      result +="<td><textarea id=\"new_paper_"+headers[k+1]+"\" cols=\"20\">"+getValueFromLS()+"</textarea></td>";
+    else if(k+1==dateIndex)
+      result +="<td><textarea style=\"display:none;\" id=\"new_paper_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
+    else
+      result +="<td><textarea id=\"new_paper_"+headers[k+1]+"\" cols=\"20\">"+textValue+"</textarea></td>";
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
   result += "</tr>";
@@ -183,6 +167,7 @@ function generatePaperTable(projectName, data, labels) {
     for(var k=0; k<data[i].length ; k++){
 
       var label = headers[k];
+      console.log(data[i][k]);
       if(k==0){
         _paperID = data[i][k];
         dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
@@ -295,6 +280,7 @@ function generateTagTable(projectName, data, labels) {
     var dateIndex = headers.indexOf("timestamp");
     var commentIndex = headers.indexOf("comment");
     var tagIndex = headers.indexOf("tag");
+    var contributorIndex = headers.indexOf("contributor");
     for( var k=0; k<data[0].length ; k++){
       if(k==0){
           result+= "<th style=\"display:none;\">"+ data[0][k] + "</th>";
@@ -303,13 +289,19 @@ function generateTagTable(projectName, data, labels) {
           result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",3)\">"+ data[0][k] + "<span class=\"description\">"+labelDescription[data[0][k]]+"</span></button></th>";
           }
       }
+
     result += "</tr>";
 
     // for new entry
     result += "<tr class=\"new_entry\">";
     //*
     for(var k=0; k<headers.length-1; k++){
-      result +="<td><textarea id=\"new_tag_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
+      if(k+1==dateIndex)
+        result +="<td><textarea style=\"display:none;\" id=\"new_tag_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
+      else if(k+1==contributorIndex)
+        result +="<td><textarea id=\"new_tag_"+headers[k+1]+"\" cols=\"20\">"+getValueFromLS()+"</textarea></td>";
+      else
+        result +="<td><textarea id=\"new_tag_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
       // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
     }
     result += "</tr>";

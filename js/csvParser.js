@@ -45,12 +45,26 @@ function countPattern(string, subString, allowOverlapping) {
     return n;
 }
 
+function strip(str, remove) {
+  while (str.length > 0 && remove.indexOf(str.charAt(0)) != -1) {
+    str = str.substr(1);
+  }
+  while (str.length > 0 && remove.indexOf(str.charAt(str.length - 1)) != -1) {
+    str = str.substr(0, str.length - 1);
+  }
+  return str;
+}
+
 function parseLine(oneLine){
   var parsedData = [];
   var item="";
   var integrating = false;
     var data = oneLine.split(',');
     for (var i=0; i<data.length; i++){
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      data[i] = strip(data[i], "'"); //element validation
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       if(!integrating)
         item = data[i];
       else {
@@ -76,7 +90,7 @@ function parseLine(oneLine){
         }
       }
       if(!integrating)
-        parsedData.push(item);
+        parsedData.push(strip(item,"'"));
     }
     return parsedData;
 }

@@ -42,7 +42,7 @@ app.get('/:type', function(req, res) {
     var tag_comment = req.param('comment');
     var tag_tag = req.param('tag');
     var tag_contributor = req.param('contributor');
-    var paper_timestamp = getCurrentTime();
+    var tag_timestamp = getCurrentTime();
     var tag_paperID = req.param('paperid');
     var passedParam = [tag_id, tag_section, tag_comment, tag_tag, tag_contributor, tag_timestamp, tag_paperID];
     csvFileManager.update(projectName, 'tag',passedParam);

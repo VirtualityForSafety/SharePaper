@@ -152,42 +152,6 @@ function generatePaperPart(projectName, paperID, paperArray, paperColumns){
   return result + "</table>";
 }
 
-function getNewEntryParameters(tagColumns, item){
-  var result ="";
-  for (var i=0 ; i<tagColumns.length ; i++) {
-        result+= tagColumns[i].replace(/ /g,"").toLowerCase() + "=" + item[i]+"&";
-  }
-  return result;
-}
-
-function getPaperParameters(paperColumns, item){
-  var result ="";
-  var index =0;
-  for (var key in paperColumns) {
-    if (paperColumns.hasOwnProperty(key)) {
-      //id="+tagArray[paperID][i][0]+"&section="+tagArray[paperID][i][1]+"&comment="+tagArray[paperID][i][2]+"&tag="+tagArray[paperID][i][3]+"'";
-
-      result+= key.replace("/","").toLowerCase() + "=" + item[index]+"&";
-      index+=1;
-    }
-  }
-  return result;
-}
-
-function getTagParameters(tagColumns, item){
-  var result ="";
-  var index =0;
-  for (var key in tagColumns) {
-    if (tagColumns.hasOwnProperty(key)) {
-      //id="+tagArray[paperID][i][0]+"&section="+tagArray[paperID][i][1]+"&comment="+tagArray[paperID][i][2]+"&tag="+tagArray[paperID][i][3]+"'";
-
-      result+= key.replace(/ /g,"").toLowerCase() + "=" + item[index]+"&";
-      index+=1;
-    }
-  }
-  return result;
-}
-
 function generateTagPart(projectName, paperID, tagArray, tagColumns){
   var result = "<table id=\"tagTable\"><tr>";
   // for header
@@ -195,7 +159,7 @@ function generateTagPart(projectName, paperID, tagArray, tagColumns){
   var headers = [];
   for (var key in tagColumns) {
     if (tagColumns.hasOwnProperty(key)) {
-      headers.push(key+"");
+      headers.push((key+"").replace(/ /g,"").replace("/","").toLowerCase());
       columnLength += 1;
       if(columnLength==1)
         result+= "<th style=\"display:none;\">"+ key + "</th>";
@@ -206,12 +170,22 @@ function generateTagPart(projectName, paperID, tagArray, tagColumns){
   }
   result += "</tr>";
 
+  var contributorIndex = headers.indexOf("contributor");
+  var dateIndex = headers.indexOf("timestamp");
+  var paperIDIndex = headers.indexOf("paperid");
   // for new entry
   result += "<tr class=\"new_entry\">";
   //*
   for(var k=0; k<columnLength-1; k++){
-    var label = headers[k+1].replace(/ /g,"").replace("/","").toLowerCase();
-    result +="<td><textarea id=\"new_tag_"+label+"\" cols=\"20\"></textarea></td>";
+    var label = headers[k+1];
+    if (k+1==contributorIndex)
+      result +="<td><textarea id=\"new_tag_"+label+"\" cols=\"20\">"+getValueFromLS()+"</textarea></td>";
+    else if(k+1==dateIndex)
+      result +="<td><textarea style=\"display:none;\" id=\"new_tag_"+label+"\" cols=\"20\"></textarea></td>";
+    else if(k+1==paperIDIndex)
+      result +="<td><textarea id=\"new_tag_"+label+"\" cols=\"20\">"+paperID+"</textarea></td>";
+    else
+      result +="<td><textarea id=\"new_tag_"+label+"\" cols=\"20\"></textarea></td>";
   }
   //*/
   result += "</tr>";
@@ -225,57 +199,11 @@ function generateTagPart(projectName, paperID, tagArray, tagColumns){
       result += "<tr>";
       var id = tagArray[paperID][i][0];
       for(var k=1; k<tagArray[paperID][i].length ; k++){
-        var label = headers[k].replace(/ /g,"").replace("/","").toLowerCase();
-        //result +=
-
+        var label = headers[k];
         result +="<td><div id="+getUUID("tag",id,label)+" contenteditable=\"true\">"+tagArray[paperID][i][k]+"</div><br>" + getUpdateButton(projectName, "tag",id,label)+"</td>";
       }
       result += "</tr>";
     }
   }
   return result + "</table>";
-}
-
-function createNewEntryParameters(headers, data){
-  var result ="";
-  for (var i=0 ; i<headers.length ; i++)
-    result+= headers[i] + "=" + data[i]+"&";
-  return result;
-}
-
-function passNewEntryParameter(projectName, type){
-  // get values from using jquery
-  var headers = ['id'];
-  var data = [99999];
-  $(".new_entry").each(function(){
-    var tdElements = $(this).find('textarea');
-    if (tdElements.length>1){
-      for(var i=0; i<tdElements.length;i++){
-        headers.push(tdElements[i].id.split("_").pop());
-        data.push($("#"+tdElements[i].id).val());
-      }
-    }
-  });
-  //console.log(headers);
-  //console.log(createNewEntryParameters(headers,data));
-  window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
-}
-
-function passOneParameter(projectName, divElement){
-  partialUpdate(projectName, $("#"+divElement.id));
-
-  // overall updates version
-  /*
-  var paperData = [];
-  for (var key in paperColumns) {
-    if (paperColumns.hasOwnProperty(key)) {
-      var parameterName = '#paper_'+key.replace("/","").toLowerCase();
-      paperData.push($(parameterName).text());
-    }
-  }
-
-  var link = "window.location.href='http://localhost:1209/paper?"+getPaperParameters(paperColumns, paperData)+"'";
-  */
-  //console.log(link);
-  //window.location.href='http://localhost:1209/paper?'+getPaperParameters(paperColumns, paperData);
 }
