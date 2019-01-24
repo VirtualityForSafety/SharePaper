@@ -126,34 +126,34 @@ function passNewEntryParameter(projectName, type){
     if (tdElements.length>1){
       for(var i=0; i<tdElements.length;i++){
         headers.push(tdElements[i].id.split("_").pop());
-
-      if(!($("#"+tdElements[i].id).val() == "")){
-        data.push($("#"+tdElements[i].id).val());
+      if(tdElements[i].id=='timestamp'){
+        data.push("time");
+      }
+      else{
+        if(!($("#"+tdElements[i].id).val() == "")){
+          data.push($("#"+tdElements[i].id).val());
+        }
       }
 
       }
     }
 
   });
-  if(data.length == headers.length){
+  if(checkArray(data.length == headers.length)){
     window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
-    //console.log("filled all");
-
   }else{
-  console.log("fill more");
+    alert("Please fill all fields.");
   }
 }
 
 
 function checkArray(my_arr, comp_arr){
    //for(var i=0;i<my_arr.length;i++){
-     if(!(my_arr.length = comp_arr.length)){
-       console.log(false);
+     if(!(my_arr.length == comp_arr.length)){
        return false;
      }
    //}
    return true;
-   console.log(true);
 }
 
 function getUUID(type, id, label){
