@@ -24,15 +24,16 @@ function convertLocalDateToUTCDate(date) {
   console.log(offset);
   var hours = date.getHours();
   newDate.setHours(hours + offset);
-  var datevalues = [
-    zeroPad(newDate.getFullYear(),1000),
-    zeroPad(newDate.getMonth()+1,10),
-    zeroPad(newDate.getDate(),10),
-    zeroPad(newDate.getHours(),10),
-    zeroPad(newDate.getMinutes(),10),
-    zeroPad(newDate.getSeconds(),10)
-  ];
-   return datevalues.join('/');
+  // var datevalues = [
+  //   zeroPad(newDate.getFullYear(),1000),
+  //   zeroPad(newDate.getMonth()+1,10),
+  //   zeroPad(newDate.getDate(),10),
+  //   zeroPad(newDate.getHours(),10),
+  //   zeroPad(newDate.getMinutes(),10),
+  //   zeroPad(newDate.getSeconds(),10)
+  // ];
+  //  return datevalues.join('/');
+  return newDate.getTime();
 }
 
 // routes will go here

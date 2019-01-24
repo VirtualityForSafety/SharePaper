@@ -217,12 +217,14 @@ function zeroPad(nr,base){
   return len > 0? new Array(len).join('0')+nr : nr;
 }
 
-function convertUTCDateToLocalDate(string) {
-  console.log(string);
-  var timestamp = string.split('/');
-  var date = new Date(Number(timestamp[0]), Number(timestamp[1]-1), Number(timestamp[2]), Number(timestamp[3]), Number(timestamp[4]), Number(timestamp[5]));
-  console.log(date.toString())
-  var newDate = new Date(date.getTime() - date.getTimezoneOffset()*60*1000);
+function convertUTCDateToLocalDate(timestamp) {
+  console.log(timestamp);
+  // var timestamp = string.split('/');
+  // var date = new Date(Number(timestamp[0]), Number(timestamp[1]-1), Number(timestamp[2]), Number(timestamp[3]), Number(timestamp[4]), Number(timestamp[5]));
+  var date = new Date(Number(timestamp));
+   console.log(date.toString())
+  var newDate = new Date(Number(timestamp) - date.getTimezoneOffset()*60*1000);
+  console.log(newDate.toString());
   var datevalues = [
     zeroPad(newDate.getFullYear(),1000),
     zeroPad(newDate.getMonth()+1,10),
