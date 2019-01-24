@@ -220,8 +220,8 @@ function zeroPad(nr,base){
 function convertUTCDateToLocalDate(string) {
   console.log(string);
   var timestamp = string.split('/');
-  console.log("timestamp[3] : "+Number(timestamp[3]));
   var date = new Date(Number(timestamp[0]), Number(timestamp[1]-1), Number(timestamp[2]), Number(timestamp[3]), Number(timestamp[4]), Number(timestamp[5]));
+  console.log(date.toString())
   var newDate = new Date(date.getTime() - date.getTimezoneOffset()*60*1000);
   var datevalues = [
     zeroPad(newDate.getFullYear(),1000),
@@ -231,7 +231,7 @@ function convertUTCDateToLocalDate(string) {
     zeroPad(newDate.getMinutes(),10),
     zeroPad(newDate.getSeconds(),10)
   ];
-  console.log(datevalues)
+  // console.log(datevalues)
   return datevalues.join('/');
 }
 
