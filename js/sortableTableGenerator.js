@@ -106,8 +106,54 @@ function checkUpdated(dateString){
 }
 
 //////////////////////////////////// paper part ////////////////////////////////////
+function createNewEntryParameters(headers, data){
+  var result ="";
+  for (var i=0 ; i<headers.length ; i++)
+    result+= headers[i] + "=" + data[i]+"&";
+  return result;
+}
 
 
+
+function passNewEntryParameter(projectName, type){
+  // get values from using jquery
+  var headers = ['id'];
+  var data = [9999];
+
+  $(".new_entry").each(function(){
+    var tdElements = $(this).find('textarea');
+    if (tdElements.length>1){
+      for(var i=0; i<tdElements.length;i++){
+        headers.push(tdElements[i].id.split("_").pop());
+      if(tdElements[i].id=='timestamp'){
+        data.push("time");
+      }
+      else{
+        if(!($("#"+tdElements[i].id).val() == "")){
+          data.push($("#"+tdElements[i].id).val());
+        }
+      }
+
+      }
+    }
+
+  });
+  if(checkArray(data.length == headers.length)){
+    window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
+  }else{
+    alert("Please fill all fields.");
+  }
+}
+
+
+function checkArray(my_arr, comp_arr){
+   //for(var i=0;i<my_arr.length;i++){
+     if(!(my_arr.length == comp_arr.length)){
+       return false;
+     }
+   //}
+   return true;
+}
 
 function getUUID(type, id, label){
   return type+"_"+id+"_"+label;
@@ -152,7 +198,8 @@ function generatePaperTable(projectName, data, labels) {
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
   result += "</tr>";
-  var submitButton = "<button onclick=\"passNewEntryParameter('"+projectName+"','paper')\">Submit</button>";
+  var submitButton = "<button id=\"submit_\" onclick=\"passNewEntryParameter('paper')\">Submit</button>";
+
   result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
 
   var _paperID = -1;
