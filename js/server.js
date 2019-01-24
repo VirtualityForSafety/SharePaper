@@ -24,16 +24,17 @@ function convertLocalDateToUTCDate(date) {
   console.log(offset);
   var hours = date.getHours();
   newDate.setHours(hours + offset);
-  // var datevalues = [
-  //   zeroPad(newDate.getFullYear(),1000),
-  //   zeroPad(newDate.getMonth()+1,10),
-  //   zeroPad(newDate.getDate(),10),
-  //   zeroPad(newDate.getHours(),10),
-  //   zeroPad(newDate.getMinutes(),10),
-  //   zeroPad(newDate.getSeconds(),10)
-  // ];
-  //  return datevalues.join('/');
-  return newDate.getTime();
+  var datevalues = [
+    zeroPad(newDate.getFullYear(),1000),
+    zeroPad(newDate.getMonth()+1,10),
+    zeroPad(newDate.getDate()-1,10),
+    zeroPad(newDate.getHours(),10),
+    zeroPad(newDate.getMinutes(),10),
+    zeroPad(newDate.getSeconds(),10)
+  ];
+   return datevalues.join('/');
+  //return newDate;
+  return dateString; 
 }
 
 // routes will go here
@@ -45,7 +46,7 @@ app.get('/:type', function(req, res) {
     var tag_comment = req.param('comment');
     var tag_tag = req.param('tag');
     var tag_contributor = req.param('contributor');
-    var tag_timestamp = getCurrentTime();
+    var paper_timestamp = getCurrentTime();
     var tag_paperID = req.param('paperid');
     var passedParam = [tag_id, tag_section, tag_comment, tag_tag, tag_contributor, tag_timestamp, tag_paperID];
     csvFileManager.update(projectName, 'tag',passedParam);
