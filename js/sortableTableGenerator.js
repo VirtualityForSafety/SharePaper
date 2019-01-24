@@ -114,44 +114,46 @@ function createNewEntryParameters(headers, data){
   return result;
 }
 
+
+
 function passNewEntryParameter(projectName, type){
   // get values from using jquery
   var headers = ['id'];
-  var data = [99999];
+  var data = [9999];
 
-  $("#submit_").click(function(e) {
-    e.preventDefault();
-    var title_ = $("#new_paper_title").val();
-    var year_ = $("#new_paper_year").val();
-    var journal_ = $("#new_paper_journalconference").val();
-    var author_ = $("#new_paper_author").val();
-    var keyword_ = $("#new_paper_keyword").val();
-    var quality_ = $("#new_paper_quality").val();
-    var timestamp_ = $("#new_paper_timestamp").val();
-    var contributor_ = $("#new_paper_contributor").val();
-    var link_ = $("#new_paper_link").val();
-    if (!(title_ == '' || year_ == '' || journal_ == ''|| author_ == ''|| keyword_ == ''|| quality_ == ''|| timestamp_ == ''|| contributor_ == ''|| link_ == '')) {
-      $(".new_entry").each(function(){
-        var tdElements = $(this).find('textarea');
-        if (tdElements.length>1){
-          for(var i=0; i<tdElements.length;i++){
-            headers.push(tdElements[i].id.split("_").pop());
-            data.push($("#"+tdElements[i].id).val());
-          }
-        }
+  $(".new_entry").each(function(){
+    var tdElements = $(this).find('textarea');
+    if (tdElements.length>1){
+      for(var i=0; i<tdElements.length;i++){
+        headers.push(tdElements[i].id.split("_").pop());
 
+      if(!($("#"+tdElements[i].id).val() == "")){
+        data.push($("#"+tdElements[i].id).val());
+      }
 
-      });
-
-      //console.log(createNewEntryParameters(headers,data));
-      window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
-
-  } else {
-      console.log("fill more");
-      //alert("Please Fill All Fields.");
+      }
     }
-  });
 
+  });
+  if(data.length == headers.length){
+    window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
+    //console.log("filled all");
+
+  }else{
+  console.log("fill more");
+  }
+}
+
+
+function checkArray(my_arr, comp_arr){
+   //for(var i=0;i<my_arr.length;i++){
+     if(!(my_arr.length = comp_arr.length)){
+       console.log(false);
+       return false;
+     }
+   //}
+   return true;
+   console.log(true);
 }
 
 function getUUID(type, id, label){
