@@ -173,6 +173,7 @@ function generatePaperTable(projectName, data, labels) {
   var titleIndex = headers.indexOf("title");
   var dateIndex = headers.indexOf("timestamp");
   var contributorIndex = headers.indexOf("contributor");
+  var linkIndex = headers.indexOf('link');
 
   for( var k=0; k<data[0].length ; k++){
     if(k==0){
@@ -193,9 +194,10 @@ function generatePaperTable(projectName, data, labels) {
       result +="<td><textarea id=\"new_paper_"+headers[k+1]+"\" cols=\"20\">"+getValueFromLS()+"</textarea></td>";
     else if(k+1==dateIndex)
       result +="<td><textarea style=\"display:none;\" id=\"new_paper_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
+    else if(k+1==linkIndex)
+      result += "<td><button id=add_link onclick=\"fileup()\">add_paper</button></td>";
     else
       result +="<td><textarea id=\"new_paper_"+headers[k+1]+"\" cols=\"20\">"+textValue+"</textarea></td>";
-    // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
   result += "</tr>";
   var submitButton = "<button id=\"submit_\" onclick=\"passNewEntryParameter('paper')\">Submit</button>";
@@ -214,7 +216,6 @@ function generatePaperTable(projectName, data, labels) {
     for(var k=0; k<data[i].length ; k++){
 
       var label = headers[k];
-      console.log(data[i][k]);
       if(k==0){
         _paperID = data[i][k];
         dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
@@ -250,7 +251,7 @@ function zeroPad(nr,base){
 
 function convertUTCDateToLocalDate(string) {
   var timestamp = string.split('/');
-  var date = new Date(Date.UTC(Number(timestamp[0]), Number(timestamp[1]-1), Number(timestamp[2]), 
+  var date = new Date(Date.UTC(Number(timestamp[0]), Number(timestamp[1]-1), Number(timestamp[2]),
     Number(timestamp[3]), Number(timestamp[4]), Number(timestamp[5])));
   var datevalues = [
     zeroPad(date.getFullYear(),1000),
@@ -261,6 +262,10 @@ function convertUTCDateToLocalDate(string) {
     zeroPad(date.getSeconds(),10)
   ];
   return datevalues.join('/');
+}
+
+function fileup(){
+  console.log("File upload");
 }
 
 function getPaperTags(index){
