@@ -164,7 +164,6 @@ function getUpdateButton(projectName, type, id, label){
 }
 
 function generatePaperTable(projectName, data, labels) {
-  console.log(data);
   //var result = "<table id=\"test\"><tbody><tr class=\"clickable\"><td>Paper info</td><td>Paper info</td><td>Paper info</td></tr><tr class=\"content\"><td colspan=3>Paper detail</td></tr></tbody></table><table id=\"paperTable\"><tr>";
   var result = "<table id=\"paperTable\"><tr>";
   var headers = [];
@@ -243,7 +242,6 @@ function generatePaperTable(projectName, data, labels) {
   //*/
   return result + "</table>";
 }
-function fileup(){
 
 function zeroPad(nr,base){
   var  len = (String(base).length - String(nr).length)+1;
