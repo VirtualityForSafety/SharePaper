@@ -243,6 +243,7 @@ function generatePaperTable(projectName, data, labels) {
   //*/
   return result + "</table>";
 }
+function fileup(){
 
 function zeroPad(nr,base){
   var  len = (String(base).length - String(nr).length)+1;
