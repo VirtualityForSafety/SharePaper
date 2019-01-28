@@ -1,3 +1,5 @@
+const pdfDir = "resources/pdf/";
+
 function getProjectNameFromLink(){
   var element = window.location.href.split('?');
   if(element.length>1){
@@ -141,7 +143,7 @@ function generatePaperPart(projectName, paperID, paperArray, paperColumns){
       var downloadLink = "";
       var label = headers[i].replace("/","").toLowerCase();
       if(i==paperArray[paperID].length-1)
-        downloadLink = "<br><a href=\"resources/"+projectName+"/"+paperArray[paperID][i]+".pdf\" download>download</a>";
+        downloadLink = "<br><a href=\""+pdfDir+paperArray[paperID][i]+".pdf\" download>download</a>";
       if(i==0)
         result +="<div id="+getUUID("paper",paperID,label)+" style=\"display:none;\">"+paperArray[paperID][i]+"</div>" ;
       else

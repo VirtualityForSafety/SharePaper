@@ -19,8 +19,6 @@ module.exports = {
   }
 };
 
-
-
 function copyAndPasteFiles(newDir){
   fs.readdir(templateDir, (err, files) => {
   files.forEach(file => {

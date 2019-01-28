@@ -69,7 +69,7 @@ app.get('/:type', function(req, res) {
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
 
     try{
-      bibGenerator.doi2bib(projectName,paper_title,paper_title);
+      bibGenerator.doi2bib(paper_title,paper_title);
     }
     catch(err){
       console.log("Error");
