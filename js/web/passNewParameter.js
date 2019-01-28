@@ -20,7 +20,7 @@ function passNewEntryParameter(projectName, type){
   });
   //console.log(headers);
   //console.log(createNewEntryParameters(headers,data));
-  if(validateInput(data.length == headers.length)){
+  if(validateInput(data, headers)){
     window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
   }else{
     alert("Please fill all fields.");
