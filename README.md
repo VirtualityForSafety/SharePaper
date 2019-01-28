@@ -1,5 +1,5 @@
 # SharePaper
-SharePaper is an open-source project of a web-based paper repository for a collaborative submission.
+SharePaper is an open-source project of a web-based reference manager for a collaborative submission.
 SharePaper aims to integrate and share multiple authors' thoughts and quotes from various papers.
 Two major features are given from the use of SharePaper:
 - A shared paper repository (as a nature of GitHub repository)
@@ -24,6 +24,9 @@ The project was initiated by [Jinki Jung](https://github.com/jinkijung), and the
 
 ## How to use
  - A demo video will be posted.
+
+## Metadata License
+SharePaper asserts no claims of ownership to individual items of paper metadata and associated files. 
 
 ## Contributor
  - [Soyeon Kim](https://github.com/soykim314): data filtering and integrity
