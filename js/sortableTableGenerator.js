@@ -114,7 +114,6 @@ function getUpdateButton(projectName, type, id, label){
 }
 
 function generatePaperTable(projectName, data, labels) {
-  console.log(data);
   //var result = "<table id=\"test\"><tbody><tr class=\"clickable\"><td>Paper info</td><td>Paper info</td><td>Paper info</td></tr><tr class=\"content\"><td colspan=3>Paper detail</td></tr></tbody></table><table id=\"paperTable\"><tr>";
   var result = "<table id=\"paperTable\"><tr>";
   var headers = [];
@@ -148,7 +147,7 @@ function generatePaperTable(projectName, data, labels) {
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
   result += "</tr>";
-  var submitButton = "<button id=\"submit_\" onclick=\"passNewEntryParameter('paper')\">Submit</button>";
+  var submitButton = "<button id=\"submit_\" onclick=\"passNewEntryParameter('"+projectName+"','paper')\">Submit</button>";
 
   result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
 
@@ -164,7 +163,6 @@ function generatePaperTable(projectName, data, labels) {
     for(var k=0; k<data[i].length ; k++){
 
       var label = headers[k];
-      console.log(data[i][k]);
       if(k==0){
         _paperID = data[i][k];
         dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
