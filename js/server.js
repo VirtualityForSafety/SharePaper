@@ -5,6 +5,7 @@ var port = process.env.PORT || 1209;
 var csvFileManager = require('./csvFileManager');
 var connect = require('connect');
 var serveStatic = require('serve-static');
+var bibGenerator = require('./data/bibGenerator');
 
 function zeroPad(nr,base){
   var  len = (String(base).length - String(nr).length)+1;
@@ -94,6 +95,7 @@ app.get('/:type', function(req, res) {
 
 connect().use(serveStatic("./")).listen(4000, function(){
   // start the server
+  bibGenerator.doi2bib("sample","1","ensuring safety in augmented reality from trade-off between immersion and situation awareness");
   app.listen(port);
   console.log('data server started! At http://localhost:' + port);
     console.log('web server running on 4000...');
