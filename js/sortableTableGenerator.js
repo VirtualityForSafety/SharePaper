@@ -105,56 +105,6 @@ function checkUpdated(dateString){
   else return 0;
 }
 
-//////////////////////////////////// paper part ////////////////////////////////////
-function createNewEntryParameters(headers, data){
-  var result ="";
-  for (var i=0 ; i<headers.length ; i++)
-    result+= headers[i] + "=" + data[i]+"&";
-  return result;
-}
-
-
-
-function passNewEntryParameter(projectName, type){
-  // get values from using jquery
-  var headers = ['id'];
-  var data = [9999];
-
-  $(".new_entry").each(function(){
-    var tdElements = $(this).find('textarea');
-    if (tdElements.length>1){
-      for(var i=0; i<tdElements.length;i++){
-        headers.push(tdElements[i].id.split("_").pop());
-      if(tdElements[i].id=='timestamp'){
-        data.push("time");
-      }
-      else{
-        if(!($("#"+tdElements[i].id).val() == "")){
-          data.push($("#"+tdElements[i].id).val());
-        }
-      }
-
-      }
-    }
-
-  });
-  if(checkArray(data.length == headers.length)){
-    window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
-  }else{
-    alert("Please fill all fields.");
-  }
-}
-
-
-function checkArray(my_arr, comp_arr){
-   //for(var i=0;i<my_arr.length;i++){
-     if(!(my_arr.length == comp_arr.length)){
-       return false;
-     }
-   //}
-   return true;
-}
-
 function getUUID(type, id, label){
   return type+"_"+id+"_"+label;
 }
@@ -250,7 +200,7 @@ function zeroPad(nr,base){
 
 function convertUTCDateToLocalDate(string) {
   var timestamp = string.split('/');
-  var date = new Date(Date.UTC(Number(timestamp[0]), Number(timestamp[1]-1), Number(timestamp[2]), 
+  var date = new Date(Date.UTC(Number(timestamp[0]), Number(timestamp[1]-1), Number(timestamp[2]),
     Number(timestamp[3]), Number(timestamp[4]), Number(timestamp[5])));
   var datevalues = [
     zeroPad(date.getFullYear(),1000),
