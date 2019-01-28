@@ -67,6 +67,7 @@ app.get('/:type', function(req, res) {
      paper_keyword,paper_quality,paper_summary,paper_timestamp,paper_contributor,paper_link];
     csvFileManager.update(projectName, 'paper',passedParam);
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
+    //bibGenerator.doi2bib(projectName,paper_id,paper_title);
   }
   else if(req.params.type == 'paperpart' || req.params.type == 'tagpart'){
     var projectName = req.param('proj');
@@ -95,7 +96,6 @@ app.get('/:type', function(req, res) {
 
 connect().use(serveStatic("./")).listen(4000, function(){
   // start the server
-  bibGenerator.doi2bib("sample","1","ensuring safety in augmented reality from trade-off between immersion and situation awareness");
   app.listen(port);
   console.log('data server started! At http://localhost:' + port);
     console.log('web server running on 4000...');

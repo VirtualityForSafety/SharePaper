@@ -7,7 +7,7 @@ function passNewEntryParameter(projectName, type){
     if (tdElements.length>1){
       for(var i=0; i<tdElements.length;i++){
         headers.push(tdElements[i].id.split("_").pop());
-        if(tdElements[i].id=='timestamp'){
+        if(headers[headers.length-1]=='timestamp'){
           data.push("time");
         }
         else{
@@ -20,7 +20,8 @@ function passNewEntryParameter(projectName, type){
   });
   //console.log(headers);
   //console.log(createNewEntryParameters(headers,data));
-  if(validateInput(data.length == headers.length)){
+  if(validateInput(data, headers)){
+    //console.log('http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data));
     window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
   }else{
     alert("Please fill all fields.");
@@ -44,7 +45,7 @@ function createNewEntryParameters(headers, data){
 
 function validateInput(my_arr, comp_arr){
    //for(var i=0;i<my_arr.length;i++){
-     if(!(my_arr.length == comp_arr.length)){
+     if(!(my_arr.length == comp_arr.length)){ // eliminate timestamp
        return false;
      }
    //}
