@@ -9,16 +9,17 @@ module.exports = {
     if(!creationResult)
       return -1;
     return copyAndPasteFiles(newDir);
-}
+  },
+  createFolder: function (newDir){
+    if (!fs.existsSync(newDir)){
+        fs.mkdirSync(newDir);
+        return true;
+    }
+    else return false;
+  }
 };
 
-function createFolder(newDir){
-  if (!fs.existsSync(newDir)){
-      fs.mkdirSync(newDir);
-      return true;
-  }
-  else return false;
-}
+
 
 function copyAndPasteFiles(newDir){
   fs.readdir(templateDir, (err, files) => {

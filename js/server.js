@@ -5,6 +5,7 @@ var port = process.env.PORT || 1209;
 var csvFileManager = require('./csvFileManager');
 var connect = require('connect');
 var serveStatic = require('serve-static');
+var bibGenerator = require('./data/bibGenerator');
 
 function zeroPad(nr,base){
   var  len = (String(base).length - String(nr).length)+1;
@@ -66,6 +67,13 @@ app.get('/:type', function(req, res) {
      paper_keyword,paper_quality,paper_summary,paper_timestamp,paper_contributor,paper_link];
     csvFileManager.update(projectName, 'paper',passedParam);
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
+
+    try{
+      bibGenerator.doi2bib(projectName,paper_title,paper_title);
+    }
+    catch(err){
+      console.log("Error");
+    }
   }
   else if(req.params.type == 'paperpart' || req.params.type == 'tagpart'){
     var projectName = req.param('proj');

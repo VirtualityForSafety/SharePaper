@@ -3,7 +3,7 @@
 var labelParser = require('./csvParser4Server');
 var dataParser = require('./sortableTableGenerator');
 var dataWriter = require('./csvWriter');
-var projectCreator = require('./addProject');
+var projectCreator = require('./data/addProject');
 var csvReader = require('./csvReader');
 var csvWriter = require('./csvWriter');
 

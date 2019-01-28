@@ -9,7 +9,16 @@ module.exports = {
       data[i] = parseLine(allTextLines[i]);
     }
     return data;
-}
+  },
+  strip: function (str, remove) {
+    while (str.length > 0 && remove.indexOf(str.charAt(0)) != -1) {
+      str = str.substr(1);
+    }
+    while (str.length > 0 && remove.indexOf(str.charAt(str.length - 1)) != -1) {
+      str = str.substr(0, str.length - 1);
+    }
+    return str;
+  }
 };
 
 
