@@ -5,7 +5,7 @@ var templateDir = './metadata/template/';
 module.exports = {
   add: function (projectName) {
     var newDir = dir+projectName+'/';
-    var creationResult = createFolder(newDir);
+    var creationResult = module.exports.createFolder(newDir);
     if(!creationResult)
       return -1;
     return copyAndPasteFiles(newDir);
