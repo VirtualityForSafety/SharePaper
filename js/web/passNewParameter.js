@@ -7,7 +7,7 @@ function passNewEntryParameter(projectName, type){
     if (tdElements.length>1){
       for(var i=0; i<tdElements.length;i++){
         headers.push(tdElements[i].id.split("_").pop());
-        if(tdElements[i].id=='timestamp'){
+        if(headers[headers.length-1]=='timestamp'){
           data.push("time");
         }
         else{
