@@ -11,7 +11,18 @@ module.exports = {
     return copyAndPasteFiles(newDir);
   },
   createFolder: function (newDir){
+    if (newDir == ".")
+      return false;
+    console.log(newDir);
+    if (newDir.endsWith("/"))
+      newDir = newDir.substring(0,newDir.length-1);
+    console.log(newDir);
     if (!fs.existsSync(newDir)){
+      if(newDir.includes('/')){
+        console.log(newDir + " -> " + newDir.split('/').slice(0,-1).join('/'));
+        module.exports.createFolder(newDir.split('/').slice(0,-1).join('/'));
+      }
+      console.log(newDir);
         fs.mkdirSync(newDir);
         return true;
     }

@@ -6,6 +6,7 @@ var csvFileManager = require('./csvFileManager');
 var connect = require('connect');
 var serveStatic = require('serve-static');
 var bibGenerator = require('./data/bibGenerator');
+var updator = require('./data/updateFromBib');
 
 function zeroPad(nr,base){
   var  len = (String(base).length - String(nr).length)+1;
@@ -33,6 +34,8 @@ function convertLocalDateToUTCDate(date) {
   ];
    return datevalues.join('/');
 }
+
+updator.update();
 
 // routes will go here
 app.get('/:type', function(req, res) {

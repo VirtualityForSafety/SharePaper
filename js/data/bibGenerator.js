@@ -7,7 +7,6 @@ const fs = require('fs');
 const addProject = require('./addProject');
 const parser = require('../csvParser4Server');
 
-
 const bibDir = "./resources/bib/";
 
 module.exports = {
@@ -79,12 +78,12 @@ function getBibtexByTitle(paperId, title){
 function writeBibtex(paperId, text){
   addProject.createFolder(bibDir);
   var fileName= paperId.replace(/[?#:]/g,'_');
-  fs.writeFile(bibDir+paperId+'.bib', text, function(err) {
+  fs.writeFile(bibDir+fileName+'.bib', text, function(err) {
       if(err) {
           return console.log(err);
       }
 
-      console.log("The bibtex file was saved: "+paperId+"!");
+      console.log("The bibtex file was saved: "+fileName+"!");
   });
 }
 
