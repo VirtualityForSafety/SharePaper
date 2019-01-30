@@ -25,7 +25,7 @@ function getBibtexByTitle(paperId, title){
   var api_url = "https://api.crossref.org/works?";
   var params = {"rows": "5", "query.title": title};
   var paramString = querystring.stringify(params);
-  console.log(api_url + paramString);
+  //console.log(api_url + paramString);
 
   urllib.request(api_url + paramString, function (err, data, res) {
     if(err){
@@ -77,7 +77,7 @@ function getBibtexByTitle(paperId, title){
 
 function writeBibtex(paperId, text){
   addProject.createFolder(bibDir);
-  var fileName= paperId.replace(/[?#:]/g,'_');
+  var fileName= parser.getWritableName(paperId);
   fs.writeFile(bibDir+fileName+'.bib', text, function(err) {
       if(err) {
           return console.log(err);

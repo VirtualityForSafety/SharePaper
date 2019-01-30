@@ -18,6 +18,9 @@ module.exports = {
       str = str.substr(0, str.length - 1);
     }
     return str;
+  },
+  getWritableName: function (fileName){
+    return fileName.replace(/[?#:]/g,'_');
   }
 };
 

@@ -114,7 +114,7 @@ function getUpdateButton(projectName, type, id, label){
 }
 
 function createPopup(){
-  return "<a href=\"#\" onClick=\"window.open('http://localhost:1209/pdfupload','pagename','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable,height=260,width=370'); return false;\">Upload</a><noscript>You need Javascript to use the previous link or use <a href=\"index.html\" target=\"_blank\">Upload</a></noscript>";
+  return "<a href=\"#\" onClick=\"passTitle(); return false;\">Upload</a><noscript>You need Javascript to use the previous link or use <a href=\"index.html\" target=\"_blank\">Upload</a></noscript>";
 }
 
 function generatePaperTable(projectName, data, labels) {

@@ -3,7 +3,9 @@ const mkdirp = require('mkdirp');
 const fs = require('fs');
 const folderCreator = require('../data/addProject')
 const baseDir = './resources/pdf/';
-var projectName= 'uncategorized';
+var paperTitle = "aPaper";
+const parser = require('../csvParser4Server');
+
 module.exports = function(app)
 {
   var storage	=	multer.diskStorage({
@@ -13,10 +15,7 @@ module.exports = function(app)
       callback(null, uploadPath);
     },
     filename: function (req, file, callback) {
-      console.log("!!");
-      var paperTitle= req.param('title');
-      console.log(paperTitle);
-      if (paperTitle==undefined)
+      if (paperTitle==undefined || paperTitle=="aPaper")
         paperTitle = file.fieldname + '-' + Date.now();
       //console.log(paperTitle);
       callback(null, paperTitle+".pdf");
@@ -25,6 +24,7 @@ module.exports = function(app)
   var upload = multer({ storage : storage}).single('userPaper');
 
   app.get('/pdfupload',function(req,res){
+    paperTitle= parser.getWritableName(req.param('title'));
     res.sendFile(__dirname + "/pdfFileUpload.html");
   });
 

@@ -17,7 +17,7 @@ module.exports = {
       newDir = newDir.substring(0,newDir.length-1);
     if (!fs.existsSync(newDir)){
       if(newDir.includes('/')){
-        console.log(newDir + " -> " + newDir.split('/').slice(0,-1).join('/'));
+        //console.log(newDir + " -> " + newDir.split('/').slice(0,-1).join('/'));
         module.exports.createFolder(newDir.split('/').slice(0,-1).join('/'));
       }
         fs.mkdirSync(newDir);
