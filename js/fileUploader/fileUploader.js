@@ -5,7 +5,8 @@ const folderCreator = require('../data/addProject')
 const baseDir = './resources/pdf/';
 var paperTitle = "aPaper";
 const parser = require('../csvParser4Server');
-
+var updator = require('../data/updateFromBib');
+//
 module.exports = function(app)
 {
   var storage	=	multer.diskStorage({
@@ -24,6 +25,7 @@ module.exports = function(app)
   var upload = multer({ storage : storage}).single('userPaper');
 
   app.get('/pdfupload',function(req,res){
+    //updator.update();
     paperTitle= parser.getWritableName(req.param('title'));
     res.sendFile(__dirname + "/pdfFileUpload.html");
   });
