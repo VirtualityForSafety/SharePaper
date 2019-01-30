@@ -18,7 +18,7 @@
     "collaboration"
   ],
   "dependencies": {
-    "bibtex": "^0.9.0",
+    "bibtex-parse-js": "0.0.24",
     "connect": "^3.6.6",
     "csv": "^0.3.7",
     "express": "^4.16.4",
