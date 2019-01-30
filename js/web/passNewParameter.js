@@ -24,7 +24,8 @@ function passNewEntryParameter(projectName, type){
     //console.log('http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data));
     window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
   }else{
-    alert("Please fill all fields.");
+    //alert("Please fill all fields.");
+    alert("Please enter paper title.");
   }
 }
 
@@ -45,9 +46,31 @@ function createNewEntryParameters(headers, data){
 
 function validateInput(my_arr, comp_arr){
    //for(var i=0;i<my_arr.length;i++){
-     if(!(my_arr.length == comp_arr.length)){
+   if(my_arr[1]==""){
+     //if(!(my_arr.length == comp_arr.length)){
        return false;
      }
    //}
    return true;
+}
+
+function getTitleFromTextArea(){
+  var result = undefined;
+  $(".new_entry").each(function(){
+    var tdElements = $(this).find('textarea');
+    if (tdElements.length>1){
+      for(var i=0; i<tdElements.length;i++){
+        if(tdElements[i].id=='new_paper_title'){
+          result= ($("#"+tdElements[i].id).val());
+        }
+      }
+    }
+  });
+  return result;
+}
+
+function passTitle(){
+  var title = getTitleFromTextArea();
+  //console.log(title);
+  window.open('http://localhost:1209/pdfupload?title='+title,'pagename','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable,height=260,width=370'); return true;
 }

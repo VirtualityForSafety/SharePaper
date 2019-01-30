@@ -117,6 +117,10 @@ function getUpdateButton(projectName, type, id, label){
   return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter('"+projectName+"',"+getUUID(type,id,label)+")\">Update</button>";
 }
 
+function getWritableName (fileName){
+  return fileName.replace(/[?#:]/g,'_');
+}
+
 function generatePaperPart(projectName, paperID, paperArray, paperColumns){
   var result = "<table id=\"paperTable\"><tr>";
   // for header
@@ -133,6 +137,10 @@ function generatePaperPart(projectName, paperID, paperArray, paperColumns){
       }
     }
   }
+
+  var titleIndex = headers.indexOf("Title");
+  console.log(pdfDir+getWritableName(paperArray[paperID][titleIndex])+".pdf");
+
   result += "</tr>";
   // for paper element
   if(paperArray[paperID]!=undefined)
@@ -143,7 +151,7 @@ function generatePaperPart(projectName, paperID, paperArray, paperColumns){
       var downloadLink = "";
       var label = headers[i].replace("/","").toLowerCase();
       if(i==paperArray[paperID].length-1)
-        downloadLink = "<br><a href=\""+pdfDir+paperArray[paperID][i]+".pdf\" download>download</a>";
+        downloadLink = "<br><a href=\""+pdfDir+getWritableName(paperArray[paperID][titleIndex])+".pdf\" download>download</a>";
       if(i==0)
         result +="<div id="+getUUID("paper",paperID,label)+" style=\"display:none;\">"+paperArray[paperID][i]+"</div>" ;
       else

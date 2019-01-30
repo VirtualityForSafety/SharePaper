@@ -6,6 +6,8 @@ var csvFileManager = require('./csvFileManager');
 var connect = require('connect');
 var serveStatic = require('serve-static');
 var bibGenerator = require('./data/bibGenerator');
+//var updator = require('./data/updateFromBib');
+//updator.update();
 
 function zeroPad(nr,base){
   var  len = (String(base).length - String(nr).length)+1;
@@ -34,8 +36,11 @@ function convertLocalDateToUTCDate(date) {
    return datevalues.join('/');
 }
 
+var fileUploader = require('./fileUploader/fileUploader')(app);
+
 // routes will go here
 app.get('/:type', function(req, res) {
+  console.log(req.params.type);
   if(req.params.type == 'tag'){
     var projectName = req.param('proj');
     var tag_id = req.param('id');

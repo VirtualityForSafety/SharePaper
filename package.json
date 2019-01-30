@@ -18,11 +18,18 @@
     "collaboration"
   ],
   "dependencies": {
+    "bibtex-parse-js": "0.0.24",
     "connect": "^3.6.6",
     "csv": "^0.3.7",
-    "express": "^4.16.4",
+    "express": "4.13.3",
     "serve-static": "^1.13.2",
+    "multer": "1.1.0",
     "urllib": "^2.33.0"
+  },
+  "devDependencies": {
+    "should": "~7.1.0",
+    "mocha": "~2.3.3",
+    "supertest": "~1.1.0"
   },
   "author": "Jinki Jung <your.jinki.jung@gmail.com> (https://jinkijung.github.io/)",
   "contributors": "Jinki Jung, Soyeon Kim, Sua Lee, Sangho Lee",
