@@ -36,8 +36,11 @@ function convertLocalDateToUTCDate(date) {
    return datevalues.join('/');
 }
 
+var fileUploader = require('./fileUploader/fileUploader')(app);
+
 // routes will go here
 app.get('/:type', function(req, res) {
+  console.log(req.params.type);
   if(req.params.type == 'tag'){
     var projectName = req.param('proj');
     var tag_id = req.param('id');

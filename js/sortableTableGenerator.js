@@ -127,6 +127,7 @@ function generatePaperTable(projectName, data, labels) {
   var dateIndex = headers.indexOf("timestamp");
   var linkIndex = headers.indexOf("link");
   var contributorIndex = headers.indexOf("contributor");
+  var linkIndex = headers.indexOf('link');
 
   for( var k=0; k<data[0].length ; k++){
     if(k==0){
@@ -217,6 +218,10 @@ function convertUTCDateToLocalDate(string) {
     zeroPad(date.getSeconds(),10)
   ];
   return datevalues.join('/');
+}
+
+function fileup(){
+  console.log("File upload");
 }
 
 function getPaperTags(index){
