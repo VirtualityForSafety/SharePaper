@@ -24,7 +24,8 @@ function passNewEntryParameter(projectName, type){
     //console.log('http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data));
     window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
   }else{
-    alert("Please fill all fields.");
+    //alert("Please fill all fields.");
+    alert("Please enter paper title.");
   }
 }
 
@@ -45,7 +46,8 @@ function createNewEntryParameters(headers, data){
 
 function validateInput(my_arr, comp_arr){
    //for(var i=0;i<my_arr.length;i++){
-     if(!(my_arr.length == comp_arr.length)){
+   if(my_arr[1]==""){
+     //if(!(my_arr.length == comp_arr.length)){
        return false;
      }
    //}

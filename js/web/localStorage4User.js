@@ -9,7 +9,7 @@ function getValueFromLS()
 {
   var value = localStorage.getItem('user');
   if(value==undefined || value == null)
-    return '[enter new user]';
+    return '[enter new user name]';
   else {
     return value;
   }
