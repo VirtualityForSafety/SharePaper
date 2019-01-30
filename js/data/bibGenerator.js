@@ -54,7 +54,10 @@ function getBibtexByTitle(paperId, title){
     console.log("ERROR: Failed to find any paper with the given title.");
     return undefined;
   }
-
+  else if(most_similar["LD"]>=30){
+    console.log("ERROR: Failed to find any paper with the given title.");
+    return undefined;
+  }
   else {
     console.log(most_similar);
     var doi = most_similar["doi"];

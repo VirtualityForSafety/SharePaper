@@ -127,7 +127,6 @@ function generatePaperTable(projectName, data, labels) {
   var dateIndex = headers.indexOf("timestamp");
   var linkIndex = headers.indexOf("link");
   var contributorIndex = headers.indexOf("contributor");
-  var linkIndex = headers.indexOf('link');
 
   for( var k=0; k<data[0].length ; k++){
     if(k==0){

@@ -7,13 +7,12 @@ function passNewEntryParameter(projectName, type){
     if (tdElements.length>1){
       for(var i=0; i<tdElements.length;i++){
         headers.push(tdElements[i].id.split("_").pop());
+        console.log(headers[headers.length-1]);
         if(headers[headers.length-1]=='timestamp'){
           data.push("time");
         }
         else{
-          if(!($("#"+tdElements[i].id).val() == "")){
-            data.push($("#"+tdElements[i].id).val());
-          }
+          data.push($("#"+tdElements[i].id).val());
         }
       }
     }
@@ -21,8 +20,8 @@ function passNewEntryParameter(projectName, type){
   //console.log(headers);
   //console.log(createNewEntryParameters(headers,data));
   if(validateInput(data, headers)){
-    //console.log('http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data));
-    window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
+    console.log('http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data));
+    //window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
   }else{
     //alert("Please fill all fields.");
     alert("Please enter paper title.");
