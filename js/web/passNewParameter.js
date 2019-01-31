@@ -20,13 +20,41 @@ function passNewEntryParameter(projectName, type){
   //console.log(headers);
   //console.log(createNewEntryParameters(headers,data));
   if(validateInput(data, headers)){
-    console.log('http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data));
-    //window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
+    /*
+    $.ajax({
+        global: false,
+        type: 'POST',
+        url: 'http://localhost:1209/',
+        dataType: 'html',
+        data: {
+            title: $("#new_paper_title").val()
+        },
+        success: function (result) {
+            console.log(result);
+        },
+        error: function (request, status, error) {
+          console.log(error);
+            //serviceError();
+        }
+    });
+    */
+    //console.log('http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data));
+    //window.history.replaceState(null, null, 'http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data));
+    //window.history.replaceState(null, null, location.href + 'http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data));
+    //var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname +'/'+ type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
+    //newurl = window.location.protocol + "//" + window.location.host + '/'+ type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
+    //newurl = 'http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
+    //console.log(newurl);
+    //window.history.pushState({path:newurl},'',newurl);
+
+    window.location.href='http://localhost:1209/'+type+'?'+'proj='+projectName+'&'+createNewEntryParameters(headers,data);
   }else{
     //alert("Please fill all fields.");
     alert("Please enter paper title.");
   }
 }
+
+
 
 function passOneParameter(projectName, divElement){
   partialUpdate(projectName, $("#"+divElement.id));
