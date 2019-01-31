@@ -80,7 +80,7 @@ function generateNewEntryCore(){
     else
       result +="<td><textarea onBlur=\"checkEntry("+"'new_paper_"+headers[k]+"');\" style=\"border: none; width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;\" id=\"new_paper_"+headers[k]+"\" cols=\"20\">"+textValue+"</textarea></td>";
 
-    if(textValue.length==0)
+    if(textValue.length==0 || textValue=="[enter new user name]")
       result += "<td width=2><img src=\"asset/undefined.png\" id=\"new_paper_"+headers[k]+"_img\" width=10 height=10 ></td>";
     else {
       result += "<td width=2><img src=\"asset/confirm.png\" id=\"new_paper_"+headers[k]+"_img\" width=10 height=10 ></td>";
@@ -98,16 +98,7 @@ function generateNewEntryCore(){
 }
 
 function checkEntry(entered){
-  if($("#"+entered).val().length>0){
-    document.getElementById(entered+"_img").src = "asset/confirm.png";
-  }
-  else{
-    document.getElementById(entered+"_img").src = "asset/undefined.png";
-  }
-}
-
-function checkEntryOnline(entered){
-  if($("#"+entered).val().length>0){
+  if($("#"+entered).val().length>0 || $("#"+entered).val()=="[enter new user name]"){
     document.getElementById(entered+"_img").src = "asset/confirm.png";
   }
   else{
