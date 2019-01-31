@@ -51,6 +51,10 @@ function drawConfirmCircle(color) {
     context.fill();
 }
 
+function getTextArea(type, textValue){
+  return "<textarea onBlur=\"checkEntry('new_paper_"+type+"');\" style=\"border: none; width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;\" id=\"new_paper_"+type+"\" cols=\"20\">"+textValue+"</textarea>";
+}
+
 function generateNewEntryCore(){
   //var result += "<p>Some text in the Modal..</p>";
   // for new entry
@@ -58,7 +62,7 @@ function generateNewEntryCore(){
   //*
   headers = ['id','title', 'year', 'journalconference', 'author', 'keyword', 'quality', 'summary', 'timestamp', 'contributor', 'link'];
   for(var k=1; k<headers.length; k++){
-    if(headers[k]=='timestamp' || headers[k]=='link')
+    if(headers[k]=='timestamp')
       continue;
 
     result +="<tr>";
@@ -67,18 +71,12 @@ function generateNewEntryCore(){
       textValue = getValueFromLS();
 
     result += "<td class=table_title width=10><b>"+capitalizeFirstLetter(headers[k])+"</b></td>";
-    if(k==1){
-      result +="<td><textarea onBlur=\"checkEntry("+"'new_paper_"+headers[k]+"');\" style=\"border: none; width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;\" id=\"new_paper_"+headers[k]+"\" cols=\"20\">"+textValue+"</textarea></td>";
-    }
-
-    else if(k==9)
-      result +="<td><textarea onBlur=\"checkEntry("+"'new_paper_"+headers[k]+"');\" style=\"border: none; width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;\" id=\"new_paper_"+headers[k]+"\" cols=\"20\">"+textValue+"</textarea></td>";
-    else if(k==8)
+    if(k==8)
       result +="<td><textarea onBlur=\"checkEntry("+"'new_paper_"+headers[k]+"');\" style=\"display:none;\" id=\"new_paper_"+headers[k]+"\" cols=\"20\"></textarea></td>";
     else if(k==10)
       result +="<td>"+createPopup()+"</td>";
     else
-      result +="<td><textarea onBlur=\"checkEntry("+"'new_paper_"+headers[k]+"');\" style=\"border: none; width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;\" id=\"new_paper_"+headers[k]+"\" cols=\"20\">"+textValue+"</textarea></td>";
+      result +="<td>"+getTextArea(headers[k], textValue)+"</td>";
 
     if(textValue.length==0 || textValue=="[enter new user name]")
       result += "<td width=2><img src=\"asset/undefined.png\" id=\"new_paper_"+headers[k]+"_img\" width=10 height=10 ></td>";
@@ -87,7 +85,9 @@ function generateNewEntryCore(){
     }
 
     if(k==1){
-      result +="</tr><tr><td colspan=3><button>Import bibtex</button><button>Apply bibtex</button></td></tr>";
+      result +="</tr><tr><td colspan=3><button onclick=\"importBibtex()\">Import bibtex</button><button onclick=\"applyBibtex()\">Apply bibtex</button></td></tr>";
+      result +="</tr><tr><td><b>Bibtex</b></td><td>"+getTextArea("bib", textValue)+"</td>";
+      result += "<td width=2><img src=\"asset/undefined.png\" id=\"new_paper_bib_img\" width=10 height=10 ></td>";
     }
     result +="</tr>";
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
@@ -97,6 +97,10 @@ function generateNewEntryCore(){
   return result;
 }
 
+function setReadOnly(id, state){
+  document.getElementById(id).readOnly = state;
+}
+
 function checkEntry(entered){
   if($("#"+entered).val().length>0 || $("#"+entered).val()=="[enter new user name]"){
     document.getElementById(entered+"_img").src = "asset/confirm.png";
@@ -104,4 +108,28 @@ function checkEntry(entered){
   else{
     document.getElementById(entered+"_img").src = "asset/undefined.png";
   }
+}
+
+function createPopup(){
+    return "<a href=\"#\" onClick=\"passTitle(); return false;\">Upload</a><noscript>You need Javascript to use the previous link or use <a href=\"index.html\" target=\"_blank\">Upload</a></noscript>";
+}
+
+function getTitleFromTextArea(){
+  return $("#new_paper_title").val();
+}
+
+function passTitle(){
+  var title = getTitleFromTextArea();
+  if(title=="")
+    alert("Please enter the paper title before uploading it.");
+  else
+    window.open('http://localhost:1209/pdfupload?title='+title,'pagename','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable,height=260,width=370'); return true;
+}
+
+function importBibtex(){
+  console.log(getTitleFromTextArea());
+}
+
+function applyBibtex(){
+  console.log(getTitleFromTextArea());
 }

@@ -52,24 +52,3 @@ function validateInput(my_arr, comp_arr){
    //}
    return true;
 }
-
-function getTitleFromTextArea(){
-  var result = undefined;
-  $(".new_entry").each(function(){
-    var tdElements = $(this).find('textarea');
-    if (tdElements.length>1){
-      for(var i=0; i<tdElements.length;i++){
-        if(tdElements[i].id=='new_paper_title'){
-          result= ($("#"+tdElements[i].id).val());
-        }
-      }
-    }
-  });
-  return result;
-}
-
-function passTitle(){
-  var title = getTitleFromTextArea();
-  //console.log(title);
-  window.open('http://localhost:1209/pdfupload?title='+title,'pagename','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable,height=260,width=370'); return true;
-}
