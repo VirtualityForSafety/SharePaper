@@ -58,10 +58,11 @@ app.post('/:type', function(req, res) {
   else if(req.params.type == 'doi2bib'){
     var paper_title = req.param('title');
     var paper_doi = req.param('doi');
+    console.log(paper_doi);
     try{
       if(paper_title.length>0){
         //bibGenerator.title2bib(paper_title, res);
-        bibGenerator.doi2bib("10.1109/ISMAR.2018.00032",paper_title, res);
+        bibGenerator.doi2bib(paper_doi,paper_title, res);
         //res.send('****Updated successfully! :'+paper_title);
       }
       else

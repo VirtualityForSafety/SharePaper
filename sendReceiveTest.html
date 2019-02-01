@@ -49,11 +49,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
 <h2>Send Receive Example</h2>
 
-<input type="button" id="myButton" value="Send PING1" onclick="passNewEntryParameter('http://localhost:4000/title2doi/','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&','rst1');">
+<input type="button" id="myButton" value="Send PING1" onclick="passNewEntryParameter('title2doi','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&','rst1');">
 
-<textarea id="rst1"></textarea>
+<textarea id="rst1" style="display:none"></textarea>
 
-<input type="button" id="myButton2" value="Send PING2" onclick="passNewEntryParameter('http://localhost:4000/doi2bib/','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi=10.1109/mcg.2015.95','rst2');">
+<input type="button" id="myButton2" value="Send PING2" onclick="passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi=10.1109/mcg.2015.95','rst2');">
 
 <textarea id="rst2" readonly></textarea>
 

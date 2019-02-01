@@ -1,7 +1,7 @@
-function passNewEntryParameter(url, data, target) {
+function passNewEntryParameter(type, data, target) {
 
   // GET requires we add the name=value pairs to the end of the URL.
-  url += '?' + data;
+  var url = "http://localhost:4000/"+type+'/?' + data;
 
     // Create a new AJAX request object
     var request = new XMLHttpRequest();
@@ -10,7 +10,7 @@ function passNewEntryParameter(url, data, target) {
     request.open('POST', url);
     console.log(url);
     // Run our handleResponse function when the server responds
-    if(target=="rst1")
+    if(type=="title2doi")
       request.addEventListener('readystatechange', handleResponseToPrivate);
     else
       request.addEventListener('readystatechange', handleResponseToPublic);
@@ -37,8 +37,12 @@ function handleResponseToPrivate() {
     var request = this;
     if (request.readyState != 4)
         return;
-    if (request.status == 200)
+    if (request.status == 200){
+      //passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi=' + request.responseText,'rst2');
+      passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi='+request.responseText);
       $('#'+target).val(request.responseText);
+    }
+
 }
 
 /*
