@@ -10,11 +10,13 @@ const parser = require('../csvParser4Server');
 const bibDir = "./resources/bib/";
 
 module.exports = {
-  title2bib: function (title) {
+  title2bib: function (title, passedRes = undefined) {
+    console.log(passedRes);
     title = parser.strip(title,"'");
-    module.exports.title2doi(title, title, true);
+    return module.exports.title2doi(title, title, true, passedRes);
   },
-  doi2bib: function (doi, paperId) {
+  doi2bib: function (doi, paperId , passedRes = undefined) {
+    console.log(passedRes);
     var command = 'curl -sLH "Accept: text/bibliography; style=bibtex" http://dx.doi.org/' + doi;
     child = exec(command,
        function (error, stdout, stderr) {
@@ -24,11 +26,17 @@ module.exports = {
           else{
             console.log("We found a bibtex!");
             writeBibtex(paperId, stdout);
+            if(passedRes!=undefined)
+            {
+              console.log(passedRes);
+              passedRes.send(stdout);
+            }
+            return stdout;
             //console.log('stdout: ' + stdout);
           }
        });
   },
-  title2doi: function(title, convert2DOI = false){
+  title2doi: function(title, convert2DOI = false, passedRes = undefined){
     var paperId = title;
     var api_url = "https://api.crossref.org/works?";
     var params = {"rows": "10", "query.title": title};
@@ -39,7 +47,7 @@ module.exports = {
       if(err){
         throw(err);
       }
-
+console.log(passedRes);
       if(res.statusCode <0) //connection failed
         return;
     //console.log(res.headers);
@@ -71,9 +79,9 @@ module.exports = {
     var doi = most_similar["doi"];
     console.log("We found a paper by the given title: " +doi);
     if(convert2DOI){
-      module.exports.doi2bib(doi, paperId);
+      return module.exports.doi2bib(doi, paperId, passedRes);
     }
-    return doi;
+    return undefined;
   });
   }
 };
