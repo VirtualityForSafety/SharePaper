@@ -38,22 +38,30 @@ function convertLocalDateToUTCDate(date) {
 
 var fileUploader = require('./fileUploader/fileUploader')(app);
 
-var chokidar = require('chokidar');
-
-var watcher = chokidar.watch('file or dir', {ignored: /^\./, persistent: true});
-var path = "./resources/bib/"
-
 app.post('/:type', function(req, res) {
-  //console.log(req.params.type);
-  if(req.params.type == 'bib'){
+  console.log(req.params.type);
+  if(req.params.type == 'title2doi'){
     var paper_title = req.param('title');
     try{
       if(paper_title.length>0){
         //bibGenerator.title2bib(paper_title, res);
+        bibGenerator.title2doi(paper_title, false, res);
+        //res.send('****Updated successfully! :'+paper_title);
+      }
+      else
+        console.log("ERROR: Empty title");
+    }
+    catch(err){
+      console.log("Error");
+    }
+  }
+  else if(req.params.type == 'doi2bib'){
+    var paper_title = req.param('title');
+    var paper_doi = req.param('doi');
+    try{
+      if(paper_title.length>0){
+        //bibGenerator.title2bib(paper_title, res);
         bibGenerator.doi2bib("10.1109/ISMAR.2018.00032",paper_title, res);
-        console.log(res);
-        watcher
-        .on('add', function(path) {res.send('Updated successfully! :'+paper_title);})
         //res.send('****Updated successfully! :'+paper_title);
       }
       else

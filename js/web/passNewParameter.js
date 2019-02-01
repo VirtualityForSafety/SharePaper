@@ -1,46 +1,4 @@
-function passNewEntryParameter(projectName, type) {
-    // URL to contact using AJAX
-    var url = 'http://localhost:4000/bib/';
-
-    // name=value pairs we'll be sending to the server.
-    var data = 'title='+projectName+'&';
-
-    // GET requires we add the name=value pairs to the end of the URL.
-    url += '?' + data;
-
-    // Create a new AJAX request object
-    var request = new XMLHttpRequest();
-
-    // Open a connection to the server
-    request.open('POST', url);
-
-    console.log(url);
-    // Run our handleResponse function when the server responds
-    //request.addEventListener('readystatechange', handleResponse);
-
-    request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-        // Actually send the request (with the POST data)
-        request.send( data );
-    // Actually send the request
-    //request.send();
-}
-
-function setupButton() {
-    var myButton = document.querySelector('#myButton');
-
-    // Run our sendPing function when someone clicks the button
-    myButton.addEventListener('click', sendPing);
-}
-
-setupButton();
-
-function sendPing() {
-  // URL to contact using AJAX
-  var url = 'http://localhost:4000/bib/';
-
-  // name=value pairs we'll be sending to the server.
-  var data = 'title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&';
+function passNewEntryParameter(url, data, target) {
 
   // GET requires we add the name=value pairs to the end of the URL.
   url += '?' + data;
@@ -52,7 +10,10 @@ function sendPing() {
     request.open('POST', url);
     console.log(url);
     // Run our handleResponse function when the server responds
-    request.addEventListener('readystatechange', handleResponse);
+    if(target=="rst1")
+      request.addEventListener('readystatechange', handleResponseToPrivate);
+    else
+      request.addEventListener('readystatechange', handleResponseToPublic);
     //request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     // Actually send the request (with the POST data)
@@ -62,34 +23,22 @@ function sendPing() {
     //request.send();
 }
 
-function showResponse(ajaxResponse) {
-    var responseContainer = document.querySelector('#responseContainer');
-
-    // Create a new span tag to hold the response
-    var span = document.createElement('span');
-    span.innerHTML = ajaxResponse;
-
-    // Add the new span to the end of responseContainer
-    responseContainer.appendChild(span);
-}
-
-function handleResponse() {
-    // "this" refers to the object we called addEventListener on
+function handleResponseToPublic() {
+  var target='rst2';
     var request = this;
-
-    /*
-    Exit this function unless the AJAX request is complete,
-    and the server has responded.
-    */
     if (request.readyState != 4)
         return;
+    if (request.status == 200)
+      $('#'+target).val(request.responseText);
+}
 
-    // If there wasn't an error, run our showResponse function
-    if (request.status == 200) {
-        var ajaxResponse = request.responseText;
-
-        showResponse(ajaxResponse);
-    }
+function handleResponseToPrivate() {
+  var target='rst1';
+    var request = this;
+    if (request.readyState != 4)
+        return;
+    if (request.status == 200)
+      $('#'+target).val(request.responseText);
 }
 
 /*

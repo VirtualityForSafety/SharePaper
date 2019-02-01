@@ -10,13 +10,11 @@ const parser = require('../csvParser4Server');
 const bibDir = "./resources/bib/";
 
 module.exports = {
-  title2bib: function (title, passedRes = undefined) {
-    console.log(passedRes);
+  title2bib: function (title) {
     title = parser.strip(title,"'");
-    return module.exports.title2doi(title, title, true, passedRes);
+    return module.exports.title2doi(title, true);
   },
   doi2bib: function (doi, paperId , passedRes = undefined) {
-    console.log(passedRes);
     var command = 'curl -sLH "Accept: text/bibliography; style=bibtex" http://dx.doi.org/' + doi;
     child = exec(command,
        function (error, stdout, stderr) {
@@ -28,7 +26,6 @@ module.exports = {
             writeBibtex(paperId, stdout);
             if(passedRes!=undefined)
             {
-              console.log(passedRes);
               passedRes.send(stdout);
             }
             return stdout;
@@ -42,12 +39,10 @@ module.exports = {
     var params = {"rows": "10", "query.title": title};
     var paramString = querystring.stringify(params);
     //console.log(api_url + paramString);
-
     urllib.request(api_url + paramString,{ timeout: 10000 }, function (err, data, res) {
       if(err){
         throw(err);
       }
-console.log(passedRes);
       if(res.statusCode <0) //connection failed
         return;
     //console.log(res.headers);
@@ -78,6 +73,7 @@ console.log(passedRes);
 
     var doi = most_similar["doi"];
     console.log("We found a paper by the given title: " +doi);
+    passedRes.send(doi);
     if(convert2DOI){
       return module.exports.doi2bib(doi, paperId, passedRes);
     }
