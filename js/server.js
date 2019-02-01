@@ -72,13 +72,6 @@ app.get('/:type', function(req, res) {
      paper_keyword,paper_quality,paper_summary,paper_timestamp,paper_contributor,paper_link];
     csvFileManager.update(projectName, 'paper',passedParam);
     res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
-
-    try{
-      bibGenerator.doi2bib(paper_title,paper_title);
-    }
-    catch(err){
-      console.log("Error");
-    }
   }
   else if(req.params.type == 'paperpart' || req.params.type == 'tagpart'){
     var projectName = req.param('proj');
@@ -101,6 +94,18 @@ app.get('/:type', function(req, res) {
     }
     else{
       res.send(projectName + ' succesfully created!');
+    }
+  }
+  else if(req.params.type == 'bib'){
+    var paper_title = req.param('title');
+    try{
+      if(paper_title.length>0)
+        bibGenerator.title2bib(paper_title);
+      else
+        console.log("ERROR: Empty title");
+    }
+    catch(err){
+      console.log("Error");
     }
   }
 });
