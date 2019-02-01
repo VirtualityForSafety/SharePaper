@@ -1,7 +1,7 @@
 // grab the packages we need
 var express = require('express');
 var app = express();
-var port = process.env.PORT || 1209;
+var port = process.env.PORT || 4000;
 var csvFileManager = require('./csvFileManager');
 var connect = require('connect');
 var serveStatic = require('serve-static');
@@ -38,6 +38,26 @@ function convertLocalDateToUTCDate(date) {
 
 var fileUploader = require('./fileUploader/fileUploader')(app);
 
+app.post('/:type', function(req, res) {
+  //console.log(req.params.type);
+  if(req.params.type == 'bib'){
+    var paper_title = req.param('title');
+    console.log(paper_title);
+    res.send('Updated successfully! :'+paper_title);
+    try{
+      if(paper_title.length>0){
+        //bibGenerator.title2bib(paper_title);
+        res.send('Updated successfully! :'+paper_title);
+      }
+      else
+        console.log("ERROR: Empty title");
+    }
+    catch(err){
+      console.log("Error");
+    }
+  }
+});
+/*
 // routes will go here
 app.get('/:type', function(req, res) {
   console.log(req.params.type);
@@ -96,23 +116,15 @@ app.get('/:type', function(req, res) {
       res.send(projectName + ' succesfully created!');
     }
   }
-  else if(req.params.type == 'bib'){
-    var paper_title = req.param('title');
-    try{
-      if(paper_title.length>0)
-        bibGenerator.title2bib(paper_title);
-      else
-        console.log("ERROR: Empty title");
-    }
-    catch(err){
-      console.log("Error");
-    }
-  }
 });
-
+*/
+app.use(express.static('./'));
+app.listen(port);
+/*
 connect().use(serveStatic("./")).listen(4000, function(){
   // start the server
   app.listen(port);
   console.log('data server started! At http://localhost:' + port);
     console.log('web server running on 4000...');
 });
+*/

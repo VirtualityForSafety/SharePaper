@@ -123,7 +123,7 @@ function passTitle(){
   if(title=="")
     alert("Please enter the paper title before uploading it.");
   else
-    window.open('http://localhost:1209/pdfupload?title='+title,'pagename','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable,height=260,width=370'); return true;
+    window.open('http://localhost:4000/pdfupload?title='+title,'pagename','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable,height=260,width=370'); return true;
 }
 
 function importBibtex(){
