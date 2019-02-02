@@ -49,32 +49,17 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
 <h2>Send Receive Example</h2>
 
-<input type="button" id="myButton" value="Send PING1" onclick="passNewEntryParameter('title2doi','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&','rst1');">
+<input type="button" id="myButton" value="Get bib" onclick="passNewEntryParameter('title2doi','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&');">
+<input type="button" id="myButton2" value="Save bib" onclick="passNewEntryParameter('bib2file','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&bib=wefwe');">
+<textarea id="textareaDOI" style="display:none"></textarea>
 
-<textarea id="rst1" style="display:none"></textarea>
-
-<input type="button" id="myButton2" value="Send PING2" onclick="passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi=10.1109/mcg.2015.95','rst2');">
-
-<textarea id="rst2" readonly></textarea>
+<!--<input type="button" id="myButton2" value="Send PING2" onclick="passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi=10.1109/mcg.2015.95','rst2');">-->
+<textarea id="textareaBIB"></textarea>
+<br><span id = "status"></span>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script src="js/web/passNewParameter.js"></script>
-<script>
-
-$( "#rst1" ).on("input", function(e) {
-  var input = $(this);
-  var val = input.val();
-    //your change action goes here
-    console.log(val);
-});
-$( "#rst1" ).bind('input propertychange', function() {
-  console.log("GG");
-  if(this.value.length){
-        alert("!!");
-  }
-});
-</script>
 
 </body>
 </html>

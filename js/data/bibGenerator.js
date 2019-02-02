@@ -23,7 +23,7 @@ module.exports = {
           }
           else{
             console.log("We found a bibtex!");
-            writeBibtex(paperId, stdout);
+            module.exports.bib2file(paperId, stdout);
             if(passedRes!=undefined)
             {
               passedRes.send(stdout);
@@ -78,7 +78,22 @@ module.exports = {
       return module.exports.doi2bib(doi, paperId, passedRes);
     }
     return undefined;
-  });
+    });
+  },
+  bib2file: function (paperId, text, passedRes = undefined){
+    addProject.createFolder(bibDir);
+    var fileName= parser.getWritableName(paperId);
+    fs.writeFile(bibDir+fileName+'.bib', text, function(err) {
+        if(err) {
+          if(passedRes != undefined)
+            passedRes.send('Fail');
+          return console.log(err);
+        }
+
+        console.log("The bibtex file was saved: "+fileName+"!");
+    });
+    if(passedRes != undefined)
+      passedRes.send('Success');
   }
 };
 
@@ -87,15 +102,3 @@ function execute(command, callback){
 };
 
 var child;
-
-function writeBibtex(paperId, text){
-  addProject.createFolder(bibDir);
-  var fileName= parser.getWritableName(paperId);
-  fs.writeFile(bibDir+fileName+'.bib', text, function(err) {
-      if(err) {
-          return console.log(err);
-      }
-
-      console.log("The bibtex file was saved: "+fileName+"!");
-  });
-}

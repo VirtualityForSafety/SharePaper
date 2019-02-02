@@ -1,8 +1,8 @@
-function passNewEntryParameter(type, data, target) {
-
+function passNewEntryParameter(type, data) {
   // GET requires we add the name=value pairs to the end of the URL.
   var url = "http://localhost:4000/"+type+'/?' + data;
 
+  $("#status").empty().text("Sending data to server...");
     // Create a new AJAX request object
     var request = new XMLHttpRequest();
 
@@ -11,9 +11,11 @@ function passNewEntryParameter(type, data, target) {
     console.log(url);
     // Run our handleResponse function when the server responds
     if(type=="title2doi")
-      request.addEventListener('readystatechange', handleResponseToPrivate);
-    else
-      request.addEventListener('readystatechange', handleResponseToPublic);
+      request.addEventListener('readystatechange', responseDOI);
+    else if(type=="doi2bib")
+      request.addEventListener('readystatechange', responseBIB);
+    else if(type=="bib2file")
+      request.addEventListener('readystatechange', responseFile);
     //request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     // Actually send the request (with the POST data)
@@ -23,26 +25,52 @@ function passNewEntryParameter(type, data, target) {
     //request.send();
 }
 
-function handleResponseToPublic() {
-  var target='rst2';
+function responseDOI() {
+  var target='textareaDOI';
     var request = this;
-    if (request.readyState != 4)
-        return;
-    if (request.status == 200)
-      $('#'+target).val(request.responseText);
-}
-
-function handleResponseToPrivate() {
-  var target='rst1';
-    var request = this;
-    if (request.readyState != 4)
-        return;
+    if (request.readyState != 4){
+      $("#status").empty().text("Failed to get a doi.");
+      return;
+    }
     if (request.status == 200){
       //passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi=' + request.responseText,'rst2');
       passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi='+request.responseText);
       $('#'+target).val(request.responseText);
+      $("#status").empty().text("Success to get the doi. Crawling the bibtex with the doi.");
     }
 
+}
+
+function responseBIB() {
+  var target='textareaBIB';
+    var request = this;
+    if (request.readyState != 4){
+      $("#status").empty().text("Failed to crawl the bibtex. Please paste the bibtex yourself.");
+      $('#'+target).readOnly = true;
+      //setReadOnly(target, true);
+      return;
+    }
+    if (request.status == 200){
+      $('#'+target).val(request.responseText);
+      $("#status").empty().text("Success to crawl the bib and saved it as a file.");
+      $('#'+target).readOnly = true;
+      //setReadOnly(target, true);
+    }
+}
+
+function responseFile() {
+    var request = this;
+    if (request.readyState != 4){
+      $("#status").empty().text(request.responseText + " to save the bibtex file.");
+      return;
+    }
+    if (request.status == 200){
+      $("#status").empty().text(request.responseText + " to save the bibtex file");
+    }
+}
+
+function setReadOnly(id, state){
+    document.getElementById(id).readOnly = state;
 }
 
 /*

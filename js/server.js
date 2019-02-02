@@ -44,9 +44,7 @@ app.post('/:type', function(req, res) {
     var paper_title = req.param('title');
     try{
       if(paper_title.length>0){
-        //bibGenerator.title2bib(paper_title, res);
         bibGenerator.title2doi(paper_title, false, res);
-        //res.send('****Updated successfully! :'+paper_title);
       }
       else
         console.log("ERROR: Empty title");
@@ -61,9 +59,22 @@ app.post('/:type', function(req, res) {
     console.log(paper_doi);
     try{
       if(paper_title.length>0){
-        //bibGenerator.title2bib(paper_title, res);
         bibGenerator.doi2bib(paper_doi,paper_title, res);
-        //res.send('****Updated successfully! :'+paper_title);
+      }
+      else
+        console.log("ERROR: Empty title");
+    }
+    catch(err){
+      console.log("Error");
+    }
+  }
+  else if(req.params.type =='bib2file'){
+    var paper_title = req.param('title');
+    var paper_bib = req.param('bib');
+    console.log(paper_bib);
+    try{
+      if(paper_title.length>0){
+        bibGenerator.bib2file(paper_title, paper_bib, res);
       }
       else
         console.log("ERROR: Empty title");
