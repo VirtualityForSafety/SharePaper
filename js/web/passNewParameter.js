@@ -8,7 +8,6 @@ function passNewEntryParameter(type, data) {
 
     // Open a connection to the server
     request.open('POST', url);
-    console.log(url);
     // Run our handleResponse function when the server responds
     if(type=="title2doi")
       request.addEventListener('readystatechange', responseDOI);
@@ -26,7 +25,7 @@ function passNewEntryParameter(type, data) {
 }
 
 function responseDOI() {
-  var target='textareaDOI';
+  var target='new_paper_doi';
     var request = this;
     if (request.readyState != 4){
       $("#status").empty().text("Failed to get a doi.");
@@ -42,7 +41,7 @@ function responseDOI() {
 }
 
 function responseBIB() {
-  var target='textareaBIB';
+  var target='new_paper_bib';
     var request = this;
     if (request.readyState != 4){
       $("#status").empty().text("Failed to crawl the bibtex. Please paste the bibtex yourself.");
@@ -65,13 +64,15 @@ function responseFile() {
       return;
     }
     if (request.status == 200){
-      $("#status").empty().text(request.responseText + " to save the bibtex file");
+      $("#status").empty().text(request.responseText + " to save the bibtex file.");
     }
 }
 
-function setReadOnly(id, state){
-    document.getElementById(id).readOnly = state;
+function getTextareaContent(target){
+  return $('#'+target).val();
 }
+
+
 
 /*
 function passNewEntryParameter(projectName, type){
