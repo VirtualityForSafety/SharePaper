@@ -2,6 +2,11 @@ function passNewEntryParameter(type, data) {
   // GET requires we add the name=value pairs to the end of the URL.
   var url = "http://localhost:4000/"+type+'/?' + data;
 
+  if(getTextareaContent('new_paper_title').length==0){
+    alert("Please enter paper title!");
+    return ;
+  }
+
   $("#status").empty().text("Sending data to server...");
     // Create a new AJAX request object
     var request = new XMLHttpRequest();

@@ -51,8 +51,8 @@ function drawConfirmCircle(color) {
     context.fill();
 }
 
-function getTextArea(type, textValue){
-  return "<textarea onBlur=\"checkEntry('new_paper_"+type+"');\" style=\"border: none; width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;\" id=\"new_paper_"+type+"\" cols=\"20\">"+textValue+"</textarea>";
+function createPopup(){
+    return "<a href=\"#\" onClick=\"passTitle(); return false;\">Upload</a><noscript>You need Javascript to use the previous link or use <a href=\"index.html\" target=\"_blank\">Upload</a></noscript>";
 }
 
 function generateNewEntryCore(){
@@ -76,7 +76,8 @@ function generateNewEntryCore(){
     else if(k==10)
       result +="<td>"+createPopup()+"</td>";
     else
-      result +="<td>"+getTextArea(headers[k], textValue)+"</td>";
+    result +="<td>"+createTextArea(headers[k], textValue)+"</td>";
+    //result +="<td><textarea onBlur=\"checkEntry("+"'new_paper_"+headers[k]+"');\" style=\"border: none; width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;\" id=\"new_paper_"+headers[k]+"\" cols=\"20\">"+textValue+"</textarea></td>";
 
     if(textValue.length==0 || textValue=="[enter new user name]")
       result += "<td width=2><img src=\"asset/undefined.png\" id=\"new_paper_"+headers[k]+"_img\" width=10 height=10 ></td>";
@@ -85,9 +86,10 @@ function generateNewEntryCore(){
     }
 
     if(k==1){
-      result +="</tr><tr><td colspan=3><button onclick=\"importBibtex()\">Import bibtex</button><button onclick=\"applyBibtex()\">Apply bibtex</button></td></tr>";
-      result +="</tr><tr><td><b>Bibtex</b></td><td>"+getTextArea("bib", textValue)+"</td>";
+      result +="</tr><tr><td colspan=3>"+createBibButtons()+"</td></tr>";
+      result +="</tr><tr><td><b>Bibtex</b></td><td>"+createTextArea("bib", textValue)+"</td>";
       result += "<td width=2><img src=\"asset/undefined.png\" id=\"new_paper_bib_img\" width=10 height=10 ></td>";
+      //result +="</tr><tr><td colspan=3>"+getBibButtons()+"</td></tr>";
     }
     result +="</tr>";
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
@@ -97,8 +99,12 @@ function generateNewEntryCore(){
   return result;
 }
 
-function setReadOnly(id, state){
-  document.getElementById(id).readOnly = state;
+function createTextArea(type, textValue){
+  return "<textarea onBlur=\"checkEntry('new_paper_"+type+"');\" style=\"border: none; width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;\" id=\"new_paper_"+type+"\" cols=\"20\">"+textValue+"</textarea>";
+}
+
+function createBibButtons(){
+  return "<button onclick=\"passNewEntryParameter('title2doi','title='+getTextareaContent('new_paper_title'));\">Get bib</button><button onclick=\"passNewEntryParameter('bib2file','title='+getTextareaContent('new_paper_title')+'&bib='+getTextareaContent('new_paper_bib'));\"> Save bib</button><span id = \"status\"></span>";
 }
 
 function checkEntry(entered){
@@ -108,10 +114,6 @@ function checkEntry(entered){
   else{
     document.getElementById(entered+"_img").src = "asset/undefined.png";
   }
-}
-
-function createPopup(){
-    return "<a href=\"#\" onClick=\"passTitle(); return false;\">Upload</a><noscript>You need Javascript to use the previous link or use <a href=\"index.html\" target=\"_blank\">Upload</a></noscript>";
 }
 
 function getTitleFromTextArea(){
@@ -124,12 +126,4 @@ function passTitle(){
     alert("Please enter the paper title before uploading it.");
   else
     window.open('http://localhost:4000/pdfupload?title='+title,'pagename','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable,height=260,width=370'); return true;
-}
-
-function importBibtex(){
-  console.log(getTitleFromTextArea());
-}
-
-function applyBibtex(){
-  console.log(getTitleFromTextArea());
 }
