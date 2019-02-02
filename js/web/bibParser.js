@@ -256,7 +256,7 @@ function BibtexParser() {
 
 //Runs the parser
 function parseBib(input) {
-  console.log(input);
+  //console.log(input);
   var b = new BibtexParser();
   b.setInput(input);
   b.bibtex();
@@ -271,8 +271,7 @@ function applyBib(input){
   checkEntry('new_paper_year');
   checkEntry('new_paper_author');
   checkEntry('new_paper_journalconference');
-  //console.log(b.entries[b.currentEntry]);
-  console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['YEAR']);
-  console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['AUTHOR']);
-  console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['JOURNAL']);
+  //console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['YEAR']);
+  //console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['AUTHOR']);
+  //console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['JOURNAL']);
 }

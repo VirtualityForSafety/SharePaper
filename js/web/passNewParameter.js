@@ -1,4 +1,4 @@
-function passNewEntryParameter(type, data) {
+function passNewEntryParameter(type, data, projectName = undefined) {
   // GET requires we add the name=value pairs to the end of the URL.
   var url = "http://localhost:4000/"+type+'/?' + data;
 
@@ -7,26 +7,20 @@ function passNewEntryParameter(type, data) {
     return ;
   }
 
-  $("#status").empty().text("Sending data to server...");
-    // Create a new AJAX request object
-    var request = new XMLHttpRequest();
+  if(projectName==undefined) // for bib entry
+    $("#status").empty().text("Sending data to server...");
 
-    // Open a connection to the server
-    request.open('POST', url);
-    // Run our handleResponse function when the server responds
-    if(type=="title2doi")
-      request.addEventListener('readystatechange', responseDOI);
-    else if(type=="doi2bib")
-      request.addEventListener('readystatechange', responseBIB);
-    else if(type=="bib2file")
-      request.addEventListener('readystatechange', responseFile);
-    //request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  var request = new XMLHttpRequest();
+  request.open('POST', url);
 
-    // Actually send the request (with the POST data)
-    request.send( data );
+  if(type=="title2doi")
+    request.addEventListener('readystatechange', responseDOI);
+  else if(type=="doi2bib")
+    request.addEventListener('readystatechange', responseBIB);
+  else if(type=="bib2file")
+    request.addEventListener('readystatechange', responseFile);
 
-    // Actually send the request
-    //request.send();
+  request.send( data );
 }
 
 function responseDOI() {
@@ -75,8 +69,6 @@ function responseFile() {
 function getTextareaContent(target){
   return $('#'+target).val();
 }
-
-
 
 /*
 function passNewEntryParameter(projectName, type){

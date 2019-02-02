@@ -36,7 +36,7 @@ module.exports = {
   title2doi: function(title, convert2DOI = false, passedRes = undefined){
     var paperId = title;
     var api_url = "https://api.crossref.org/works?";
-    var params = {"rows": "10", "query.title": title};
+    var params = {"rows": "5", "query.title": title};
     var paramString = querystring.stringify(params);
     //console.log(api_url + paramString);
     urllib.request(api_url + paramString,{ timeout: 10000 }, function (err, data, res) {

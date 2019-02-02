@@ -116,6 +116,7 @@ function clearNewEntry(){
   }
   $("#new_paper_bib").val("");
   checkEntry("new_paper_bib");
+  $("#status").empty();
 }
 
 function checkEntry(entered){
