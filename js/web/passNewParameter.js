@@ -40,9 +40,8 @@ function responseDOI() {
       //passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi=' + request.responseText,'rst2');
       passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi='+request.responseText);
       $('#'+target).val(request.responseText);
-      $("#status").empty().text("Success to get the doi. Crawling the bibtex with the doi.");
+      $("#status").empty().text("Success to get the doi. Crawling the bibtex with the doi....");
     }
-
 }
 
 function responseBIB() {
@@ -50,15 +49,14 @@ function responseBIB() {
     var request = this;
     if (request.readyState != 4){
       $("#status").empty().text("Failed to crawl the bibtex. Please paste the bibtex yourself.");
-      $('#'+target).readOnly = true;
-      //setReadOnly(target, true);
+
       return;
     }
     if (request.status == 200){
       $('#'+target).val(request.responseText);
+      checkEntry(target);
       $("#status").empty().text("Success to crawl the bib and saved it as a file.");
-      $('#'+target).readOnly = true;
-      //setReadOnly(target, true);
+      applyBib($('#'+target).val());
     }
 }
 
@@ -70,6 +68,7 @@ function responseFile() {
     }
     if (request.status == 200){
       $("#status").empty().text(request.responseText + " to save the bibtex file.");
+      applyBib($('#'+target).val());
     }
 }
 

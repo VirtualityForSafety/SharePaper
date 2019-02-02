@@ -51,15 +51,17 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <textarea id="new_paper_title">Visual Perspective and Feedback Guidance for VR Free-Throw Training</textarea><br>
 <input type="button" value="Get bib" onclick="passNewEntryParameter('title2doi','title='+getTextareaContent('new_paper_title'));">
 <input type="button" value="Save bib" onclick="passNewEntryParameter('bib2file','title='+getTextareaContent('new_paper_title')+'&bib='+getTextareaContent('new_paper_bib'));">
+<input type="button" value="Parse bib" onclick="applyBib(getTextareaContent('new_paper_bib'));">
 <textarea id="new_paper_doi" style="display:none"></textarea>
 
 <!--<input type="button" id="myButton2" value="Send PING2" onclick="passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi=10.1109/mcg.2015.95','rst2');">-->
-<textarea id="new_paper_bib"></textarea>
+<textarea id="new_paper_bib"> @article{Covaci_2015, title={Visual Perspective and Feedback Guidance for VR Free-Throw Training}, volume={35}, ISSN={0272-1716}, url={http://dx.doi.org/10.1109/mcg.2015.95}, DOI={10.1109/mcg.2015.95}, number={5}, journal={IEEE Computer Graphics and Applications}, publisher={Institute of Electrical and Electronics Engineers (IEEE)}, author={Covaci, Alexandra and Olivier, Anne-Helene and Multon, Franck}, year={2015}, month={Sep}, pages={55–65}}</textarea>
 <br><span id = "status"></span>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script src="js/web/passNewParameter.js"></script>
+<script src="js/web/bibParser.js"></script>
 
 </body>
 </html>

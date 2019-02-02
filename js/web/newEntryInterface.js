@@ -94,7 +94,7 @@ function generateNewEntryCore(){
     result +="</tr>";
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
-  result += "<tr><td colspan=3><button id=\"submit_\" onclick=\"passNewEntryParameter('"+projectName+"','paper')\">Submit</button></td></tr>";
+  result += "<tr><td colspan=3><button id=\"submit_\" onclick=\"passNewEntryParameter('"+projectName+"','paper')\">Submit</button> <button onclick=\"clearNewEntry()\">Clear</button></td></tr>";
   result += "</table>";
   return result;
 }
@@ -105,6 +105,17 @@ function createTextArea(type, textValue){
 
 function createBibButtons(){
   return "<button onclick=\"passNewEntryParameter('title2doi','title='+getTextareaContent('new_paper_title'));\">Get bib</button><button onclick=\"passNewEntryParameter('bib2file','title='+getTextareaContent('new_paper_title')+'&bib='+getTextareaContent('new_paper_bib'));\"> Save bib</button><span id = \"status\"></span>";
+}
+
+function clearNewEntry(){
+  for(var k=1; k<headers.length; k++){
+    if(headers[k]=='timestamp' || headers[k]=='link' || headers[k]=='contributor')
+      continue;
+    $("#new_paper_"+headers[k]).val("");
+    checkEntry("new_paper_"+headers[k]);
+  }
+  $("#new_paper_bib").val("");
+  checkEntry("new_paper_bib");
 }
 
 function checkEntry(entered){
