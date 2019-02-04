@@ -52,7 +52,6 @@ module.exports = {
     for(var i=0; i<items.length ; i++){
       var item = items[i];
       var title = item["title"];
-      console.log(title);
       var result = {
                   "title": title[0],
                   "LD": levenshtein.get(title[0].toLowerCase(), params["query.title"].toLowerCase()),

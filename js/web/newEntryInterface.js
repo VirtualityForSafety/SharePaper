@@ -94,7 +94,7 @@ function generateNewEntryCore(){
     result +="</tr>";
     // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
-  result += "<tr><td colspan=3><button id=\"submit_\" onclick=\"passNewEntryParameter('"+projectName+"','paper')\">Submit</button> <button onclick=\"clearNewEntry()\">Clear</button></td></tr>";
+  result += "<tr><td colspan=3><button id=\"submit_\" onclick=\"passNewEntryParameter('paper', undefined, '"+projectName+"')\">Submit</button> <button onclick=\"clearNewEntry()\">Clear</button></td></tr>";
   result += "</table>";
   return result;
 }
@@ -116,7 +116,6 @@ function clearNewEntry(){
   }
   $("#new_paper_bib").val("");
   checkEntry("new_paper_bib");
-  $("#status").empty();
 }
 
 function checkEntry(entered){

@@ -4,8 +4,7 @@ var app = express();
 var port = process.env.PORT || 4000;
 
 var fileUploader = require('./fileUploader/fileUploader')(app);
-var bibRouter = require('./router/routeBib.js')(app);
-var metadataRouter = require('./router/routeMetadata.js')(app);
+var router = require('./router/router.js')(app);
 
 app.use(express.static('./'));
 app.listen(port);

@@ -1,6 +1,12 @@
 function passNewEntryParameter(type, data, projectName = undefined) {
   // GET requires we add the name=value pairs to the end of the URL.
+  //console.log(type + "\t" + data + "\t" + projectName);
+
+  if(data==undefined){
+    data = 'proj='+projectName+'&'+getAllTextareaContents();
+  }
   var url = "http://localhost:4000/"+type+'/?' + data;
+  console.log(url);
 
   if(getTextareaContent('new_paper_title').length==0){
     alert("Please enter paper title!");
@@ -19,6 +25,9 @@ function passNewEntryParameter(type, data, projectName = undefined) {
     request.addEventListener('readystatechange', responseBIB);
   else if(type=="bib2file")
     request.addEventListener('readystatechange', responseFile);
+  else {
+    request.addEventListener('readystatechange', responseUpdate);
+  }
 
   request.send( data );
 }
@@ -35,6 +44,17 @@ function responseDOI() {
       passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi='+request.responseText);
       $('#'+target).val(request.responseText);
       $("#status").empty().text("Success to get the doi. Crawling the bibtex with the doi....");
+    }
+}
+
+function responseUpdate() {
+    var request = this;
+    if (request.readyState != 4){
+      console.log("Error occurred.");
+      return;
+    }
+    if (request.status == 200){
+      location.reload();
     }
 }
 
@@ -68,6 +88,30 @@ function responseFile() {
 
 function getTextareaContent(target){
   return $('#'+target).val();
+}
+
+function getAllTextareaContents(){
+  // get values from using jquery
+  var headers = ['id'];
+  var data = [99999];
+  $(".new_entry").each(function(){
+    var tdElements = $(this).find('textarea');
+    if (tdElements.length>1){
+      for(var i=0; i<tdElements.length;i++){
+        headers.push(tdElements[i].id.split("_").pop());
+        //console.log(headers[headers.length-1]);
+        if(headers[headers.length-1]=='timestamp'){
+          data.push("time");
+        }
+        else{
+          data.push($("#"+tdElements[i].id).val());
+        }
+      }
+    }
+  });
+  //var mapData = integrate2Map(headers,data);
+  //console.log(stringify(mapData));
+  return stringify(integrate2Map(headers,data));
 }
 
 /*

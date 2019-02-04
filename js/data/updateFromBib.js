@@ -12,7 +12,7 @@ module.exports = {
 
 function updateRowFromBib(projectName, data_id, data_type, bibJson){
   var passedParam = [data_id, data_type, getEntryValue(bibJson, data_type)];
-  console.log(passedParam);
+  //console.log(passedParam);
   csvFileManager.update(projectName, 'paper', passedParam);
 }
 

@@ -125,6 +125,8 @@ function generateTableHeader(headers, labelDescription){
   return result;
 }
 
+
+
 function generateNewEntryRow(type, projectName, headers){
   var dateIndex = headers.indexOf("timestamp");
   var contributorIndex = headers.indexOf("contributor");
@@ -154,7 +156,7 @@ function generateNewEntryRow(type, projectName, headers){
       result +="<td><textarea id=\""+ newPrefix+headers[k]+"\" >"+textValue+"</textarea></td>";
   }
   result += "</tr>";
-  var submitButton = "<button id=\"submit_\" onclick=\"passNewEntryParameter('"+projectName+"','"+type+"')\">Submit</button>";
+  var submitButton = "<button id=\"submit_\" onclick=\"passNewEntryParameter('"+type+"',undefined,'"+projectName+"')\">Submit</button>";
   result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
   return result;
 }
