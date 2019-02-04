@@ -74,7 +74,7 @@ $(document).ready(function() {
                          // prevent the default behaviour of return key pressed
                          //console.log($(this).attr('id')+"\t"+$(this).html());
 
-                         partialUpdate(projectName, $(this));
+                         passOneParameter(projectName, $(this));
                        }
                      });
                    }
@@ -85,18 +85,6 @@ $(document).ready(function() {
 });
 
 });
-
-function partialUpdate(projectName, element){
-  element.blur();
-  var label= ["id","label","value"];
-  var queries = element.attr('id').split('_');
-  var type= queries.shift()+'part';
-  queries.push(element.html());
-  var result = "";
-  for(var i=0; i<label.length;i++)
-    result += label[i]+"="+queries[i]+"&";
-  window.location.href="http://localhost:4000/"+type+"?"+'proj='+projectName+'&'+result;
-}
 
 // returns a paperId, but a negative value for invalid link
 function getPaperIDFromLink(){
@@ -114,7 +102,7 @@ function getUUID(type, id, label){
 }
 
 function getUpdateButton(projectName, type, id, label){
-  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter('"+projectName+"',"+getUUID(type,id,label)+")\">Update</button>";
+  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter('"+projectName+"',undefined,"+getUUID(type,id,label)+")\">Update</button>";
 }
 
 function getWritableName (fileName){

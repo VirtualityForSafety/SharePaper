@@ -18,7 +18,6 @@ module.exports = function(app)
     filename: function (req, file, callback) {
       if (paperTitle==undefined || paperTitle=="aPaper")
         paperTitle = file.fieldname + '-' + Date.now();
-      //console.log(paperTitle);
       callback(null, paperTitle+".pdf");
     }
   });
@@ -42,6 +41,8 @@ module.exports = function(app)
 
 // for creating a folder when it doesn't exist
 function checkUploadPath(req, res, next) {
+  if(fs.existsSync(baseDir))
+    next();
   if(folderCreator.createFolder(baseDir)>0)
     next();
   /*

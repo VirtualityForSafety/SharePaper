@@ -110,7 +110,7 @@ function getUUID(type, id, label){
 }
 
 function getUpdateButton(projectName, type, id, label){
-  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter('"+projectName+"',"+getUUID(type,id,label)+")\">Update</button>";
+  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter('"+projectName+"',undefined,"+getUUID(type,id,label)+")\">Update</button>";
 }
 
 function generateTableHeader(headers, labelDescription){

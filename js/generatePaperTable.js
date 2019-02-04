@@ -62,7 +62,7 @@ $(document).ready(function() {
                         // prevent the default behaviour of return key pressed
                         //console.log($(this).attr('id')+"\t"+$(this).html());
 
-                        partialUpdate(projectName$(this));
+                        passOneParameter(projectName, $(this));
                       }
                     });
                      }

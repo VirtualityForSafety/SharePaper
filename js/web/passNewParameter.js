@@ -6,8 +6,6 @@ function passNewEntryParameter(type, data, projectName = undefined) {
     data = 'proj='+projectName+'&'+getAllTextareaContents();
   }
   var url = "http://localhost:4000/"+type+'/?' + data;
-  console.log(type);
-  console.log(url);
 
   //check mandatory element input
   if(type=="tag"){
@@ -20,8 +18,8 @@ function passNewEntryParameter(type, data, projectName = undefined) {
       return ;
     }
   }
-  else if(type=="project"){
-    
+  else if(type=="project" || type=='paperpart' || type=='tagpart'){
+
   }
   else{
     if(getTextareaContent('new_paper_title').length==0){
@@ -59,7 +57,7 @@ function responseDOI() {
     }
     if (request.status == 200){
       //passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi=' + request.responseText,'rst2');
-      passNewEntryParameter('doi2bib','title=Visual Perspective and Feedback Guidance for VR Free-Throw Training&doi='+request.responseText);
+      passNewEntryParameter('doi2bib','title='+$('#new_paper_title').val()+'&doi='+request.responseText);
       $('#'+target).val(request.responseText);
       $("#status").empty().text("Success to get the doi. Crawling the bibtex with the doi....");
     }
@@ -68,7 +66,7 @@ function responseDOI() {
 function responseUpdate() {
     var request = this;
     if (request.readyState != 4){
-      console.log("Error occurred.");
+      alert("Error occurred during update.");
       return;
     }
     if (request.status == 200){
@@ -172,9 +170,32 @@ function passNewEntryParameter(projectName, type){
 }
 */
 
+function getPartialType(element){
+  var queries = element.attr('id').split('_');
+  var type= queries.shift()+'part';
+  return type;
+}
 
-function passOneParameter(projectName, divElement){
-  partialUpdate(projectName, $("#"+divElement.id));
+function getPartialData(projectName, element){
+  var label= ["id","label","value"];
+  var queries = element.attr('id').split('_');
+  var type= queries.shift()+'part';
+  queries.push(element.html());
+  var result = "";
+  for(var i=0; i<label.length;i++)
+    result += label[i]+"="+queries[i]+"&";
+  return 'proj='+projectName+'&'+result;
+}
+
+function passOneParameter(projectName, element, divElement = undefined){
+  if(element == undefined)
+    element = $("#"+divElement.id);
+  element.blur();
+  var data = getPartialData(projectName, element);
+  var type = getPartialType(element);
+  console.log(data + "\t" + type);
+  //partialUpdate(projectName, $("#"+divElement.id));
+  passNewEntryParameter(type, data, projectName);
 }
 
 function createNewEntryParameters(headers, data){
