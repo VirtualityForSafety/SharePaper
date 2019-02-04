@@ -6,12 +6,30 @@ function passNewEntryParameter(type, data, projectName = undefined) {
     data = 'proj='+projectName+'&'+getAllTextareaContents();
   }
   var url = "http://localhost:4000/"+type+'/?' + data;
+  console.log(type);
   console.log(url);
 
-  if(getTextareaContent('new_paper_title').length==0){
-    alert("Please enter paper title!");
-    return ;
+  //check mandatory element input
+  if(type=="tag"){
+    if(getTextareaContent('new_tag_comment').length==0){
+      alert("Please enter comment!");
+      return ;
+    }
+    if(getTextareaContent('new_tag_tag').length==0){
+      alert("Please enter tag!");
+      return ;
+    }
   }
+  else if(type=="project"){
+    
+  }
+  else{
+    if(getTextareaContent('new_paper_title').length==0){
+      alert("Please enter paper title!");
+      return ;
+    }
+  }
+
 
   if(projectName==undefined) // for bib entry
     $("#status").empty().text("Sending data to server...");

@@ -89,10 +89,8 @@ function generateNewEntryCore(){
       result +="</tr><tr><td colspan=3>"+createBibButtons()+"</td></tr>";
       result +="</tr><tr><td><b>Bibtex</b></td><td>"+createTextArea("bib", textValue)+"</td>";
       result += "<td width=2><img src=\"asset/undefined.png\" id=\"new_paper_bib_img\" width=10 height=10 ></td>";
-      //result +="</tr><tr><td colspan=3>"+getBibButtons()+"</td></tr>";
     }
     result +="</tr>";
-    // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
   }
   result += "<tr><td colspan=3><button id=\"submit_\" onclick=\"passNewEntryParameter('paper', undefined, '"+projectName+"')\">Submit</button> <button onclick=\"clearNewEntry()\">Clear</button></td></tr>";
   result += "</table>";

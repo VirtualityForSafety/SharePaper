@@ -199,7 +199,7 @@ function generateTagPart(projectName, paperID, tagArray, tagColumns){
   }
   //*/
   result += "</tr>";
-  var submitButton = "<button onclick=\"passNewEntryParameter('"+projectName+"','tag')\">Submit</button>";
+  var submitButton = "<button onclick=\"passNewEntryParameter('tag',undefined,'"+projectName+"')\">Submit</button>";
   result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
 
   // for tag elements

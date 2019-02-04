@@ -83,6 +83,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
   <script src="js/csvParser.js"></script>
   <script src="js/web/localStorage4User.js"></script>
+  <script src="js/web/passNewParameter.js"></script>
   <script src="js/web/index.js"></script>
 
   <center>
@@ -143,7 +144,7 @@ $("#myForm").submit(function(e) {
 function passProjectParam(){
   var projectName = $('#projectName').val();
   var projectDescription = $('#projectDescription').val();
-  window.location.href="http://localhost:4000/project?proj="+projectName+"&desc="+projectDescription;
+  passNewEntryParameter('project',"proj="+projectName+"&desc="+projectDescription,projectName);
 }
 
 function openForm() {

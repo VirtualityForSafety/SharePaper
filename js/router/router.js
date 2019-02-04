@@ -35,7 +35,7 @@ module.exports = function(app){
     var projectDescription = req.param('desc');
 
     try{
-      if(paper_title.length>0){
+      //if(paper_title.length>0){
         if(req.params.type == 'title2doi')
           bibGenerator.title2doi(paper_title, false, res);
         else if(req.params.type == 'doi2bib')
@@ -71,9 +71,9 @@ module.exports = function(app){
               res.send(projectName + ' succesfully created!');
             }
           }
-      }
-      else
-        console.log("ERROR: Empty title");
+      //}
+      //else
+      //  console.log("ERROR: Empty title");
     }
     catch(err){
       console.log("Error");
