@@ -127,7 +127,7 @@ function generatePaperPart(projectName, paperID, paperArray, paperColumns){
   }
 
   var titleIndex = headers.indexOf("Title");
-  console.log(pdfDir+getWritableName(paperArray[paperID][titleIndex])+".pdf");
+  //console.log(pdfDir+getWritableName(paperArray[paperID][titleIndex])+".pdf");
 
   result += "</tr>";
   // for paper element

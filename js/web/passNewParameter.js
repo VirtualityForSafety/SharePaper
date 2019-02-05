@@ -65,13 +65,14 @@ function responseDOI() {
 
 function responseUpdate() {
     var request = this;
-    console.log("responseUpdate");
+    //console.log("responseUpdate: " + request.readyState + "\t" + request.status);
     if (request.readyState != 4){
       console.log("Error occurred during update.");
       return;
     }
     if (request.status == 200){
-      if(request.responseText == 'Updated successfully.')
+      //console.log(request.responseText);
+      if(request.responseText.includes('successfully'))
         location.reload();
       else {
         //alert("Error occurred during update.");

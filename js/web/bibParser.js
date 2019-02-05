@@ -267,10 +267,10 @@ function applyBib(input){
   var bibtexJSON = parseBib(input);
   $('#new_paper_year').val(bibtexJSON.entries[bibtexJSON.currentEntry]['YEAR']);
   $('#new_paper_author').val(bibtexJSON.entries[bibtexJSON.currentEntry]['AUTHOR']);
-  $('#new_paper_journalconference').val(bibtexJSON.entries[bibtexJSON.currentEntry]['JOURNAL']);
+  $('#new_paper_journal').val(bibtexJSON.entries[bibtexJSON.currentEntry]['JOURNAL']);
   checkEntry('new_paper_year');
   checkEntry('new_paper_author');
-  checkEntry('new_paper_journalconference');
+  checkEntry('new_paper_journal');
   //console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['YEAR']);
   //console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['AUTHOR']);
   //console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['JOURNAL']);

@@ -32,6 +32,10 @@ module.exports = {
     var columnFile = 'metadata/'+projectName+'/columns.csv';
 
     var fileName = "./metadata/"+projectName+"/columns.csv";
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    res.send('Updated successfully.');
+    ////////////////////////////////////////////////////////////////////////////////////
     csvReader.read(fileName, function (err, content) {
       var csvDataText = content;
       //console.log(getLabelForType(type.replace('part',''),content).join(',') + newLine);    //paperColumns = generateLabel("Paper", csvDataText);
@@ -71,7 +75,7 @@ module.exports = {
           fs.writeFile(fileToWrite, fields+passedParam+newLine, function (err, stat) {
               if (err) throw err;
               console.log('file saved');
-              res.send('Updated successfully');
+              res.send('Updated successfully.');
           });
         }
 

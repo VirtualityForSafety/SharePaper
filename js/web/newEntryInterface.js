@@ -1,5 +1,46 @@
+/*
 $(document).ready(function() {
-  document.getElementById("newEntryInterface").innerHTML = generateNewEntry();
+  $.ajax({
+     type: "GET",
+     url: "metadata/"+projectName+"/columns.csv",
+     dataType: "text",
+     success: function(csvData) {
+       var csvDataText = parseText(csvData);
+         header = getLabelForType("Paper", csvDataText);
+
+         document.getElementById("newEntryInterface").innerHTML = generateNewEntry(header);
+         var modal = document.getElementById('myModal');
+         // Get the button that opens the modal
+         var btn = document.getElementById("newEntryBtn");
+         // Get the <span> element that closes the modal
+         var span = document.getElementsByClassName("close")[0];
+
+         // When the user clicks the button, open the modal
+         btn.onclick = function() {
+           modal.style.display = "block";
+         }
+
+         // When the user clicks on <span> (x), close the modal
+         span.onclick = function() {
+           modal.style.display = "none";
+         }
+
+         // When the user clicks anywhere outside of the modal, close it
+         window.onclick = function(event) {
+           if (event.target == modal) {
+             modal.style.display = "none";
+           }
+         }
+       }
+  });
+
+});
+*/
+
+function generateNewEntryInterface(csvDataText){
+  header = getLabelForType("Paper", csvDataText);
+
+  document.getElementById("newEntryInterface").innerHTML = generateNewEntry(header);
   var modal = document.getElementById('myModal');
   // Get the button that opens the modal
   var btn = document.getElementById("newEntryBtn");
@@ -21,15 +62,28 @@ $(document).ready(function() {
     if (event.target == modal) {
       modal.style.display = "none";
     }
-  }
-});
+  };
+}
 
-function generateNewEntry(){
+function getLabelForType(type, content){
+  var header = content[0];
+  var groupIndex = header.indexOf('Group');
+  var nameIndex = header.indexOf('Name');
+  var result = [];
+  for(var i=1 ; i<content.length ; i++){
+    if(content[i][groupIndex].toLowerCase()==type.toLowerCase()){
+        result.push(content[i][nameIndex].toLowerCase());
+    }
+  }
+  return result;
+}
+
+function generateNewEntry(header){
   var result = "<button id=\"newEntryBtn\" >+</button>";
   result += "<div id=\"myModal\" class=\"modal\">";
   result += "<div class=\"modal-content\">";
   result += "<span class=\"close\">&times;</span>";
-  result += generateNewEntryCore();
+  result += generateNewEntryCore(header);
   result += "</div></div>";
   return result;
 }
@@ -55,12 +109,12 @@ function createPopup(){
     return "<a href=\"#\" onClick=\"passTitle(); return false;\">Upload</a><noscript>You need Javascript to use the previous link or use <a href=\"index.html\" target=\"_blank\">Upload</a></noscript>";
 }
 
-function generateNewEntryCore(){
+function generateNewEntryCore(headers){
   //var result += "<p>Some text in the Modal..</p>";
   // for new entry
   var result = "<table>";
   //*
-  headers = ['id','title', 'year', 'journalconference', 'author', 'keyword', 'quality', 'summary', 'timestamp', 'contributor', 'link'];
+  //headers = ['id','title', 'year', 'journalconference', 'author', 'keyword', 'quality', 'summary', 'timestamp', 'contributor', 'link'];
   for(var k=1; k<headers.length; k++){
     if(headers[k]=='timestamp')
       continue;

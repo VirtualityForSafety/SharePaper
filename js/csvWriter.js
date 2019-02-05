@@ -22,7 +22,7 @@ module.exports = {
             fs.writeFile(fileToWrite, fields, function (err, stat) {
                 if (err) throw err;
                 console.log('file saved');
-                res.send('Updated successfully.');
+                //res.send('Updated successfully.');
             });
         }
     });

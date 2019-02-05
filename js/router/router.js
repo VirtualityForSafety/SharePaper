@@ -11,7 +11,7 @@ module.exports = function(app){
     var paper_doi = req.param('doi');
     var paper_id = req.param('id');
     var paper_year = req.param('year');
-    var paper_journalconference = req.param('journalconference');
+    var paper_journal = req.param('journal');
     var paper_author = req.param('author');
     var paper_keyword = req.param('keyword');
     var paper_quality = req.param('quality');
@@ -49,7 +49,7 @@ module.exports = function(app){
           //+ '<br>' + tag_contributor+ '<br>' + tag_timestamp+ '<br>' + tag_paperID+"<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
           }
           else if(req.params.type == 'paper'){
-            var passedParam = [paper_id, paper_title, paper_year, paper_journalconference, paper_author,
+            var passedParam = [paper_id, paper_title, paper_year, paper_journal, paper_author,
              paper_keyword,paper_quality,paper_summary,paper_timestamp,paper_contributor,paper_link];
             csvFileManager.update(projectName, 'paper',passedParam, res);
             //res.send('Updated successfully! :' + req.params.type+'<br>'+passedParam + "<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");

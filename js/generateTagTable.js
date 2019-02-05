@@ -22,7 +22,7 @@ $(document).ready(function() {
        var csvDataText = parseText(csvData);
          labelDescription = generateLabel("Tag", csvDataText);
          labelPriorityMaps = getLabelPriorityMap("Tag",csvDataText);
-
+         
          $.ajax({
             type: "GET",
             url: "metadata/"+projectName+"/tags.csv",

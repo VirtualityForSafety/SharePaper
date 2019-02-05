@@ -23,6 +23,8 @@ $(document).ready(function() {
        var csvDataText = parseText(csvData);
          labelDescription = generateLabel("Paper", csvDataText);
          labelPriorityMaps = getLabelPriorityMap("Paper",csvDataText);
+
+
          $.ajax({
             type: "GET",
             url: "metadata/"+projectName+"/tags.csv",
@@ -69,6 +71,8 @@ $(document).ready(function() {
                 });
               }
          });
+
+         generateNewEntryInterface(csvDataText); // from newEntryInterface.js
        }
 });
 
