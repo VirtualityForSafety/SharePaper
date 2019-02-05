@@ -1,18 +1,3 @@
-/*
-module.exports = {
-  parse: function (allText) {
-    var allTextLines = allText.split(/\r\n|\n/);
-    var data = new Array;
-    for (var i = 0; i < allTextLines.length; i++) {
-      if(allTextLines[i].length==0)
-        continue;
-      data[i] = parseLine(allTextLines[i]);
-    }
-    return data;
-}
-};
-*/
-
 function parseText(allText){
   var allTextLines = allText.split(/\r\n|\n/);
   var data = new Array;

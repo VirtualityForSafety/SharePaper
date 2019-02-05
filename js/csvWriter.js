@@ -1,18 +1,18 @@
 const fs = require('fs');
 
 module.exports = {
-  append: function (fileToWrite, dataArray, passedParam) {
-    fs.stat(fileToWrite, function (err, stat) {
+  append: function (fileToWrite, dataArray, passedParam, res) {
+    fs.stat(fileToWrite, res, function (err, stat) {
         if (err == null) {
             passedParam[0] = getMaxID(dataArray)+1;
             //write the actual data and end with newline
             dataArray.push(passedParam);
 
-            fs.writeFile(fileToWrite, flatten(dataArray), function (err, stat) {
+            fs.writeFile(fileToWrite, flatten(dataArray), res, function (err, stat) {
             //fs.appendFile(fileToWrite, csv, function (err) {
                 if (err) throw err;
                 console.log('The "data to append" was appended to file!');
-                return true;
+                //res.send('Updated successfully.');
             });
         }
         else {
@@ -22,28 +22,28 @@ module.exports = {
             fs.writeFile(fileToWrite, fields, function (err, stat) {
                 if (err) throw err;
                 console.log('file saved');
-                return true;
+                res.send('Updated successfully.');
             });
         }
     });
     return false;
 },
-update: function (fileToWrite, dataArray, passedParam) {
+update: function (fileToWrite, dataArray, passedParam, res) {
   var labelIndexMap = getLabelIndexMap(dataArray);
   for(var i=0; i<dataArray.length;i++){
     var data = dataArray[i];
     var id = data[0];
-    console.log(id +'\t' + passedParam[0]);
+    //console.log(id +'\t' + passedParam[0]);
     if(id==passedParam[0]){
       console.log("Same ID found");
-      console.log(labelIndexMap);
-      console.log(passedParam[1]);
-      console.log(labelIndexMap[passedParam[1]]);
-      console.log(passedParam[2]);
-      console.log(dataArray[i][labelIndexMap[passedParam[1]]]);
-      console.log(fileToWrite);
+      //console.log(labelIndexMap);
+      //console.log(passedParam[1]);
+      //console.log(labelIndexMap[passedParam[1]]);
+      //console.log(passedParam[2]);
+      //console.log(dataArray[i][labelIndexMap[passedParam[1]]]);
+      //console.log(fileToWrite);
       dataArray[i][labelIndexMap[passedParam[1]]] = passedParam[2];
-      return appendToNewFile(fileToWrite, flatten(dataArray));
+      appendToNewFile(fileToWrite, flatten(dataArray), res);
     }
   }
   return false;
@@ -51,7 +51,7 @@ update: function (fileToWrite, dataArray, passedParam) {
 };
 
 function getMaxID(data){
-  console.log(data);
+  //console.log(data);
   var maxID = 0;
   for (var i=1; i<data.length; i++) {
     var paperID = data[i][0] * 1;
@@ -62,13 +62,13 @@ function getMaxID(data){
 }
 
 
-function appendToNewFile(fileName, content){
+function appendToNewFile(fileName, content, res){
   //write the actual data and end with newline
   fs.writeFile(fileName, content, function (err, stat) {
   //fs.appendFile(fileToWrite, csv, function (err) {
       if (err) throw err;
       console.log('Updated successfully.');
-      return true;
+      res.send('Updated successfully.');
   });
 }
 
@@ -89,7 +89,6 @@ function flatten(dataArray){
         if(dataArray[0][t]=='Summary' || dataArray[0][t]=='Comment' || (dataArray[i][t]+"").includes(','))
         {
             dataArray[i][t] = "\""+dataArray[i][t].allReplace({"'": '', "\"": ''})+"\"";
-            console.log(dataArray[i][t]);
         }
       }
     }

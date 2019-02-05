@@ -65,12 +65,17 @@ function responseDOI() {
 
 function responseUpdate() {
     var request = this;
+    console.log("responseUpdate");
     if (request.readyState != 4){
-      alert("Error occurred during update.");
+      console.log("Error occurred during update.");
       return;
     }
     if (request.status == 200){
-      location.reload();
+      if(request.responseText == 'Updated successfully.')
+        location.reload();
+      else {
+        //alert("Error occurred during update.");
+      }
     }
 }
 
@@ -193,7 +198,7 @@ function passOneParameter(projectName, element, divElement = undefined){
   element.blur();
   var data = getPartialData(projectName, element);
   var type = getPartialType(element);
-  console.log(data + "\t" + type);
+  //console.log(data + "\t" + type);
   //partialUpdate(projectName, $("#"+divElement.id));
   passNewEntryParameter(type, data, projectName);
 }
