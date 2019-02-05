@@ -16,23 +16,19 @@ var projectName = getProjectNameFromLink();
 $(document).ready(function() {
   $.ajax({
      type: "GET",
-     //url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/columns.csv",
      url: "metadata/"+projectName+"/columns.csv",
      dataType: "text",
      success: function(csvData) {
        var csvDataText = parseText(csvData);
          labelDescription = generateLabel("Tag", csvDataText);
          labelPriorityMaps = getLabelPriorityMap("Tag",csvDataText);
-
+         
          $.ajax({
             type: "GET",
-            //url: "https://raw.githubusercontent.com/VirtualityForSafety/SharePaper/master/metadata/tags.csv",
             url: "metadata/"+projectName+"/tags.csv",
             dataType: "text",
             success: function(csvData) {
-                document.getElementById("tags").innerHTML = generateTagTable(projectName, parseText(csvData), labelDescription);
-                //sortTable(5,1);
-                //reverseTableRows(1);
+                document.getElementById("tagList").innerHTML = generateTable("tag", projectName, parseText(csvData), labelDescription);
 
             $("tbody").tableDnD({
               onDragClass: "myDragClass"

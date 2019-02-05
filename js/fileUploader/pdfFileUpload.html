@@ -3,15 +3,17 @@
     <title>Upload PDF file</title>
   </head>
   <body>
-    <button onclick="importBib">import bibtex</button></br>
       <form id="uploadForm"
           enctype="multipart/form-data"
           action="/api/pdf"
           method="post">
-      <input type="file" name="userPaper" />
+      <input type="file" name="userPaper" /><br>
       <input type="submit" value="Upload PDF" name="submit">
       <span id = "status"></span>
     </form>
+    <br>
+    <button
+        onclick="window.open('', '_self', ''); window.close();">Close</button>
   </body>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>

@@ -6,7 +6,7 @@ function hasClass(element, cls) {
 
 function reverseTableRows(skipInterval) {
 
-    var table = document.getElementById("paperTable"),
+    var table = document.getElementById("sortableTable"),
         newTbody = document.createElement('tbody'),
         oldTbody = table.tBodies[0],
         rows = table.rows,
@@ -38,7 +38,7 @@ function invalidateSortingState(){
 function sortTable(numElement, skipInterval, priorityMap) {
   var priorityMap = labelPriorityMaps[numElement];
   var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("paperTable");
+  table = document.getElementById("sortableTable");
   switching = true;
   /*Make a loop that will continue until
   no switching has been done:*/
@@ -110,93 +110,145 @@ function getUUID(type, id, label){
 }
 
 function getUpdateButton(projectName, type, id, label){
-  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter('"+projectName+"',"+getUUID(type,id,label)+")\">Update</button>";
+  return "<button id=btn_"+getUUID(type,id,label)+" class='rowSubmitButton' onclick=\"passOneParameter('"+projectName+"',undefined,"+getUUID(type,id,label)+")\">Update</button>";
 }
 
-function createPopup(){
-  return "<a href=\"#\" onClick=\"passTitle(); return false;\">Upload</a><noscript>You need Javascript to use the previous link or use <a href=\"index.html\" target=\"_blank\">Upload</a></noscript>";
-}
-
-function generatePaperTable(projectName, data, labels) {
-  //var result = "<table id=\"test\"><tbody><tr class=\"clickable\"><td>Paper info</td><td>Paper info</td><td>Paper info</td></tr><tr class=\"content\"><td colspan=3>Paper detail</td></tr></tbody></table><table id=\"paperTable\"><tr>";
-  var result = "<table id=\"paperTable\"><tr>";
-  var headers = [];
-  for(var i=0; i<data[0].length ; i++)
-    headers.push((data[0][i]+"").replace(/ /g,"").replace("/","").toLowerCase());
-  var titleIndex = headers.indexOf("title");
-  var dateIndex = headers.indexOf("timestamp");
-  var linkIndex = headers.indexOf("link");
-  var contributorIndex = headers.indexOf("contributor");
-  var linkIndex = headers.indexOf('link');
-
-  for( var k=0; k<data[0].length ; k++){
-    if(k==0){
-        result+= "<th style=\"display:none;\">"+ data[0][k] + "</th>";
-    }
-    else{
-      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",3)\">"+ data[0][k] + "<span class=\"description\">"+labelDescription[data[0][k]]+"</span></button></th>";
-    }
+function generateTableHeader(headers, labelDescription){
+  var result = "";
+  for( var k=0; k<headers.length ; k++){
+    if(k==0)
+        result+= "<th style=\"display:none;\">"+ headers[k] + "</th>";
+    else
+      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",3)\">"+ capitalizeFirstLetter(headers[k]) + "<span class=\"description\">"+labelDescription[headers[k]]+"</span></button></th>";
   }
   result += "</tr>";
+  return result;
+}
 
-  // for new entry
-  result += "<tr class=\"new_entry\">";
+
+
+function generateNewEntryRow(type, projectName, headers){
+  var dateIndex = headers.indexOf("timestamp");
+  var contributorIndex = headers.indexOf("contributor");
+  var titleIndex = headers.indexOf("title");
+  var linkIndex = headers.indexOf("link");
+
+  var newPrefix = "";
+  if(type == 'tag'){
+    newPrefix = 'new_tag_';
+  }
+  else{
+    newPrefix = 'new_paper_';
+  }
+
+  var result = "<tr class=\"new_entry\">";
+
   //*
-  for(var k=0; k<headers.length-1; k++){
+  for(var k=1; k<headers.length; k++){
     var textValue="";
-    if(k+1==contributorIndex)
-      result +="<td><textarea id=\"new_paper_"+headers[k+1]+"\" cols=\"20\">"+getValueFromLS()+"</textarea></td>";
-    else if(k+1==dateIndex)
-      result +="<td><textarea style=\"display:none;\" id=\"new_paper_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
-    else if(k+1==linkIndex)
+    if(k==contributorIndex)
+      result +="<td><textarea id=\""+ newPrefix+headers[k]+"\" >"+getValueFromLS()+"</textarea></td>";
+    else if(k==dateIndex)
+      result +="<td><textarea style=\"display:none;\" id=\""+ newPrefix+headers[k]+"\" ></textarea></td>";
+    else if(linkIndex >= 0 && k==linkIndex)
       result +="<td>"+createPopup()+"</td>";
     else
-      result +="<td><textarea id=\"new_paper_"+headers[k+1]+"\" cols=\"20\">"+textValue+"</textarea></td>";
-
-    // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
+      result +="<td><textarea id=\""+ newPrefix+headers[k]+"\" >"+textValue+"</textarea></td>";
   }
   result += "</tr>";
-  var submitButton = "<button id=\"submit_\" onclick=\"passNewEntryParameter('"+projectName+"','paper')\">Submit</button>";
-
+  var submitButton = "<button id=\"submit_\" onclick=\"passNewEntryParameter('"+type+"',undefined,'"+projectName+"')\">Submit</button>";
   result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
+  return result;
+}
 
-  var _paperID = -1;
+function generateDataRows(type, projectName, data, headers){
+  var result = "";
+  var dateIndex = headers.indexOf("timestamp");
+  var commentIndex = headers.indexOf("comment");
+  var tagIndex = headers.indexOf("tag");
+
   for (var i=data.length-1; i>=1; i--) {
-    var tags = getPaperTags(i);
-    var dataLine = "<tr class=\"clickable _tag "+tags+"\">";
-    var shouldHighlighted = false;
-    if(dateIndex >=0){
-      shouldHighlighted = checkUpdated(data[i][dateIndex]);
-    }
+    var dataLine = "";
+    var dataRow = data[i];
+    var shouldHighlighted = checkUpdated(dataRow[dateIndex]);
     var id = i;
-    for(var k=0; k<data[i].length ; k++){
 
+    if(type =='tag'){
+      var tagName = ("_"+dataRow[tagIndex]).replace(" ","_");
+      dataLine += "<tr class=\"_tag "+tagName+"\">";
+    }
+    else{
+      var tags = getPaperTags(i);
+      dataLine += "<tr class=\"clickable _tag "+tags+"\">";
+    }
+
+    for(var k=0; k<dataRow.length ; k++){
       var label = headers[k];
       if(k==0){
-        _paperID = data[i][k];
-        dataLine+= "<td style=\"display:none;\">"+ data[i][k] + "</td>";
+        id = dataRow[k];
+        dataLine+= "<td style=\"display:none;\">"+ dataRow[k] + "</td>";
       }
       else{
         var highLightStyle = "";
         if(shouldHighlighted)
           highLightStyle ="class='highlight'";
-        if(k==data[i].length-1)
-          dataLine += "<td "+"><a href=\"detail.html?proj="+projectName+"&id="+(_paperID+"")+"\">link</a></td>";
+
+        // last element
+        if(k==dataRow.length-1){
+          if(type == 'tag')
+            dataLine += "<td><a href=\"detail.html?proj="+projectName+"&id="+dataRow[k]+"\">"+dataRow[k]+"</a></td>";
+          else
+            dataLine += "<td "+"><a href=\"detail.html?proj="+projectName+"&id="+(id)+"\">link</a></td>";
+        }
         else
         {
-          if(label =='timestamp') {
-            dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ convertUTCDateToLocalDate(data[i][k]) + "</div><br>" + getUpdateButton(projectName, "paper",id,label)+"</td>";
+          if(type == 'tag'){
+            if(k==commentIndex)
+              dataLine+= "<td><a onclick = \"setClipboard('"+ dataRow[k]+"')\">"+dataRow[k] + "</a></td>";
+            else
+              dataLine+= "<td>"+ dataRow[k] + "</td>";
           }
-          else dataLine+= "<td "+"><div id="+getUUID("paper",_paperID,label)+" contenteditable=\"true\">"+ data[i][k] + "</div><br>" + getUpdateButton(projectName, "paper",id,label)+"</td>";
+          else{
+            if(label =='timestamp')
+              dataLine+= "<td "+"><div id="+getUUID("paper",id,label)+" contenteditable=\"true\">"+ convertUTCDateToLocalDate(dataRow[k]) + "</div><br>" + getUpdateButton(projectName, "paper",i,label)+"</td>";
+            else
+              dataLine+= "<td "+"><div id="+getUUID("paper",id,label)+" contenteditable=\"true\">"+ dataRow[k] + "</div><br>" + getUpdateButton(projectName, "paper",i,label)+"</td>";
+          }
         }
-
       }
     }
     result += dataLine + "</tr>";
-    // DEPRECATED: paper detail information
-    //result += getPaperDetail(i, header.length-1);
   }
-  //*/
+  return result;
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function generateTable(type,projectName, data, labels){
+  var result = "";
+  var trStyle = "";
+  if(type == 'tag')
+    trStyle = "class=\"nodrop nodrag\"";
+  result += "<table id=\"sortableTable\"><tr "+trStyle+">";
+
+  var headers = [];
+
+  for (var key in labels) {
+    if (labels.hasOwnProperty(key)) {
+      headers.push((key+"").replace(/ /g,"").replace("/","").toLowerCase());
+    }
+  }
+  //for(var i=0; i<labels.length ; i++)
+    //headers.push((labels[i]+"").replace(/ /g,"").replace("/","").toLowerCase());
+
+  // header
+  result += generateTableHeader(headers, labelDescription);
+  // new entry
+  result += generateNewEntryRow(type, projectName, headers);
+  // existing data
+  result += generateDataRows(type,projectName, data, headers);
   return result + "</table>";
 }
 
@@ -277,75 +329,4 @@ function generateTagArray(data) {
     }
   }
   return tagArray;
-}
-
-function generateTagTable(projectName, data, labels) {
-    var result = "<table id=\"paperTable\"><tr class=\"nodrop nodrag\">";
-
-    var headers = [];
-    for(var i=0; i<data[0].length ; i++)
-      headers.push((data[0][i]+"").replace(/ /g,"").replace("/","").toLowerCase());
-    var dateIndex = headers.indexOf("timestamp");
-    var commentIndex = headers.indexOf("comment");
-    var tagIndex = headers.indexOf("tag");
-    var contributorIndex = headers.indexOf("contributor");
-    for( var k=0; k<data[0].length ; k++){
-      if(k==0){
-          result+= "<th style=\"display:none;\">"+ data[0][k] + "</th>";
-        }
-        else{
-          result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",3)\">"+ data[0][k] + "<span class=\"description\">"+labelDescription[data[0][k]]+"</span></button></th>";
-          }
-      }
-
-    result += "</tr>";
-
-    // for new entry
-    result += "<tr class=\"new_entry\">";
-    //*
-    for(var k=0; k<headers.length-1; k++){
-      if(k+1==dateIndex)
-        result +="<td><textarea style=\"display:none;\" id=\"new_tag_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
-      else if(k+1==contributorIndex)
-        result +="<td><textarea id=\"new_tag_"+headers[k+1]+"\" cols=\"20\">"+getValueFromLS()+"</textarea></td>";
-      else
-        result +="<td><textarea id=\"new_tag_"+headers[k+1]+"\" cols=\"20\"></textarea></td>";
-      // result += "<td><input type=\"button\" value=\"Submit\" onclick=\"passNewEntryParameter(99999)\">"+hiddenItem+"</td>";
-    }
-    result += "</tr>";
-    var submitButton = "<button onclick=\"passNewEntryParameter('"+projectName+"','tag')\">Submit</button>";
-    result += "<tr class=\"new_entry\"><td style=\"text-align: center; vertical-align: middle;\" colspan='"+(headers.length-1)+"'>"+submitButton+"</td></tr>";
-
-    for (var i=data.length-1; i>=1; i--) {
-      var tagName = ("_"+data[i][tagIndex]).replace(" ","_");
-      var dataLine = "<tr class=\"_tag "+tagName+"\">";
-        var dataRow = data[i];
-        var shouldHighlighted = checkUpdated(dataRow[dateIndex]);
-        var id=i;
-        for( var k=0; k<dataRow.length ; k++){
-          var highLightStyle = "";
-          if(shouldHighlighted)
-            highLightStyle ="class='highlight'";
-
-          if(k==0){
-            id = dataRow[k];
-            dataLine+= "<td style=\"display:none;\">"+ dataRow[k] + "</td>";
-            }
-            else{
-              if(k==commentIndex){
-                //dataLine+= "<td><input type=\"hidden\" value=\""+dataRow[k]+"\" id=\"tag"+ i +"\">"; // set hidden input value
-                dataLine+= "<td><a onclick = \"setClipboard('"+ dataRow[k]+"')\">"; // set link
-                dataLine+= dataRow[k] + "</a></td>";
-              }
-              else if(k==dataRow.length-1)
-                dataLine += "<td><a href=\"detail.html?proj="+projectName+"&id="+dataRow[k]+"\">link</a></td>";
-              else
-                dataLine+= "<td>"+ dataRow[k] + "</td>";
-              }
-          }
-
-        result += dataLine + "</tr>";
-    }
-
-    return result + "</table>";
 }

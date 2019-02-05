@@ -57,6 +57,46 @@ td {
 .tip:hover .description {
   visibility: visible;
 }
+
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
 </style>
 
 </head>
@@ -64,19 +104,24 @@ td {
 <section id="topLink"></section>
 <section id="checkTag"></section>
 <button type="button" onclick="showAll()">show all</button>
-<button class="expandNewEntry">+</button>
-<section id="paper"></section>
+<!--<button class="expandNewEntry">+</button>-->
+<section id="newEntryInterface"></section>
+<section id="paperList"></section>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src="js/topLink.js"></script>
 <script src="js/csvParser.js"></script>
 <script src="js/labelLoader.js"></script>
+<script src="js/web/bibParser.js"></script>
+<script src="js/web/data2param.js"></script>
 <script src="js/web/localStorage4User.js"></script>
 <script src="js/web/passNewParameter.js"></script>
 <script src="js/sortableTableGenerator.js"></script>
 <script src="js/generatePaperTable.js"></script>
 <script src="js/eachTag.js"></script>
+<script src="js/web/newEntryInterface.js"></script>
 <script>
+
 // variables
 var sortingState = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var labelDescription = {};
@@ -103,7 +148,7 @@ function toggle_by_class(cls) {
       lst[i].style.display = "";
   }
 }
-
+/*
 function passOneParameter(projectName, divElement){
   partialUpdate(projectName, $("#"+divElement.id));
 }
@@ -118,8 +163,9 @@ function partialUpdate(projectName, element){
   var result = "";
   for(var i=0; i<label.length;i++)
     result += label[i]+"="+queries[i]+"&";
-  window.location.href="http://localhost:1209/"+type+"?proj="+projectName+"&"+result;
+  window.location.href="http://localhost:4000/"+type+"?proj="+projectName+"&"+result;
 }
+*/
 </script>
 
 </body>

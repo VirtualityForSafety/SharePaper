@@ -83,31 +83,31 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
   <script src="js/csvParser.js"></script>
   <script src="js/web/localStorage4User.js"></script>
+  <script src="js/web/passNewParameter.js"></script>
   <script src="js/web/index.js"></script>
 
   <center>
 <h1>SharePaper</h1>
-<h2>Welcome, <div id="user" contenteditable="true"></div></h2>
+<h2>Welcome, <div id="contributor_local" contenteditable="true"></div></h2>
 
 
 <section id="projectList"></section>
 <script>
-var userEntry = document.getElementById("user");
+var userEntry = document.getElementById("contributor_local");
 userEntry.innerHTML = ""+getValueFromLS();
 
 $('div[contenteditable=true]').keydown(function(e) {
    // trap the return key being pressed
    if (e.keyCode == 13) {
-     // insert 2 br tags (if only one br tag is inserted the cursor won't go to the second line)
-     //document.execCommand('insertHTML', false, '<br><br>');
-     // prevent the default behaviour of return key pressed
-     //console.log($(this).attr('id')+"\t"+$(this).html());
-     var userEntry = document.getElementById("user");
-     var value = userEntry.textContent;
-     setValueToLS(value);
+     saveUserName("contributor_local");
      $(this).blur();
    }
  });
+
+ $('div[contenteditable=true]').blur(function() {
+    saveUserName("contributor_local");
+  });
+
 </script>
 <div style="height:100%;width:100%;position:absolute;top:0;left:0;background-color:#000000;display:none;">
      <div id="divOperationMessage" style="background-color: White; border: 2px solid black;
@@ -144,7 +144,7 @@ $("#myForm").submit(function(e) {
 function passProjectParam(){
   var projectName = $('#projectName').val();
   var projectDescription = $('#projectDescription').val();
-  window.location.href="http://localhost:1209/project?proj="+projectName+"&desc="+projectDescription;
+  passNewEntryParameter('project',"proj="+projectName+"&desc="+projectDescription,projectName);
 }
 
 function openForm() {

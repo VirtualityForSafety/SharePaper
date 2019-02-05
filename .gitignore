@@ -2,7 +2,7 @@
 !.gitignore
 !.gitmodules
 *~
-
+package-lock.json
 components/
 node_modules/
 _site/
