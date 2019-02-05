@@ -263,15 +263,17 @@ function parseBib(input) {
   return b;
 }
 
+function applyAndCheck(name, value){
+  if($("#"+name).length !=0){
+    $("#"+name).val(value);
+    checkEntry(name);
+  }
+}
+
 function applyBib(input){
   var bibtexJSON = parseBib(input);
-  $('#new_paper_year').val(bibtexJSON.entries[bibtexJSON.currentEntry]['YEAR']);
-  $('#new_paper_author').val(bibtexJSON.entries[bibtexJSON.currentEntry]['AUTHOR']);
-  $('#new_paper_journal').val(bibtexJSON.entries[bibtexJSON.currentEntry]['JOURNAL']);
-  checkEntry('new_paper_year');
-  checkEntry('new_paper_author');
-  checkEntry('new_paper_journal');
-  //console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['YEAR']);
-  //console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['AUTHOR']);
-  //console.log(bibtexJSON.entries[bibtexJSON.currentEntry]['JOURNAL']);
+  applyAndCheck('new_paper_year', bibtexJSON.entries[bibtexJSON.currentEntry]['YEAR']);
+  applyAndCheck('new_paper_author', bibtexJSON.entries[bibtexJSON.currentEntry]['AUTHOR']);
+  applyAndCheck('new_paper_journal', bibtexJSON.entries[bibtexJSON.currentEntry]['JOURNAL']);
+  applyAndCheck('new_paper_journalconference', bibtexJSON.entries[bibtexJSON.currentEntry]['JOURNAL']);
 }
