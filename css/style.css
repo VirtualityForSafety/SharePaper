@@ -1,239 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
-.strips {
-  min-height: 12vh;
-  text-align: center;
-  overflow: hidden;
-  color: white;
-}
-.strips .strip__content {
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
-  -webkit-animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-          animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-  -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 12vh;
-  text-decoration: none;
-}
-.strips .strip__content:hover:before {
-  -webkit-transform: skew(-30deg) scale(3) translate(0, 0);
-          transform: skew(-30deg) scale(3) translate(0, 0);
-  opacity: 0.1;
-}
-.strips .strip__content:before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: white;
-  opacity: 0.05;
-  -webkit-transform-origin: center center;
-          transform-origin: center center;
-  -webkit-transform: skew(-30deg) scaleY(1) translate(0, 0);
-          transform: skew(-30deg) scaleY(1) translate(0, 0);
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-}
-.strips .strip__inner-text {
-  will-change: transform, opacity;
-  position: absolute;
-  z-index: 5;
-  top: 50%;
-  left: 50%;
-  width: 70%;
-  -webkit-transform: translate(-50%, -50%) scale(0.5);
-          transform: translate(-50%, -50%) scale(0.5);
-  opacity: 0;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-}
-.strips__strip--expanded {
-  width: 100%;
-  top: 0 !important;
-  left: 0 !important;
-  z-index: 3;
-  cursor: default;
-}
-@media screen and (max-width: 760px) {
-  .strips__strip--expanded {
-    min-height: 100vh;
-  }
-}
-.strips__strip--expanded .strip__content:hover:before {
-  -webkit-transform: skew(-30deg) scale(1) translate(0, 0);
-          transform: skew(-30deg) scale(1) translate(0, 0);
-  opacity: 0.05;
-}
-.strips__strip--expanded .strip__title {
-  opacity: 0;
-}
-.strips__strip--expanded .strip__inner-text {
-  opacity: 1;
-  -webkit-transform: translate(-50%, -50%) scale(1);
-          transform: translate(-50%, -50%) scale(1);
-}
-
-.strip__title {
-  display: block;
-  margin: 0;
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  font-size: 2.2vw;
-  color: white;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-}
-@media screen and (max-width: 760px) {
-  .strip__title {
-    font-size: 28px;
-  }
-}
-
-.strip__close {
-  position: absolute;
-  right: 3vw;
-  top: 3vw;
-  opacity: 0;
-  z-index: 10;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  cursor: pointer;
-  transition-delay: 0.5s;
-}
-.strip__close--show {
-  opacity: 1;
-}
-
-@-webkit-keyframes strip1 {
-  0% {
-    -webkit-transform: translate3d(-100%, 0, 0);
-            transform: translate3d(-100%, 0, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes strip1 {
-  0% {
-    -webkit-transform: translate3d(-100%, 0, 0);
-            transform: translate3d(-100%, 0, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-  }
-}
-@-webkit-keyframes strip2 {
-  0% {
-    -webkit-transform: translate3d(0, 100%, 0);
-            transform: translate3d(0, 100%, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes strip2 {
-  0% {
-    -webkit-transform: translate3d(0, 100%, 0);
-            transform: translate3d(0, 100%, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-  }
-}
-@-webkit-keyframes strip3 {
-  0% {
-    -webkit-transform: translate3d(0, -100%, 0);
-            transform: translate3d(0, -100%, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes strip3 {
-  0% {
-    -webkit-transform: translate3d(0, -100%, 0);
-            transform: translate3d(0, -100%, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-  }
-}
-@-webkit-keyframes strip4 {
-  0% {
-    -webkit-transform: translate3d(0, 100%, 0);
-            transform: translate3d(0, 100%, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes strip4 {
-  0% {
-    -webkit-transform: translate3d(0, 100%, 0);
-            transform: translate3d(0, 100%, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-  }
-}
-@-webkit-keyframes strip5 {
-  0% {
-    -webkit-transform: translate3d(100%, 0, 0);
-            transform: translate3d(100%, 0, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes strip5 {
-  0% {
-    -webkit-transform: translate3d(100%, 0, 0);
-            transform: translate3d(100%, 0, 0);
-  }
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-  }
-}
-
-tr:nth-child(even) {
-   background-color: #f2f2f2;
-}
-
-h1, h2 {
-  font-weight: 300;
-}
-
-.fa {
-  font-size: 30px;
-  color: white;
-}
-
-h2 {
-  font-size: 36px;
-  margin: 0 0 16px;
-}
-
 /* Demo purposes */
 
 body {
@@ -242,6 +6,104 @@ body {
   text-rendering: geometricPrecision;
   line-height: 1.5;
 }
+
+th, td {
+text-align: left;
+padding: 16px;
+}
+
+tr:nth-child(odd) {
+background-color: #fafafa
+}
+
+table {
+  border-spacing: 0;
+  width: 100%;
+border-collapse: collapse;
+border: 2px #777 solid;
+font: 12px sans-serif;
+font-family: "Quicksand", sans-serif;
+}
+
+table.table_header{
+  vertical-align: middle;
+}
+
+td {
+border: 0.5px #aaa solid;
+padding: 5px;
+}
+/* Tooltip container */
+.tip {
+  font: 13px sans-serif;
+  font-weight: bold;
+  color: #318090;
+  font-family: "Quicksand", sans-serif;
+position: relative;
+background-color: transparent;
+border: 0px; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tip .description {
+visibility: hidden;
+width: 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+padding: 5px 0;
+border-radius: 6px;
+
+/* Position the tooltip text - see examples below! */
+position: absolute;
+z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tip:hover .description {
+visibility: visible;
+}
+
+
+/* The Modal (background) */
+.modal {
+display: none; /* Hidden by default */
+position: fixed; /* Stay in place */
+z-index: 1; /* Sit on top */
+padding-top: 100px; /* Location of the box */
+left: 0;
+top: 0;
+width: 100%; /* Full width */
+height: 100%; /* Full height */
+overflow: auto; /* Enable scroll if needed */
+background-color: rgb(0,0,0); /* Fallback color */
+background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+background-color: #fefefe;
+margin: auto;
+padding: 20px;
+border: 1px solid #888;
+width: 80%;
+}
+
+/* The Close Button */
+.close {
+color: #aaaaaa;
+float: right;
+font-size: 28px;
+font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+color: #000;
+text-decoration: none;
+cursor: pointer;
+}
+
 
 .go:focus{
   background-color:#19A3FF;
@@ -331,16 +193,19 @@ input.tag_test {
 }
 
 .tag {
-  background: blue;
+  font: 15px sans-serif;
+  font-family: "Abel";
+  background: #419080;
   display: inline-block;
   border-radius: 2px 0 0 2px;
   color: #fff;
   display: inline-block;
   height: 26px;
-  line-height: 26px;
-  padding: 0 15px 0 15px;
+  font-weight: lighter;
+  line-height: 0px;
+  padding: 0 3px 0 3px;
   position: relative;
-  margin: 0 15px 15px 0;
+  margin: 0 0px 0px 0;
   text-decoration: none;
   -webkit-transition: color 0.2s;
 }

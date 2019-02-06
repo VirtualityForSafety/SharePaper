@@ -117,9 +117,9 @@ function generateTableHeader(headers, labelDescription){
   var result = "";
   for( var k=0; k<headers.length ; k++){
     if(k==0)
-        result+= "<th style=\"display:none;\">"+ headers[k] + "</th>";
+        result+= "<td class=table_header style=\"display:none;\">"+ headers[k] + "</td>";
     else
-      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",3)\">"+ capitalizeFirstLetter(headers[k]) + "<span class=\"description\">"+labelDescription[headers[k]]+"</span></button></th>";
+      result+= "<td class=table_header><button class=\"tip\" onclick=\"sortTable("+k+",3)\">"+ capitalizeFirstLetter(headers[k]) + "<span class=\"description\">"+labelDescription[headers[k]]+"</span></button></td>";
   }
   result += "</tr>";
   return result;
