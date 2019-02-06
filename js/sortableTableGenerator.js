@@ -117,9 +117,9 @@ function generateTableHeader(headers, labelDescription){
   var result = "";
   for( var k=0; k<headers.length ; k++){
     if(k==0)
-        result+= "<th style=\"display:none;\">"+ headers[k] + "</th>";
+        result+= "<td class=table_header style=\"display:none;\">"+ headers[k] + "</td>";
     else
-      result+= "<th><button class=\"tip\" onclick=\"sortTable("+k+",3)\">"+ capitalizeFirstLetter(headers[k]) + "<span class=\"description\">"+labelDescription[headers[k]]+"</span></button></th>";
+      result+= "<td class=table_header><button class=\"tip\" onclick=\"sortTable("+k+",3)\">"+ capitalizeFirstLetter(headers[k]) + "<span class=\"description\">"+labelDescription[headers[k]]+"</span></button></td>";
   }
   result += "</tr>";
   return result;
@@ -204,9 +204,9 @@ function generateDataRows(type, projectName, data, headers){
         {
           if(type == 'tag'){
             if(k==commentIndex)
-              dataLine+= "<td><a onclick = \"setClipboard('"+ dataRow[k]+"')\">"+dataRow[k] + "</a></td>";
+              dataLine+= "<td class=unselectable><a onclick = \"setClipboard('"+ dataRow[k]+"')\">"+dataRow[k] + "</a></td>";
             else
-              dataLine+= "<td>"+ dataRow[k] + "</td>";
+              dataLine+= "<td class=unselectable>"+ dataRow[k] + "</td>";
           }
           else{
             if(label =='timestamp')
