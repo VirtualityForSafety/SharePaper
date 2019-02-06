@@ -204,9 +204,9 @@ function generateDataRows(type, projectName, data, headers){
         {
           if(type == 'tag'){
             if(k==commentIndex)
-              dataLine+= "<td><a onclick = \"setClipboard('"+ dataRow[k]+"')\">"+dataRow[k] + "</a></td>";
+              dataLine+= "<td class=unselectable><a onclick = \"setClipboard('"+ dataRow[k]+"')\">"+dataRow[k] + "</a></td>";
             else
-              dataLine+= "<td>"+ dataRow[k] + "</td>";
+              dataLine+= "<td class=unselectable>"+ dataRow[k] + "</td>";
           }
           else{
             if(label =='timestamp')

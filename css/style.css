@@ -29,6 +29,10 @@ table.table_header{
   vertical-align: middle;
 }
 
+.unselectable{
+  user-select: none;
+}
+
 td {
 border: 0.5px #aaa solid;
 padding: 5px;
