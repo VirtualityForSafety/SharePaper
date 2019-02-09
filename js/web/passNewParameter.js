@@ -126,7 +126,7 @@ function getAllTextareaContents(){
           data.push("time");
         }
         else{
-          data.push($("#"+tdElements[i].id).val());
+          data.push(($("#"+tdElements[i].id).val()).replace(/\n/g, " "));
         }
       }
     }
