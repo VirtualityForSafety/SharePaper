@@ -43,7 +43,7 @@ module.exports = function(app){
         else if(req.params.type =='bib2file')
           bibGenerator.bib2file(paper_title, paper_bib, res);
           if(req.params.type == 'tag'){
-            var passedParam = [tag_id, tag_section, tag_comment, tag_tag, tag_contributor, tag_timestamp, tag_paperID];
+            var passedParam = [tag_id, tag_section, tag_tag, tag_comment, tag_contributor, tag_timestamp, tag_paperID];
             csvFileManager.update(projectName, 'tag',passedParam, res);
             //res.send('Updated successfully! :' + req.params.type+':'+tag_id+'<br>' +tag_section + '<br>' + tag_comment + '<br>' + tag_tag
           //+ '<br>' + tag_contributor+ '<br>' + tag_timestamp+ '<br>' + tag_paperID+"<br><br><input type=\"button\" value=\"Back\" onclick=\"window.history.back()\" /> ");
