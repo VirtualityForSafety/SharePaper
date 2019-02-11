@@ -68,7 +68,7 @@ function appendToNewFile(fileName, content, res){
   //fs.appendFile(fileToWrite, csv, function (err) {
       if (err) throw err;
       console.log('Updated successfully.');
-      res.send('Updated successfully.');
+      //res.send('Updated successfully.');
   });
 }
 
