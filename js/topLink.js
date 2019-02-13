@@ -13,9 +13,10 @@ function getProjectNameFromLink(){
 
 function insertTopLink(){
   var projectName = getProjectNameFromLink();
+  var backToIndex = "<a href='http://localhost:4000/'>Back to home</a><br>";
   var shareButton ="<input class=\"top_share\" type=\"button\" value=\"Share \" onClick=\"location.href='share.html?proj="+projectName+"&'\">";
   var paperButton ="<input class=\"top_paper\" type=\"button\" value=\" Paper\" onClick=\"location.href='paper.html?proj="+projectName+"&'\">";
-  return shareButton+paperButton+"<br>";
+  return backToIndex+shareButton+paperButton+"<br>";
 }
 
 document.getElementById("topLink").innerHTML = insertTopLink();
