@@ -1,6 +1,6 @@
 # SharePaper
 
-**IMPORTANT: This work is further developed as PaperMining(https://github.com/JinkiJung/PaperMining). This repository will not be maintained.
+**IMPORTANT: This work is further developed as PaperMining(https://github.com/JinkiJung/PaperMining). This repository will not be maintained.**
 
 SharePaper is an open-source project of a web-based reference manager for collaborative submissions.
 SharePaper aims to maximizing writing productivity by two core functions:
