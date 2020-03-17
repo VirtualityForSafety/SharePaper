@@ -1,10 +1,13 @@
 # SharePaper
+
+**IMPORTANT: This work is further developed as PaperMining(https://github.com/JinkiJung/PaperMining). This repository will not be maintained.
+
 SharePaper is an open-source project of a web-based reference manager for collaborative submissions.
 SharePaper aims to maximizing writing productivity by two core functions:
 - Share authors' intention of referencing other papers as tags
 - Convert tags to latex formatted texts (+ bibtex) by organizing them into sections
 
-The project was initiated by [Jinki Jung](https://github.com/jinkijung), and then has been implemented by [Jinki Jung](https://github.com/jinkijung), [Soyeon Kim](https://github.com/soykim314), [Sua Lee](https://github.com/otterlee), and [Sangho Lee](https://github.com/kimmydkemf).
+The project was initiated by [Jinki Jung](https://github.com/jinkijung), and then has been implemented with [Soyeon Kim](https://github.com/soykim314), [Sua Lee](https://github.com/otterlee), and [Sangho Lee](https://github.com/kimmydkemf).
 
 ## Current setup
 - Remotely (read-only): SharePaper provides a web interface to explore whole contents.
