@@ -38,7 +38,8 @@
   "devDependencies": {
     "mocha": "^7.1.0",
     "should": "~7.1.0",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "kind-of": ">=6.0.3"
   },
   "author": "Jinki Jung <your.jinki.jung@gmail.com> (https://jinkijung.github.io/)",
   "contributors": "Jinki Jung, Soyeon Kim, Sua Lee, Sangho Lee",
